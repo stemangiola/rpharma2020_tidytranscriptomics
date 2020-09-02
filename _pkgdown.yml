@@ -1,0 +1,26 @@
+url: https://stemangiola.github.io/rpharma2020_tidytranscriptomics
+
+template:
+  params:
+    bootswatch: flatly
+    ganalytics: UA-93043521-1
+
+home:
+  title: "TidyTranscriptomics"
+  type: inverse
+  
+navbar:
+  title: ~
+  type: default
+  left:
+    - text: Workshop
+      href: articles/tidytranscriptomics.html
+    - text: Supplementary 
+      href: articles/supplementary.html
+
+  right:
+   - icon: fa-github
+     href: https://github.com/stemangiola/rpharma2020_tidytranscriptomics
+   - icon: fa-docker
+     href: https://hub.docker.com/repository/docker/stemangiola/rpharma2020_tidytranscriptomics
+    
