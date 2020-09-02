@@ -1,5 +1,5 @@
 ---
-title: "Bioc 2020 Tidytranscriptomics Solutions"
+title: "rpharma2020 Tidytranscriptomics Solutions"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{Solutions}
