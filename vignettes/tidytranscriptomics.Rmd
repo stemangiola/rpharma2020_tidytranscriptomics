@@ -184,27 +184,35 @@ From this tidybulk tibble, we can perform differential expression analysis with 
 ## Filtering lowly expressed genes  
 Genes with very low counts across all libraries provide little evidence for differential expression and they interfere with some of the statistical approximations that are used later in the pipeline. They also add to the multiple testing burden when estimating false discovery rates, reducing power to detect differentially expressed genes. These genes should be filtered out prior to further analysis.
 
-With tidybulk, it is not really necessary to explicitly filter lowly transcribed genes, as all calculations (e.g., scaling, removal of unwanted variation, differential expression testing) are performed on abundantly transcribed genes; although in case of scaling, the scaling is applied back to all genes in the dataset. Tidybulk can use the *edgeR* `filterByExpr` function described in [@law2016rna]. By default, this will keep genes with ~10 counts in a minimum number of samples, the number of the samples in the smallest group. In this dataset the smallest group size is four (as we have four dex-treated samples vs four untreated). tidybulk performs this filtering in the functions we will use `scale_abundance` and `test_differential_abundance`.
+Tidybulk `keep_abundant` can use the *edgeR* `filterByExpr` function described in [@law2016rna] to keep the genes with adequate abundance for differential expression testing. By default, this will keep genes with ~10 counts in a minimum number of samples, the number of the samples in the smallest group. In this dataset the smallest group size is four (as we have four dex-treated samples vs four untreated). Alternatively, we could use `identify_abundant` to identify which genes are abundant or not (TRUE/FALSE), rather than just keeping the abundant ones. 
+
+```{r}
+# Filtering counts
+counts_filtered <- counts_tt %>% keep_abundant(factor_of_interest=dex)
+
+# take a look
+counts_filtered
+```
+After running `keep_abundant` we have a column called `.abundant` containing TRUE  (`identify_abundant` would have TRUE/FALSE).
 
 ## Scaling counts to normalise
 
-Scaling of counts, normalisation, is performed to eliminate uninteresting differences between samples due to sequencing depth or composition. In the tidybulk package the function `scale_abundance` generates scaled counts, with scaling factors calculated on abundant (filtered) transcripts and applied to all transcripts. We can choose from different normalisation methods. Here we will use the default, TMM, [@robinson2010scaling]. TMM normalisation (and most scaling normalisation methods) scale relative to one sample. We use `factor_of_interest` to specify the column containing the groups for the filtering described above.
+Scaling of counts, normalisation, is performed to eliminate uninteresting differences between samples due to sequencing depth or composition. In the tidybulk package the function `scale_abundance` generates scaled counts, with scaling factors calculated on abundant (filtered) transcripts and applied to all transcripts. We can choose from different normalisation methods. Here we will use the default, TMM, [@robinson2010scaling]. TMM normalisation (and most scaling normalisation methods) scale relative to one sample.
 
 ```{r}
 # Scaling counts
-counts_scaled <- counts_tt %>% scale_abundance(factor_of_interest = dex)
+counts_scaled <- counts_filtered %>% scale_abundance()
 
 # take a look
 counts_scaled
 ```
 
-After we run `scale_abundance` we should see some columns have been added at the end. We have a column called `lowly_abundant` that indicates whether the gene has been filtered due to being lowly expressed. FALSE means the gene was not filtered, TRUE means it was. The `counts_scaled` column contains the scaled counts.
+After we run `scale_abundance` we should see some columns have been added at the end. The `counts_scaled` column contains the scaled counts.
 
 We can visualise the difference of abundance densities before and after scaling. As tidybulk output is compatible with tidyverse, we can simply pipe it into standard tidyverse functions such as `filter`, `pivot_longer` and `ggplot`. We can also take advantage of ggplot's `facet_wrap` to easily create multiple plots.
 
 ```{r out.width = "70%"}
 counts_scaled %>%
-	filter(!lowly_abundant) %>%
 	pivot_longer(cols = c("counts", "counts_scaled"), names_to = "source", values_to = "abundance") %>%
 	ggplot(aes(x=abundance + 1, color=sample)) +
 	geom_density() +
@@ -225,7 +233,6 @@ airway %>%
 	tidybulk() %>%
 	scale_abundance() %>%
 	pivot_longer(cols = c("counts", "counts_scaled"), names_to = "source", values_to = "abundance") %>%
-	filter(!lowly_abundant) %>%
 	ggplot(aes(x=abundance + 1, color=sample)) +
 	geom_density() +
 	facet_wrap(~source) +
@@ -322,9 +329,6 @@ An alternative to principal component analysis for examining relationships betwe
 ```{r out.width = "70%"}
 counts_scaled %>%
 
-  # filter lowly abundant
-  filter(!lowly_abundant) %>%
-
 	# extract 500 most variable genes
 	keep_variable( .abundance = counts_scaled, top = 500) %>%
 
@@ -363,12 +367,12 @@ gplots::heatmap.2(highly_variable_lcpm, col=colours, trace="none", ColSideColors
 
 ## Differential expression
 
-Now that we are happy that the data looks good, we can continue to testing for differentially expressed (DE) genes. We will use the `test_differential_abundance` from tidybulk which currently uses *edgeR* [@robinson2010edger] to perform the differential expression analysis. We give `test_differential_abundance` our tidybulk counts object and a formula, specifying the column that contains our groups to be compared. If all our samples were from the same cell line we could use the formula `0 + dex`, however, each treated and untreated sample is from a different cell line so we add the cell line as an additional factor `0 + dex + cell`. We also provide the names of the groups we want to compare to `.contrasts` (e.g. `.contrasts = c("dextreat - dexuntreat")`). `test_differential_abundance` will perform the filtering of lowly expressed genes as described before.
+Now that we are happy that the data looks good, we can continue to testing for differentially expressed (DE) genes. We will use the `test_differential_abundance` from tidybulk which currently uses *edgeR* [@robinson2010edger] to perform the differential expression analysis. We give `test_differential_abundance` our tidybulk counts object and a formula, specifying the column that contains our groups to be compared. If all our samples were from the same cell line we could use the formula `0 + dex`, however, each treated and untreated sample is from a different cell line so we add the cell line as an additional factor `0 + dex + cell`. We also provide the names of the groups we want to compare to `.contrasts` (e.g. `.contrasts = c("dextreat - dexuntreat")`).
 
 We only have one contrast here so we omit the suffix.
 
 ```{r warning=FALSE}
-counts_de <- counts_tt %>%
+counts_de <- counts_filtered %>%
     test_differential_abundance(
       .formula = ~ 0 + dex + cell,
       .contrasts = c("dextrt - dexuntrt"),
@@ -464,7 +468,6 @@ Volcano plots are a useful genome-wide plot for checking that the analysis looks
 ```{r out.width = "70%"}
 # volcano plot, minimal
 counts_de %>%
-	filter(!lowly_abundant) %>%
 	ggplot(aes(x=logFC, y=PValue, colour=significant)) +
 	geom_point() +
 	scale_y_continuous(trans = "log10_reverse") +
@@ -479,7 +482,6 @@ counts_de %>%
 	pivot_transcript() %>%
 
   # Subset data
-	filter(!lowly_abundant) %>%
 	mutate(significant = FDR<0.05 & abs(logFC) >=2) %>%
 	mutate(transcript = ifelse(transcript %in% topgenes_symbols, as.character(transcript), "")) %>%
 
@@ -527,6 +529,26 @@ We can also specify which parameters from the `aes` we want to show up when we h
 
 ```{r, out.width = "70%", warning=FALSE}
 strip_chart %>% ggplotly(tooltip = c("label", "y"))
+```
+
+# Extended
+
+## Differential testing methods
+
+With tidybulk you can choose to run one or more of the three most popular algorithms for RNA-sequencing differential expression, edgeR, limma-voom, DESeq2.
+
+```{r}
+# edgeR (default method)
+counts_de_edger <- counts_filtered %>%
+    test_differential_abundance(.formula=~dex)
+
+# limma-voom
+counts_de_voom <- counts_filtered %>%
+ test_differential_abundance(.formula=~dex, method="limma_voom")
+
+# DESeq2
+counts_de_deseq2 <- counts_filtered %>%
+    test_differential_abundance(.formula=~dex, method="DESeq2")
 ```
 
 ## Key Points

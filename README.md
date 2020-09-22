@@ -5,7 +5,7 @@
 
 # A Tidy Transcriptomics introduction to RNA sequencing analyses
 
-<img width="100" alt="rpharma2020" src="https://github.com/Bioconductor/BiocStickers/blob/master/events/rpharma2020/rpharma2020.png?raw=true"/> <img width="100" alt="tidybulk" src="https://github.com/Bioconductor/BiocStickers/blob/master/tidybulk/tidybulk.png?raw=true"/>
+<img width="100" alt="rpharma2020" src="rpharma_logo.png"/> <img width="100" alt="tidybulk" src="https://github.com/Bioconductor/BiocStickers/blob/master/tidybulk/tidybulk.png?raw=true"/>
 
 ## Instructor names and contact information
 
@@ -42,7 +42,7 @@ You should see the Rmarkdown file with all the workshop code which you can run.
 Alternatively, you could install the workshop using the commands below in R `4.0`.
 
 ```
-devtools::install_github("stemangiola/tidybulk@v1.1.5")
+devtools::install_github("stemangiola/tidybulk")
 devtools::install_github("stemangiola/rpharma2020_tidytranscriptomics", build_vignettes = TRUE)
 library(rpharma2020tidytranscriptomics)
 browseVignettes("rpharma2020tidytranscriptomics")
