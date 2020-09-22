@@ -116,7 +116,7 @@ counts_scaled %>%
 ```{r out.width = "70%"}
 airway %>%
 	tidybulk() %>%
-    keep_abundant(factor_of_interest = dex)
+    keep_abundant(factor_of_interest = dex) %>%
 	scale_abundance() %>%
 	reduce_dimensions(method="MDS", scale = FALSE) %>%
 	pivot_sample() %>%

@@ -95,7 +95,7 @@ Measuring gene expression on a genome-wide scale has become common practice over
 There are many steps involved in analysing an RNA sequencing dataset. The main steps for a differential expression analysis are shown in the figure below. Sequenced reads are aligned to a reference genome, then the number of reads mapped to each gene can be counted. This results in a table of counts, which is what we perform statistical analyses on in R. While mapping and counting are important and necessary tasks, today we will be starting from the count data and showing how differential expression analysis can be performed in a friendly way using tidybulk.
 
 ```{r, echo=FALSE, out.width = "70%"}
-knitr::include_graphics("../inst/vignettes/rpharma2020tidybulkpipeline-01.png")
+knitr::include_graphics("../inst/vignettes/tidybulkpipeline-01.png")
 ```
 
 First, let’s load all the packages we will need to analyse the data. Note that you should load the *tidybulk* library after the tidyverse core packages for best integration.
