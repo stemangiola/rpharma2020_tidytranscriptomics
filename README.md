@@ -5,7 +5,8 @@
 
 # A Tidy Transcriptomics introduction to RNA sequencing analyses
 
-<img width="100" alt="rpharma2020" src="rpharma_logo.png"/> <img width="100" alt="tidybulk" src="https://github.com/Bioconductor/BiocStickers/blob/master/tidybulk/tidybulk.png?raw=true"/>
+<img width="100" alt="rpharma2020" src="rpharma_logo.png"/> 
+<img width="100" alt="tidybulk" src="https://github.com/Bioconductor/BiocStickers/blob/master/tidybulk/tidybulk.png?raw=true"/>
 
 ## Instructor names and contact information
 
@@ -16,7 +17,7 @@
 
 Material [web page](https://stemangiola.github.io/rpharma2020_tidytranscriptomics/articles/tidytranscriptomics.html).
 
-This material was created for a rpharma2020 conference workshop but it can also be used for self-learning.
+This material was created for the R/Pharma2020 conference workshop but it can also be used for self-learning.
 
 More details on the workshop are below.
 
@@ -27,6 +28,8 @@ This is necessary in order to reproduce the code shown in the workshop. The work
 ### Via Docker image
 
 If you're familiar with [Docker](https://docs.docker.com/get-docker/) you could use the Docker image which has all the software pre-configured to the correct versions.
+
+TODO: Docker not created yet
 
 ```
 docker run -e PASSWORD=abc -p 8787:8787 stemangiola/rpharma2020_tidytranscriptomics:rpharma2020
@@ -43,6 +46,7 @@ Alternatively, you could install the workshop using the commands below in R `4.0
 
 ```
 devtools::install_github("stemangiola/tidybulk")
+devtools::install_github("stemangiola/tidyseurat")
 devtools::install_github("stemangiola/rpharma2020_tidytranscriptomics", build_vignettes = TRUE)
 library(rpharma2020tidytranscriptomics)
 browseVignettes("rpharma2020tidytranscriptomics")
@@ -54,14 +58,27 @@ To run the code, you could then copy and paste the code from the workshop [R mar
 
 This workshop will present how to perform analysis of RNA sequencing data following the tidy data paradigm. The tidy data paradigm provides a standard way to organise data values within a dataset, where each variable is a column, each observation is a row, and data is manipulated using an easy-to-understand vocabulary. Most importantly, the data structure remains consistent across manipulation and analysis functions.
 
-This can be achieved for RNA sequencing data with the [tidybulk](https://stemangiola.github.io/tidybulk/), [tidyHeatmap](https://stemangiola.github.io/tidyHeatmap/) and [tidyverse](https://www.tidyverse.org/) packages. The tidybulk package provides a tidy data structure and a modular framework for bulk transcriptional analyses. tidyHeatmap provides a tidy implementation of ComplexHeatmap. These packages are part of the tidytranscriptomics suite that introduces a tidy approach to RNA sequencing data.
+This can be achieved for RNA sequencing data with the [tidybulk](https://stemangiola.github.io/tidybulk/), [tidyseurat](https://stemangiola.github.io/tidyseurat/),  [tidyHeatmap](https://stemangiola.github.io/tidyHeatmap/) and [tidyverse](https://www.tidyverse.org/) packages. The tidybulk package provides a tidy data structure and a modular framework for bulk transcriptional analyses, the tidyseurat package provides similar for single-cell transcriptional analyses, and tidyHeatmap provides a tidy implementation of ComplexHeatmap. These packages are part of the tidytranscriptomics suite that introduces a tidy approach to RNA sequencing data.
 
 The topics presented in this workshop will be
 
+(DRAFT subject to change)
+
+Part 1 
 - Data exploration
 - Data dimensionality reduction and clustering
 - Differential gene expression analysis
 - Data visualisation
+
+Part 2
+- Comparison of differential testing tools
+- Comparison of normalisation
+- Example of nested analysis               
+
+Part 3
+- A very brief introduction to single-cell RNA-seq
+- tidyseurat
+
 
 ### Pre-requisites
 
@@ -73,27 +90,39 @@ Recommended Background Reading
 
 ### Workshop Participation
 
-The workshop format is a 55 min session consisting of a 30 min demo followed by 25 min opportunity for attendees to try out the code, exercises and Q&A.
+The workshop format is a 2 hour session consisting of demos, exercises and Q&A.
 
 ### _R_ / _Bioconductor_ packages used
 
 * tidyverse
 * tidybulk
 * tidyHeatmap
+* tidyseurat
 * edgeR
+* limma
+* DESeq2
 * ggrepel
 * airway
 
 ### Time outline
 
-| Activity                                           | Time |
-|----------------------------------------------------|------|
-| Demo                                               | 30m  |
-|     *Introduction and Data preprocessing*          |      |
-|     *Data dimensionality reduction and clustering* |      |
-|     *Differential gene expression*                 |      |
-|     *Data visualisation*                           |      |
-| Try out code, Exercises, Q&A                       | 25m  |
+| Activity                                            | Time |
+|-----------------------------------------------------|------|
+| Part 1 Bulk RNA-seq Core                            | 60m  |
+|  *Introduction to RNA-seq*                          |      |
+|  *Data preprocessing*                               |      |
+|  *Data dimensionality reduction and clustering*     |      |
+|  *Differential gene expression*                     |      |
+|  *Data visualisation*                               |      |
+Break                                                 |  5m  |
+| Part 2 Bulk RNA-seq Extended                        | 25m  |
+|  *Comparison of differential testing tools*         |      |
+|  *Comparison of normalisation*                      |      |
+|  *Example of nested analysis*                       |      |
+| Part 3 Single-cell RNA-seq                          | 30m  |
+|  *A very brief introduction to single-cell RNA-seq* |      |
+|  *A very brief introduction to tidyseurat*          |      |
+
 
 ### Workshop goals and objectives
 
@@ -103,8 +132,8 @@ The tidytranscriptomics approach to RNA sequencing data analysis abstracts out t
 
 #### Learning goals
 
-* To understand the key concepts and steps of bulk RNA sequencing data analysis
-* To approach data representation and analysis though a tidy data paradigm, integrating tidyverse with tidybulk and tidyHeatmap.
+* To understand the key concepts and steps of RNA sequencing data analysis
+* To approach data representation and analysis though a tidy data paradigm, integrating tidyverse with tidybulk, tidyseurat and tidyHeatmap.
 
 #### Learning objectives
 
