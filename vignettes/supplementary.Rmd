@@ -94,12 +94,14 @@ ggplot(counts_tt, aes(x=sample, weight=counts, fill=cell)) +
 ## How to examine normalised counts with boxplots
 
 ```{r out.width = "70%"}
+# filter counts
+counts_filtered <- counts_tt %>% keep_abundant(factor_of_interest = dex)
+
 # scale counts
-counts_scaled <- counts_tt %>% scale_abundance(factor_of_interest = dex)
+counts_scaled <- counts_filtered %>% scale_abundance()
 
 # create box plots
 counts_scaled %>%
-	filter(!lowly_abundant) %>%
 	pivot_longer(cols = c("counts", "counts_scaled"), names_to = "source", values_to = "abundance") %>%
 	ggplot(aes(x=sample, y=abundance + 1, fill=dex)) +
 	geom_boxplot() +
@@ -114,8 +116,9 @@ counts_scaled %>%
 ```{r out.width = "70%"}
 airway %>%
 	tidybulk() %>%
-	scale_abundance(factor_of_interest=dex) %>%
-	reduce_dimensions(method="MDS", scale = F) %>%
+    keep_abundant(factor_of_interest = dex)
+	scale_abundance() %>%
+	reduce_dimensions(method="MDS", scale = FALSE) %>%
 	pivot_sample() %>%
 	ggplot(aes(Dim1, Dim2, color = dex)) +
 	geom_point()
@@ -139,7 +142,6 @@ counts_de <-
 # maplot, minimal
 counts_de %>%
 	pivot_transcript() %>%
-	filter(!lowly_abundant) %>%
 	ggplot(aes(x=logCPM, y=-logFC, colour=significant)) +
 	geom_point()+
 	theme_bw()
@@ -152,7 +154,6 @@ counts_de %>%
 	pivot_transcript() %>%
 	
 	# Subset data
-	filter(!lowly_abundant) %>%
 	mutate(significant = FDR<0.05 & abs(logFC) >=2) %>%
 	mutate(transcript = ifelse(abs(logFC) >=5, as.character(transcript), "")) %>%
 	
@@ -176,8 +177,7 @@ library(org.Hs.eg.db)
 
 # extract all genes tested for DE
 res <- counts_de %>% 
-    pivot_transcript() %>% 
-    filter(!lowly_abundant)
+    pivot_transcript()
 
 # GO terms
 egoCC <- res %>%

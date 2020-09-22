@@ -41,12 +41,14 @@ data("pasilla", package = "rpharma2020tidytranscriptomics")
 counts_tt <- pasilla %>% 
   tidybulk()
 
+# filter counts
+counts_filtered <- counts_tt %>% keep_abundant(factor_of_interest = condition)
+
 # scale counts
-counts_scaled <- counts_tt %>% scale_abundance(factor_of_interest = condition)
+counts_scaled <- counts_filtered %>% scale_abundance()
 
 # create density plots
 counts_scaled %>%
-  filter(!lowly_abundant) %>%
 	pivot_longer(cols = c("counts", "counts_scaled"), names_to = "source", values_to = "abundance") %>%
   ggplot(aes(x=abundance + 1, group=sample, color=condition)) +
 	geom_density() +
@@ -115,9 +117,6 @@ Answer: FBgn0025111
 
 ```{r out.width = "70%"}
 counts_scaled %>% 
-  
-  # filter lowly abundant
-  filter(!lowly_abundant) %>%
 	
 	# extract 500 most variable genes
 	keep_variable( .abundance = counts_scaled, top = 500) %>%
@@ -155,7 +154,6 @@ p <- counts_de %>%
 	pivot_transcript() %>%
 
   # Subset data
-	filter(!lowly_abundant) %>%
 	mutate(significant = FDR<0.05 & abs(logFC) >=2) %>%
 
   # Plot
