@@ -1,0 +1,12 @@
+pandoc: 2.7.3
+pkgdown: 1.6.1
+pkgdown_sha: ~
+articles:
+  solutions: solutions.html
+  supplementary: supplementary.html
+  tidytranscriptomics: tidytranscriptomics.html
+last_built: 2020-09-22T12:51Z
+urls:
+  reference: https://stemangiola.github.io/rpharma2020_tidytranscriptomics/reference
+  article: https://stemangiola.github.io/rpharma2020_tidytranscriptomics/articles
+
