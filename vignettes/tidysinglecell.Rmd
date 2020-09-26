@@ -86,11 +86,7 @@ Set colours and theme for plots.
 
 ```{r}
 # Use colourblind-friendly colours
-if (requireNamespace("dittoSeq", quietly = TRUE)) {
-      friendly_cols <- dittoSeq::dittoColors()
-   } else {
-      friendly_cols <- c("red", "blue", "green", "purple")
-   }
+friendly_cols <- dittoSeq::dittoColors()
 
 # Set theme
 my_theme <-

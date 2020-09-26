@@ -32,6 +32,7 @@ Imports:
     ggrepel,
     plotly,
     airway,
+    dittoSeq
 Suggests:
     knitr,
     rmarkdown,
