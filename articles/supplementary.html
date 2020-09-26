@@ -88,63 +88,60 @@
     
 <div class="sourceCode" id="cb1"><pre class="downlit">
 <span class="co"># load libraries</span>
-<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="kw"><a href="https://tibble.tidyverse.org">tibble</a></span>)
-<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="kw"><a href="https://dplyr.tidyverse.org">dplyr</a></span>)
-<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="kw"><a href="https://tidyr.tidyverse.org">tidyr</a></span>)
-<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="kw"><a href="http://readr.tidyverse.org">readr</a></span>)
-<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="kw"><a href="http://stringr.tidyverse.org">stringr</a></span>)
-<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="kw"><a href="http://ggplot2.tidyverse.org">ggplot2</a></span>)
-<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="kw"><a href="https://www.r-project.org">tidyHeatmap</a></span>)
-<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="kw">tidybulk</span>)
-<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="kw"><a href="http://github.com/slowkow/ggrepel">ggrepel</a></span>)
-<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="kw">airway</span>)
-</pre></div>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://tibble.tidyverse.org/">tibble</a></span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org">dplyr</a></span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://tidyr.tidyverse.org">tidyr</a></span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="http://readr.tidyverse.org">readr</a></span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="http://stringr.tidyverse.org">stringr</a></span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="http://ggplot2.tidyverse.org">ggplot2</a></span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://www.r-project.org">tidyHeatmap</a></span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">tidybulk</span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="http://github.com/slowkow/ggrepel">ggrepel</a></span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">airway</span><span class="op">)</span></pre></div>
 <div id="how-to-start-from-tables" class="section level2">
 <h2 class="hasAnchor">
 <a href="#how-to-start-from-tables" class="anchor"></a>How to start from tables</h2>
 <div class="sourceCode" id="cb2"><pre class="downlit">
 <span class="co"># create some example tables to use</span>
-<span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span>(<span class="kw">airway</span>)
+<span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span><span class="op">(</span><span class="va">airway</span><span class="op">)</span>
 
 <span class="co"># counts table</span>
-<span class="kw">counts</span> <span class="op">&lt;-</span> <span class="fu">assay</span>(<span class="kw">airway</span>) <span class="op">%&gt;%</span>
-  <span class="fu"><a href="https://tibble.tidyverse.org/reference/as_tibble.html">as_tibble</a></span>(rownames = <span class="st">"geneID"</span>)
+<span class="va">counts</span> <span class="op">&lt;-</span> <span class="fu">assay</span><span class="op">(</span><span class="va">airway</span><span class="op">)</span> <span class="op">%&gt;%</span>
+  <span class="fu"><a href="https://tibble.tidyverse.org/reference/as_tibble.html">as_tibble</a></span><span class="op">(</span>rownames <span class="op">=</span> <span class="st">"geneID"</span><span class="op">)</span>
 
 <span class="co"># sample information table</span>
-<span class="kw">sampleinfo</span> <span class="op">&lt;-</span> <span class="fu">colData</span>(<span class="kw">airway</span>) <span class="op">%&gt;%</span>
-  <span class="fu"><a href="https://tibble.tidyverse.org/reference/as_tibble.html">as_tibble</a></span>(rownames = <span class="st">"sample"</span>)
+<span class="va">sampleinfo</span> <span class="op">&lt;-</span> <span class="fu">colData</span><span class="op">(</span><span class="va">airway</span><span class="op">)</span> <span class="op">%&gt;%</span>
+  <span class="fu"><a href="https://tibble.tidyverse.org/reference/as_tibble.html">as_tibble</a></span><span class="op">(</span>rownames <span class="op">=</span> <span class="st">"sample"</span><span class="op">)</span>
 
 <span class="co"># data preprocessing</span>
 
-<span class="kw">counts_tt</span> <span class="op">&lt;-</span> 
+<span class="va">counts_tt</span> <span class="op">&lt;-</span> 
     <span class="co"># convert to tidy format</span>
-    <span class="fu"><a href="https://tidyr.tidyverse.org/reference/pivot_longer.html">pivot_longer</a></span>(<span class="kw">counts</span>, cols = <span class="fu"><a href="https://tidyselect.r-lib.org/reference/starts_with.html">starts_with</a></span>(<span class="st">"SRR"</span>), names_to = <span class="st">"sample"</span>, values_to = <span class="st">"counts"</span>) <span class="op">%&gt;%</span>
+    <span class="fu"><a href="https://tidyr.tidyverse.org/reference/pivot_longer.html">pivot_longer</a></span><span class="op">(</span><span class="va">counts</span>, cols <span class="op">=</span> <span class="fu"><a href="https://tidyselect.r-lib.org/reference/starts_with.html">starts_with</a></span><span class="op">(</span><span class="st">"SRR"</span><span class="op">)</span>, names_to <span class="op">=</span> <span class="st">"sample"</span>, values_to <span class="op">=</span> <span class="st">"counts"</span><span class="op">)</span> <span class="op">%&gt;%</span>
 
     <span class="co"># get gene symbols</span>
-    <span class="fu"><a href="https://rdrr.io/pkg/tidybulk/man/ensembl_to_symbol-methods.html">ensembl_to_symbol</a></span>(<span class="kw">geneID</span>) <span class="op">%&gt;%</span>
+    <span class="fu"><a href="https://rdrr.io/pkg/tidybulk/man/ensembl_to_symbol-methods.html">ensembl_to_symbol</a></span><span class="op">(</span><span class="va">geneID</span><span class="op">)</span> <span class="op">%&gt;%</span>
 
     <span class="co"># order the columns for tidybulk</span>
-    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span>(<span class="kw">sample</span>, <span class="kw">geneID</span>, <span class="kw">counts</span>, <span class="kw">transcript</span>) <span class="op">%&gt;%</span>
+    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="va">sample</span>, <span class="va">geneID</span>, <span class="va">counts</span>, <span class="va">transcript</span><span class="op">)</span> <span class="op">%&gt;%</span>
 
     <span class="co"># add the sample info</span>
-    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html">left_join</a></span>(<span class="kw">sampleinfo</span>) <span class="op">%&gt;%</span>
+    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html">left_join</a></span><span class="op">(</span><span class="va">sampleinfo</span><span class="op">)</span> <span class="op">%&gt;%</span>
 
     <span class="co"># shorten sample name</span>
-    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span>(sample=<span class="fu"><a href="https://stringr.tidyverse.org/reference/str_remove.html">str_remove</a></span>(<span class="kw">sample</span>, <span class="st">"SRR1039"</span>)) <span class="op">%&gt;%</span>
+    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span>sample<span class="op">=</span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_remove.html">str_remove</a></span><span class="op">(</span><span class="va">sample</span>, <span class="st">"SRR1039"</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span>
 
     <span class="co"># convert to tidybulk tibble</span>
-    <span class="fu"><a href="https://rdrr.io/pkg/tidybulk/man/tidybulk-methods.html">tidybulk</a></span>(.sample=<span class="kw">sample</span>, .transcript=<span class="kw">geneID</span>, .abundance=<span class="kw">counts</span>)
-</pre></div>
+    <span class="fu"><a href="https://rdrr.io/pkg/tidybulk/man/tidybulk-methods.html">tidybulk</a></span><span class="op">(</span>.sample<span class="op">=</span><span class="va">sample</span>, .transcript<span class="op">=</span><span class="va">geneID</span>, .abundance<span class="op">=</span><span class="va">counts</span><span class="op">)</span></pre></div>
 <pre><code>## Joining, by = "sample"</code></pre>
 </div>
 <div id="how-to-count-reads-per-sample" class="section level2">
 <h2 class="hasAnchor">
 <a href="#how-to-count-reads-per-sample" class="anchor"></a>How to count reads per sample</h2>
 <div class="sourceCode" id="cb4"><pre class="downlit">
-<span class="kw">counts_tt</span> <span class="op">%&gt;%</span> 
-    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by</a></span>(<span class="kw">sample</span>) <span class="op">%&gt;%</span> 
-    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html">summarise</a></span>(total_reads=<span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span>(<span class="kw">counts</span>))
-</pre></div>
+<span class="va">counts_tt</span> <span class="op">%&gt;%</span> 
+    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by</a></span><span class="op">(</span><span class="va">sample</span><span class="op">)</span> <span class="op">%&gt;%</span> 
+    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html">summarise</a></span><span class="op">(</span>total_reads<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="va">counts</span><span class="op">)</span><span class="op">)</span></pre></div>
 <pre><code>## # A tibble: 8 x 2
 ##   sample total_reads
 ##   &lt;chr&gt;        &lt;int&gt;
@@ -158,24 +155,21 @@
 ## 8 521       21164133</code></pre>
 <p>We can also check how many counts we have for each sample by making a bar plot. This helps us see whether there are any major discrepancies between the samples more easily.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit">
-<span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span>(<span class="kw">counts_tt</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span>(x=<span class="kw">sample</span>, weight=<span class="kw">counts</span>, fill=<span class="kw">sample</span>)) <span class="op">+</span> 
-    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_bar.html">geom_bar</a></span>() <span class="op">+</span>
-    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html">theme_bw</a></span>()
-</pre></div>
+<span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="va">counts_tt</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x<span class="op">=</span><span class="va">sample</span>, weight<span class="op">=</span><span class="va">counts</span>, fill<span class="op">=</span><span class="va">sample</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> 
+    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_bar.html">geom_bar</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span>
+    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html">theme_bw</a></span><span class="op">(</span><span class="op">)</span></pre></div>
 <p><img src="supplementary_files/figure-html/unnamed-chunk-4-1.png" width="70%"></p>
 <p>As we are using ggplot2, we can also easily view by any other variable that’s a column in our dataset, such as cell line, simply by changing <code>fill</code>.</p>
 <p>We can colour by dex treatment.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit">
-<span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span>(<span class="kw">counts_tt</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span>(x=<span class="kw">sample</span>, weight=<span class="kw">counts</span>, fill=<span class="kw">dex</span>)) <span class="op">+</span> 
-    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_bar.html">geom_bar</a></span>() <span class="op">+</span>
-    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html">theme_bw</a></span>()
-</pre></div>
+<span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="va">counts_tt</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x<span class="op">=</span><span class="va">sample</span>, weight<span class="op">=</span><span class="va">counts</span>, fill<span class="op">=</span><span class="va">dex</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> 
+    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_bar.html">geom_bar</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span>
+    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html">theme_bw</a></span><span class="op">(</span><span class="op">)</span></pre></div>
 <p><img src="supplementary_files/figure-html/unnamed-chunk-5-1.png" width="70%"> We can colour by cell line.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit">
-<span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span>(<span class="kw">counts_tt</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span>(x=<span class="kw">sample</span>, weight=<span class="kw">counts</span>, fill=<span class="kw">cell</span>)) <span class="op">+</span> 
-    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_bar.html">geom_bar</a></span>() <span class="op">+</span>
-    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html">theme_bw</a></span>()
-</pre></div>
+<span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="va">counts_tt</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x<span class="op">=</span><span class="va">sample</span>, weight<span class="op">=</span><span class="va">counts</span>, fill<span class="op">=</span><span class="va">cell</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> 
+    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_bar.html">geom_bar</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span>
+    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html">theme_bw</a></span><span class="op">(</span><span class="op">)</span></pre></div>
 <p><img src="supplementary_files/figure-html/unnamed-chunk-6-1.png" width="70%"></p>
 </div>
 <div id="how-to-examine-normalised-counts-with-boxplots" class="section level2">
@@ -183,36 +177,34 @@
 <a href="#how-to-examine-normalised-counts-with-boxplots" class="anchor"></a>How to examine normalised counts with boxplots</h2>
 <div class="sourceCode" id="cb9"><pre class="downlit">
 <span class="co"># filter counts</span>
-<span class="kw">counts_filtered</span> <span class="op">&lt;-</span> <span class="kw">counts_tt</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://rdrr.io/pkg/tidybulk/man/keep_abundant-methods.html">keep_abundant</a></span>(factor_of_interest = <span class="kw">dex</span>)
+<span class="va">counts_filtered</span> <span class="op">&lt;-</span> <span class="va">counts_tt</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://rdrr.io/pkg/tidybulk/man/keep_abundant-methods.html">keep_abundant</a></span><span class="op">(</span>factor_of_interest <span class="op">=</span> <span class="va">dex</span><span class="op">)</span>
 
 <span class="co"># scale counts</span>
-<span class="kw">counts_scaled</span> <span class="op">&lt;-</span> <span class="kw">counts_filtered</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://rdrr.io/pkg/tidybulk/man/scale_abundance-methods.html">scale_abundance</a></span>()
+<span class="va">counts_scaled</span> <span class="op">&lt;-</span> <span class="va">counts_filtered</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://rdrr.io/pkg/tidybulk/man/scale_abundance-methods.html">scale_abundance</a></span><span class="op">(</span><span class="op">)</span>
 
 <span class="co"># create box plots</span>
-<span class="kw">counts_scaled</span> <span class="op">%&gt;%</span>
-    <span class="fu"><a href="https://tidyr.tidyverse.org/reference/pivot_longer.html">pivot_longer</a></span>(cols = <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"counts"</span>, <span class="st">"counts_scaled"</span>), names_to = <span class="st">"source"</span>, values_to = <span class="st">"abundance"</span>) <span class="op">%&gt;%</span>
-    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span>(<span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span>(x=<span class="kw">sample</span>, y=<span class="kw">abundance</span> <span class="op">+</span> <span class="fl">1</span>, fill=<span class="kw">dex</span>)) <span class="op">+</span>
-    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_boxplot.html">geom_boxplot</a></span>() <span class="op">+</span>
-    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_abline.html">geom_hline</a></span>(<span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span>(yintercept = <span class="fu"><a href="https://rdrr.io/r/stats/median.html">median</a></span>(<span class="kw">abundance</span> <span class="op">+</span> <span class="fl">1</span>)), colour=<span class="st">"red"</span>) <span class="op">+</span>
-    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/facet_wrap.html">facet_wrap</a></span>(<span class="op">~</span><span class="kw">source</span>) <span class="op">+</span>
-    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html">scale_y_log10</a></span>() <span class="op">+</span>
-    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html">theme_bw</a></span>()
-</pre></div>
+<span class="va">counts_scaled</span> <span class="op">%&gt;%</span>
+    <span class="fu"><a href="https://tidyr.tidyverse.org/reference/pivot_longer.html">pivot_longer</a></span><span class="op">(</span>cols <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"counts"</span>, <span class="st">"counts_scaled"</span><span class="op">)</span>, names_to <span class="op">=</span> <span class="st">"source"</span>, values_to <span class="op">=</span> <span class="st">"abundance"</span><span class="op">)</span> <span class="op">%&gt;%</span>
+    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x<span class="op">=</span><span class="va">sample</span>, y<span class="op">=</span><span class="va">abundance</span> <span class="op">+</span> <span class="fl">1</span>, fill<span class="op">=</span><span class="va">dex</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
+    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_boxplot.html">geom_boxplot</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span>
+    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_abline.html">geom_hline</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>yintercept <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/median.html">median</a></span><span class="op">(</span><span class="va">abundance</span> <span class="op">+</span> <span class="fl">1</span><span class="op">)</span><span class="op">)</span>, colour<span class="op">=</span><span class="st">"red"</span><span class="op">)</span> <span class="op">+</span>
+    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/facet_wrap.html">facet_wrap</a></span><span class="op">(</span><span class="op">~</span><span class="va">source</span><span class="op">)</span> <span class="op">+</span>
+    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html">scale_y_log10</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span>
+    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html">theme_bw</a></span><span class="op">(</span><span class="op">)</span></pre></div>
 <p><img src="supplementary_files/figure-html/unnamed-chunk-7-1.png" width="70%"></p>
 </div>
 <div id="how-to-create-mds-plot" class="section level2">
 <h2 class="hasAnchor">
 <a href="#how-to-create-mds-plot" class="anchor"></a>How to create MDS plot</h2>
 <div class="sourceCode" id="cb10"><pre class="downlit">
-<span class="kw">airway</span> <span class="op">%&gt;%</span>
-    <span class="fu"><a href="https://rdrr.io/pkg/tidybulk/man/tidybulk-methods.html">tidybulk</a></span>() <span class="op">%&gt;%</span>
-    <span class="fu"><a href="https://rdrr.io/pkg/tidybulk/man/keep_abundant-methods.html">keep_abundant</a></span>(factor_of_interest = <span class="kw">dex</span>) <span class="op">%&gt;%</span>
-    <span class="fu"><a href="https://rdrr.io/pkg/tidybulk/man/scale_abundance-methods.html">scale_abundance</a></span>() <span class="op">%&gt;%</span>
-    <span class="fu"><a href="https://rdrr.io/pkg/tidybulk/man/reduce_dimensions-methods.html">reduce_dimensions</a></span>(method=<span class="st">"MDS"</span>, scale = <span class="fl">FALSE</span>) <span class="op">%&gt;%</span>
-    <span class="fu"><a href="https://rdrr.io/pkg/tidybulk/man/pivot_sample-methods.html">pivot_sample</a></span>() <span class="op">%&gt;%</span>
-    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span>(<span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span>(<span class="kw">Dim1</span>, <span class="kw">Dim2</span>, color = <span class="kw">dex</span>)) <span class="op">+</span>
-    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html">geom_point</a></span>()
-</pre></div>
+<span class="va">airway</span> <span class="op">%&gt;%</span>
+    <span class="fu"><a href="https://rdrr.io/pkg/tidybulk/man/tidybulk-methods.html">tidybulk</a></span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span>
+    <span class="fu"><a href="https://rdrr.io/pkg/tidybulk/man/keep_abundant-methods.html">keep_abundant</a></span><span class="op">(</span>factor_of_interest <span class="op">=</span> <span class="va">dex</span><span class="op">)</span> <span class="op">%&gt;%</span>
+    <span class="fu"><a href="https://rdrr.io/pkg/tidybulk/man/scale_abundance-methods.html">scale_abundance</a></span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span>
+    <span class="fu"><a href="https://rdrr.io/pkg/tidybulk/man/reduce_dimensions-methods.html">reduce_dimensions</a></span><span class="op">(</span>method<span class="op">=</span><span class="st">"MDS"</span>, scale <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> <span class="op">%&gt;%</span>
+    <span class="fu"><a href="https://rdrr.io/pkg/tidybulk/man/pivot_sample-methods.html">pivot_sample</a></span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span>
+    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span><span class="va">Dim1</span>, <span class="va">Dim2</span>, color <span class="op">=</span> <span class="va">dex</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
+    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html">geom_point</a></span><span class="op">(</span><span class="op">)</span></pre></div>
 <pre><code>## tidybulk says: to access the raw results do `attr(..., "internals")$MDS`</code></pre>
 <p><img src="supplementary_files/figure-html/unnamed-chunk-8-1.png" width="70%"></p>
 </div>
@@ -222,14 +214,14 @@
 <p>MA plots enable us to visualise amount of expression (logCPM) versus logFC. Highly expressed genes are towards the right of the plot. We can also colour significant genes (e.g. genes with FDR &lt; 0.05)</p>
 <div class="sourceCode" id="cb12"><pre class="downlit">
 <span class="co"># perform differential testing</span>
-<span class="kw">counts_de</span> <span class="op">&lt;-</span> 
-    <span class="kw">counts_tt</span> <span class="op">%&gt;%</span>
-    <span class="fu"><a href="https://rdrr.io/pkg/tidybulk/man/test_differential_abundance-methods.html">test_differential_abundance</a></span>(
-        .formula = <span class="op">~</span> <span class="fl">0</span> <span class="op">+</span> <span class="kw">dex</span> <span class="op">+</span> <span class="kw">cell</span>,
-        .contrasts = <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"dextrt - dexuntrt"</span>),
-        omit_contrast_in_colnames = <span class="fl">TRUE</span>
-    )
-</pre></div>
+<span class="va">counts_de</span> <span class="op">&lt;-</span> 
+    <span class="va">counts_tt</span> <span class="op">%&gt;%</span>
+    <span class="fu"><a href="https://rdrr.io/pkg/tidybulk/man/test_differential_abundance-methods.html">test_differential_abundance</a></span><span class="op">(</span>
+        .formula <span class="op">=</span> <span class="op">~</span> <span class="fl">0</span> <span class="op">+</span> <span class="va">dex</span> <span class="op">+</span> <span class="va">cell</span>,
+        .contrasts <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"dextrt - dexuntrt"</span><span class="op">)</span>,
+        omit_contrast_in_colnames <span class="op">=</span> <span class="cn">TRUE</span>
+    <span class="op">)</span></pre></div>
+<pre><code>## tidybulk says: All methods use raw counts, irrespective of if scale_abundance or adjust_abundance have been calculated, therefore it is essential to add covariates such as batch effects (if applicable) in the formula.</code></pre>
 <pre><code>## Warning in eval(dots[[i]][[action]], env, env): tidybulk says: highly abundant
 ## transcripts were not identified (i.e. identify_abundant()) or filtered (i.e.,
 ## keep_abundant), therefore this operation will be performed on unfiltered
@@ -237,72 +229,69 @@
 ## workflows is generally unwanted.</code></pre>
 <pre><code>## tidybulk says: The design column names are "dextrt, dexuntrt, cellN061011, cellN080611, cellN61311"</code></pre>
 <pre><code>## tidybulk says: to access the raw results (fitted GLM) do `attr(..., "internals")$edgeR`</code></pre>
-<div class="sourceCode" id="cb16"><pre class="downlit">
+<div class="sourceCode" id="cb17"><pre class="downlit">
 <span class="co"># maplot, minimal</span>
-<span class="kw">counts_de</span> <span class="op">%&gt;%</span>
-    <span class="fu"><a href="https://rdrr.io/pkg/tidybulk/man/pivot_transcript-methods.html">pivot_transcript</a></span>() <span class="op">%&gt;%</span>
-    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span>(<span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span>(x=<span class="kw">logCPM</span>, y=<span class="op">-</span><span class="kw">logFC</span>, colour=<span class="kw">significant</span>)) <span class="op">+</span>
-    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html">geom_point</a></span>()<span class="op">+</span>
-    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html">theme_bw</a></span>()
-</pre></div>
+<span class="va">counts_de</span> <span class="op">%&gt;%</span>
+    <span class="fu"><a href="https://rdrr.io/pkg/tidybulk/man/pivot_transcript-methods.html">pivot_transcript</a></span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span>
+    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x<span class="op">=</span><span class="va">logCPM</span>, y<span class="op">=</span><span class="op">-</span><span class="va">logFC</span>, colour<span class="op">=</span><span class="va">significant</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
+    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html">geom_point</a></span><span class="op">(</span><span class="op">)</span><span class="op">+</span>
+    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html">theme_bw</a></span><span class="op">(</span><span class="op">)</span></pre></div>
 <p><img src="supplementary_files/figure-html/unnamed-chunk-9-1.png" width="70%"></p>
 <p>A more informative MA plot, integrating some of the packages in tidyverse.</p>
-<div class="sourceCode" id="cb17"><pre class="downlit">
-<span class="kw">counts_de</span> <span class="op">%&gt;%</span>
-    <span class="fu"><a href="https://rdrr.io/pkg/tidybulk/man/pivot_transcript-methods.html">pivot_transcript</a></span>() <span class="op">%&gt;%</span>
+<div class="sourceCode" id="cb18"><pre class="downlit">
+<span class="va">counts_de</span> <span class="op">%&gt;%</span>
+    <span class="fu"><a href="https://rdrr.io/pkg/tidybulk/man/pivot_transcript-methods.html">pivot_transcript</a></span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span>
     
     <span class="co"># Subset data</span>
-    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span>(significant = <span class="kw">FDR</span><span class="op">&lt;</span><span class="fl">0.05</span> <span class="op">&amp;</span> <span class="fu"><a href="https://rdrr.io/r/base/MathFun.html">abs</a></span>(<span class="kw">logFC</span>) <span class="op">&gt;=</span><span class="fl">2</span>) <span class="op">%&gt;%</span>
-    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span>(transcript = <span class="fu"><a href="https://rdrr.io/r/base/ifelse.html">ifelse</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/MathFun.html">abs</a></span>(<span class="kw">logFC</span>) <span class="op">&gt;=</span><span class="fl">5</span>, <span class="fu"><a href="https://rdrr.io/r/base/character.html">as.character</a></span>(<span class="kw">transcript</span>), <span class="st">""</span>)) <span class="op">%&gt;%</span>
+    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span>significant <span class="op">=</span> <span class="va">FDR</span><span class="op">&lt;</span><span class="fl">0.05</span> <span class="op">&amp;</span> <span class="fu"><a href="https://rdrr.io/r/base/MathFun.html">abs</a></span><span class="op">(</span><span class="va">logFC</span><span class="op">)</span> <span class="op">&gt;=</span><span class="fl">2</span><span class="op">)</span> <span class="op">%&gt;%</span>
+    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span>transcript <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/ifelse.html">ifelse</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/MathFun.html">abs</a></span><span class="op">(</span><span class="va">logFC</span><span class="op">)</span> <span class="op">&gt;=</span><span class="fl">5</span>, <span class="fu"><a href="https://rdrr.io/r/base/character.html">as.character</a></span><span class="op">(</span><span class="va">transcript</span><span class="op">)</span>, <span class="st">""</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span>
     
     <span class="co"># Plot</span>
-    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span>(<span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span>(x = <span class="kw">logCPM</span>, y = <span class="kw">logFC</span>, label=<span class="kw">transcript</span>)) <span class="op">+</span>
-    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html">geom_point</a></span>(<span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span>(color = <span class="kw">significant</span>, size = <span class="kw">significant</span>, alpha=<span class="kw">significant</span>)) <span class="op">+</span>
-    <span class="fu"><a href="https://rdrr.io/pkg/ggrepel/man/geom_text_repel.html">geom_text_repel</a></span>() <span class="op">+</span>
-    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_manual.html">scale_color_manual</a></span>(values=<span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"black"</span>, <span class="st">"#e11f28"</span>)) <span class="op">+</span>
-    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_size.html">scale_size_discrete</a></span>(range = <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">0</span>, <span class="fl">2</span>)) <span class="op">+</span>
-    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html">theme_bw</a></span>()
-</pre></div>
+    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">logCPM</span>, y <span class="op">=</span> <span class="va">logFC</span>, label<span class="op">=</span><span class="va">transcript</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
+    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html">geom_point</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>color <span class="op">=</span> <span class="va">significant</span>, size <span class="op">=</span> <span class="va">significant</span>, alpha<span class="op">=</span><span class="va">significant</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
+    <span class="fu"><a href="https://rdrr.io/pkg/ggrepel/man/geom_text_repel.html">geom_text_repel</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span>
+    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_manual.html">scale_color_manual</a></span><span class="op">(</span>values<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"black"</span>, <span class="st">"#e11f28"</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
+    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_size.html">scale_size_discrete</a></span><span class="op">(</span>range <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">2</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
+    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html">theme_bw</a></span><span class="op">(</span><span class="op">)</span></pre></div>
 <p><img src="supplementary_files/figure-html/unnamed-chunk-10-1.png" width="70%"></p>
 </div>
 <div id="how-to-perform-gene-enrichment-analysis" class="section level2">
 <h2 class="hasAnchor">
 <a href="#how-to-perform-gene-enrichment-analysis" class="anchor"></a>How to perform gene enrichment analysis</h2>
 <p>To run below you’ll need the <code>clusterProfiler</code> and <code>org.Hs.eg.db</code> packages. This is just one suggestion, adapted from <a href="https://simon-anders.github.io/data_analysis_course/lecture9.html">here</a>. If you have other suggestions for how to do a ‘tidy’ pathway analysis feel free to <a href="https://github.com/stemangiola/rpharma2020_tidytranscriptomics/blob/master/CONTRIBUTING.md">let us know</a>.</p>
-<div class="sourceCode" id="cb18"><pre class="downlit">
-<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="kw">clusterProfiler</span>)
-<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="kw">org.Hs.eg.db</span>)
+<div class="sourceCode" id="cb19"><pre class="downlit">
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">clusterProfiler</span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">org.Hs.eg.db</span><span class="op">)</span>
 
 <span class="co"># extract all genes tested for DE</span>
-<span class="kw">res</span> <span class="op">&lt;-</span> <span class="kw">counts_de</span> <span class="op">%&gt;%</span> 
-    <span class="fu"><a href="https://rdrr.io/pkg/tidybulk/man/pivot_transcript-methods.html">pivot_transcript</a></span>()
+<span class="va">res</span> <span class="op">&lt;-</span> <span class="va">counts_de</span> <span class="op">%&gt;%</span> 
+    <span class="fu"><a href="https://rdrr.io/pkg/tidybulk/man/pivot_transcript-methods.html">pivot_transcript</a></span><span class="op">(</span><span class="op">)</span>
 
 <span class="co"># GO terms</span>
-<span class="kw">egoCC</span> <span class="op">&lt;-</span> <span class="kw">res</span> <span class="op">%&gt;%</span>
-    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(<span class="kw">FDR</span> <span class="op">&lt;</span> <span class="fl">0.1</span> <span class="op">&amp;</span> <span class="kw">logFC</span> <span class="op">&gt;</span> <span class="fl">0</span> ) <span class="op">%&gt;%</span>
-    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/pull.html">pull</a></span>( <span class="st">"transcript"</span> ) <span class="op">%&gt;%</span>
-    <span class="fu">enrichGO</span>(
-      OrgDb = <span class="kw">org.Hs.eg.db</span>,
-      keyType = <span class="st">'SYMBOL'</span>,
-      ont = <span class="st">"BP"</span>,
-      universe = (<span class="kw">res</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/pull.html">pull</a></span>( <span class="st">"transcript"</span> ) ) )
+<span class="va">egoCC</span> <span class="op">&lt;-</span> <span class="va">res</span> <span class="op">%&gt;%</span>
+    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">FDR</span> <span class="op">&lt;</span> <span class="fl">0.1</span> <span class="op">&amp;</span> <span class="va">logFC</span> <span class="op">&gt;</span> <span class="fl">0</span> <span class="op">)</span> <span class="op">%&gt;%</span>
+    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/pull.html">pull</a></span><span class="op">(</span> <span class="st">"transcript"</span> <span class="op">)</span> <span class="op">%&gt;%</span>
+    <span class="fu">enrichGO</span><span class="op">(</span>
+      OrgDb <span class="op">=</span> <span class="va">org.Hs.eg.db</span>,
+      keyType <span class="op">=</span> <span class="st">'SYMBOL'</span>,
+      ont <span class="op">=</span> <span class="st">"BP"</span>,
+      universe <span class="op">=</span> <span class="op">(</span><span class="va">res</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/pull.html">pull</a></span><span class="op">(</span> <span class="st">"transcript"</span> <span class="op">)</span> <span class="op">)</span> <span class="op">)</span>
 
-<span class="fu"><a href="https://rdrr.io/r/graphics/graphics-defunct.html">dotplot</a></span>(<span class="kw">egoCC</span>)
-<span class="fu">goplot</span>(<span class="kw">egoCC</span>)
-<span class="fu">emapplot</span>(<span class="kw">egoCC</span>)
+<span class="fu"><a href="https://rdrr.io/r/graphics/graphics-defunct.html">dotplot</a></span><span class="op">(</span><span class="va">egoCC</span><span class="op">)</span>
+<span class="fu">goplot</span><span class="op">(</span><span class="va">egoCC</span><span class="op">)</span>
+<span class="fu">emapplot</span><span class="op">(</span><span class="va">egoCC</span><span class="op">)</span>
 
 
 <span class="co"># MSigDB Hallmark</span>
-<span class="kw">gmtH</span> <span class="op">&lt;-</span> <span class="fu">read.gmt</span>( <span class="st">"https://data.broadinstitute.org/gsea-msigdb/msigdb/release/6.2/h.all.v6.2.symbols.gmt"</span> )
-<span class="kw">enrH</span> <span class="op">&lt;-</span> <span class="fu">enricher</span>(
-   gene = ( <span class="kw">res</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(<span class="kw">FDR</span> <span class="op">&lt;</span> <span class="fl">0.1</span> <span class="op">&amp;</span> <span class="kw">logFC</span> <span class="op">&gt;</span> <span class="fl">0</span>) <span class="op">%&gt;%</span>
-    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/pull.html">pull</a></span>( <span class="st">"transcript"</span> ) ),
-   TERM2GENE = <span class="kw">gmtH</span>,
-   universe = ( <span class="kw">res</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/pull.html">pull</a></span>( <span class="st">"transcript"</span> ) ) )
+<span class="va">gmtH</span> <span class="op">&lt;-</span> <span class="fu">read.gmt</span><span class="op">(</span> <span class="st">"https://data.broadinstitute.org/gsea-msigdb/msigdb/release/6.2/h.all.v6.2.symbols.gmt"</span> <span class="op">)</span>
+<span class="va">enrH</span> <span class="op">&lt;-</span> <span class="fu">enricher</span><span class="op">(</span>
+   gene <span class="op">=</span> <span class="op">(</span> <span class="va">res</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">FDR</span> <span class="op">&lt;</span> <span class="fl">0.1</span> <span class="op">&amp;</span> <span class="va">logFC</span> <span class="op">&gt;</span> <span class="fl">0</span><span class="op">)</span> <span class="op">%&gt;%</span>
+    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/pull.html">pull</a></span><span class="op">(</span> <span class="st">"transcript"</span> <span class="op">)</span> <span class="op">)</span>,
+   TERM2GENE <span class="op">=</span> <span class="va">gmtH</span>,
+   universe <span class="op">=</span> <span class="op">(</span> <span class="va">res</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/pull.html">pull</a></span><span class="op">(</span> <span class="st">"transcript"</span> <span class="op">)</span> <span class="op">)</span> <span class="op">)</span>
 
-<span class="fu"><a href="https://rdrr.io/r/graphics/graphics-defunct.html">dotplot</a></span>( <span class="kw">enrH</span> )
-<span class="fu">emapplot</span>(<span class="kw">enrH</span>)
-</pre></div>
+<span class="fu"><a href="https://rdrr.io/r/graphics/graphics-defunct.html">dotplot</a></span><span class="op">(</span> <span class="va">enrH</span> <span class="op">)</span>
+<span class="fu">emapplot</span><span class="op">(</span><span class="va">enrH</span><span class="op">)</span></pre></div>
 </div>
   </div>
 
