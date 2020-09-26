@@ -26,6 +26,7 @@ Imports:
     dplyr,
     readr,
     tidyr,
+    forcats,
     tidybulk,
     tidygate,
     tidyseurat,

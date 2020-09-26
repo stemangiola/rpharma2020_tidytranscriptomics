@@ -24,10 +24,11 @@ knitr::include_graphics("../inst/vignettes/tidybulk_logo.png")
 ```
 
 ```{r message=FALSE, warning=FALSE}
-library(tidyverse)
+library(dplyr)
+library(forcats)
 library(tidybulk)
-library(GGally)
 library(tidygate)
+library(GGally)
 library(plotly)
 ```
 

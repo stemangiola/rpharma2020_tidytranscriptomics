@@ -23,7 +23,9 @@ knitr::include_graphics("../inst/vignettes/tidybulk_logo.png")
 ```
 
 ```{r}
-library(tidyverse)
+library(dplyr)
+library(ggplot2)
+library(purrr)
 library(tidybulk)
 ```
 
