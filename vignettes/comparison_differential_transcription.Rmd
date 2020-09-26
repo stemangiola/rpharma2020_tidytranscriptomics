@@ -27,7 +27,7 @@ Recommended Background Reading
 knitr::include_graphics("../inst/vignettes/tidybulk_logo.png")
 ```
 
-```{r}
+```{r message=FALSE, warning=FALSE}
 library(tidyverse)
 library(tidybulk)
 library(GGally)

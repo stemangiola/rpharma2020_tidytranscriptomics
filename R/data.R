@@ -6,3 +6,11 @@
 #' @source \url{https://bioconductor.org/packages/release/data/experiment/html/pasilla.html}
 #' @usage data(pasilla)
 "pasilla"
+
+#' de_gate_gates
+#'
+#' Stefano's gate list
+#'
+#' @format  A list of gates to use. Gates consist of x and y corordinates.
+#' @usage data(de_gate_gates)
+"de_gate_gates"
