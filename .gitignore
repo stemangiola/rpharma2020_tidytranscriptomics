@@ -4,3 +4,6 @@ Meta
 .RData
 .Rhistory
 *.Rproj
+rpharma2020tidytranscriptomics.Rcheck/
+rpharma2020tidytranscriptomics*.tar.gz
+rpharma2020tidytranscriptomics*.tgz

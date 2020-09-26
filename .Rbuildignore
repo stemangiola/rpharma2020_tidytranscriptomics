@@ -9,3 +9,6 @@ _pkgdown.yml
 ^data-raw$
 dev$
 CONTRIBUTING.md
+^rpharma2020tidytranscriptomics\.Rcheck$
+^rpharma2020tidytranscriptomics.*\.tar\.gz$
+^rpharma2020tidytranscriptomics.*\.tgz$
