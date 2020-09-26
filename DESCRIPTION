@@ -27,6 +27,8 @@ Imports:
     readr,
     tidyr,
     tidybulk,
+    tidygate,
+    tidyseurat,
     tidyHeatmap,
     edgeR,
     ggrepel,

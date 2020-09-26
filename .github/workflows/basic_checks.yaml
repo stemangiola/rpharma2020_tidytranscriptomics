@@ -9,6 +9,13 @@ jobs:
       - name: Query dependencies and update old packages
         run: |
           install.packages('remotes')
+          
+          ## We need the GitHub versions of these packages
+          BiocManager::install("stemangiola/tidybulk", version="devel")
+          BiocManager::install("stemangiola/tidygate", version="devel")
+          BiocManager::install("stemangiola/tidyseurat", version="devel")
+          
+          ## Then install the other dependencies in the usual way
           options(repos = c(CRAN = 'https://cran.r-project.org'))
           BiocManager::install(ask=FALSE)
           saveRDS(remotes::dev_package_deps(dependencies = TRUE), ".github/depends.Rds", version = 2)
