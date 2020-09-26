@@ -394,7 +394,7 @@ If we just want a table of differentially expressed genes we can select the tran
 counts_de %>% pivot_transcript()
 ```
 
-Now we have columns with our log-fold change (logFC), false-discovery rate (FDR) and probability value (p-value). There is also a column called significant that indicates if the gene has false-discovery rate < 0.05.
+Now we have columns with our log-fold change (logFC), false-discovery rate (FDR) and probability value (p-value). 
 
 Tidybulk enables a simplified way of performing an RNA sequencing differential expression analysis (with the benefit of smoothly integrating with ggplot2 and other tidyverse packages). Compare the code for a tidybulk edgeR analysis versus standard edgeR below.
 
@@ -430,11 +430,11 @@ counts_de %>%
 
 ### Counting differentially expressed genes
 
-We can count how many differentially expressed genes there are using the significant column.
+We can count how many differentially expressed genes there are. We'll filter on FDR 0.05.
 
 ```{r}
 counts_de %>%
-  filter(significant == TRUE) %>%
+  filter(FDR < 0.05) %>%
   summarise(num_de = n_distinct(transcript))
 ```
 
@@ -468,7 +468,7 @@ Volcano plots are a useful genome-wide plot for checking that the analysis looks
 ```{r out.width = "70%"}
 # volcano plot, minimal
 counts_de %>%
-	ggplot(aes(x=logFC, y=PValue, colour=significant)) +
+	ggplot(aes(x=logFC, y=PValue, colour=FDR < 0.05)) +
 	geom_point() +
 	scale_y_continuous(trans = "log10_reverse") +
 	theme_bw()
