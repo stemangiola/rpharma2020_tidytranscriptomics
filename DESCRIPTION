@@ -34,7 +34,8 @@ Imports:
     ggrepel,
     plotly,
     airway,
-    dittoSeq
+    dittoSeq,
+    GGally
 Suggests:
     knitr,
     rmarkdown,
