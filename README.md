@@ -108,20 +108,23 @@ The workshop format is a 2 hour session consisting of demos, exercises and Q&A.
 
 | Activity                                            | Time |
 |-----------------------------------------------------|------|
-| Part 1 Bulk RNA-seq Core                            | 60m  |
+| **Part 1 Bulk RNA-seq Core**                        | 60m  |
 |  *Introduction to RNA-seq*                          |      |
 |  *Data preprocessing*                               |      |
 |  *Data dimensionality reduction and clustering*     |      |
 |  *Differential gene expression*                     |      |
 |  *Data visualisation*                               |      |
-Break                                                 |  5m  |
-| Part 2 Bulk RNA-seq Extended                        | 25m  |
+|  *Questions and exercises*                          |      |
+| _Break_                                               |  5m  |
+| **Part 2 Bulk RNA-seq Extended**                    | 25m  |
 |  *Comparison of differential testing tools*         |      |
 |  *Comparison of normalisation*                      |      |
 |  *Example of nested analysis*                       |      |
-| Part 3 Single-cell RNA-seq                          | 30m  |
-|  *A very brief introduction to single-cell RNA-seq* |      |
-|  *A very brief introduction to tidyseurat*          |      |
+|  *Questions and exercises*                          |      |
+| **Part 3 Single-cell RNA-seq**                      | 30m  |
+|  *Brief introduction to single-cell RNA-seq*        |      |
+|  *Brief introduction to tidyseurat*                 |      |
+|  *Questions and exercises*                          |      |
 
 
 ### Workshop goals and objectives
