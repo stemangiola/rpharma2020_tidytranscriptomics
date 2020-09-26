@@ -35,6 +35,8 @@ jobs:
         env:
           RHUB_PLATFORM: linux-x86_64-ubuntu-gcc
         run: |
+          # Adding an install of python-minimal as got error "Package 'python-minimal' has no installation candidate"
+          sudo apt-get install -y python-minimal
           Rscript -e "remotes::install_github('r-hub/sysreqs')"
           sysreqs=$(Rscript -e "cat(sysreqs::sysreq_commands('DESCRIPTION'))")
           sudo -s eval "$sysreqs"
