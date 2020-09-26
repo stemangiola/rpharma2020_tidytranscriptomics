@@ -1,11 +1,11 @@
 ---
-title: "Case study - comparison methods"
+title: "Case study - comparison of DE methods"
 author:
   - Maria Doyle, Peter MacCallum Cancer Centre^[maria.doyle@petermac.org]
   - Stefano Mangiola, Walter and Eliza Hall Institute^[mangiola.s@wehi.edu.au]
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Case study - comparison methods}
+  %\VignetteIndexEntry{Case study - comparison of DE methods}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -16,12 +16,8 @@ knitr::opts_chunk$set(
   comment = "#>"
 )
 
-# bibliography: "`r file.path(system.file(package='tidytranscriptomics', 'vignettes'), 'workshop_1_hour.bib')`"
-
 ```
 
-Recommended Background Reading
-[Introduction to R for Biologists](https://melbournebioinformatics.github.io/r-intro-biologists/intro_r_biologists.html)
 
 ```{r, echo=FALSE, out.width = "200px"}
 knitr::include_graphics("../inst/vignettes/tidybulk_logo.png")
@@ -36,7 +32,7 @@ library(plotly)
 ```
 
 ```{r, echo = FALSE}
-custom_theme = 	
+custom_theme <- 	
   list(
   	theme_bw() +
   	theme(
@@ -58,14 +54,14 @@ custom_theme =
 ```
 
 ## Introduction
-`tidybulk` integrates several method for differential transcript abundance testing.
+`tidybulk` integrates several methods for differential transcript abundance testing.
 
 ### Comparison of methods
-We can serially perform differential analyses with several methods, which results will be added to the original datasets. 
+We can serially perform differential analyses with several methods, and the results will be added to the original dataset. 
 
 We first pre-process the data, creating a tibble and identifying abundant genes.
 ```{r}
-pasilla_de = 
+pasilla_de <- 
   rpharma2020tidytranscriptomics::pasilla %>% 
   
   # Convert SE object to tibble
@@ -75,7 +71,7 @@ pasilla_de =
   identify_abundant(factor_of_interest=condition) 
 ```
 
-This is an example for the default method for differential transcriptional testing
+This is an example for the default method for differential transcriptional testing. It uses the edgeR method.
 ```{r}
 pasilla_de %>%
   
@@ -87,41 +83,41 @@ pasilla_de %>%
   arrange(FDR)
 ```
 
-Now let's try to perform multiple methods to the same dataset.
-```{r}
-de_all = 
+Now let's try to perform multiple methods on the same dataset.
+```{r message=FALSE}
+de_all <- 
   
   pasilla_de %>%
   
-  # Test differential composition
+  # edgeR QLT
   test_differential_abundance(
     ~ condition + type, 
     method = "edger_quasi_likelihood",
     prefix = "edgerQLT_"
   )  %>%
   
-  # Test differential composition
+  # edgeR LRT
   test_differential_abundance(
     ~ condition + type, 
     method = "edger_likelihood_ratio",
     prefix = "edgerLR_"
   )  %>%
   
-  # Test differential composition
+  # limma-voom
   test_differential_abundance(
     ~ condition + type, 
     method = "limma_voom",
     prefix = "voom_"
   ) %>%
   
-  # Test differential composition
+  # DESeq2
   test_differential_abundance(
     ~ condition + type, 
     method = "deseq2",
     prefix = "deseq2_"
   ) 
 ```
-We can visually compare the estimate difference for all methods. We will notice that the consistency of the estimates is really high
+We can visually compare the log fold change (logFC) of transcript abundance for the comparison of interest (treated vs untreated) for all methods. We will notice that the consistency of the logFC is really high for the methods.
 
 ```{r}
 de_all %>%
@@ -141,7 +137,7 @@ de_all %>%
 
 ```
 
-We can investigate some of the genes that are less consistent between methods, for example edgeR QLT and DESeq2. In this case we can use plotly to produce an interactive plot.
+We can investigate some of the genes that are less consistent between methods, for example between edgeR QLT and DESeq2. In this case we can use plotly to produce an interactive plot.
 
 ```{r}
 # Produce the ggplot
@@ -157,7 +153,7 @@ We can investigate some of the genes that are less consistent between methods, f
 
 ```
 
-We can select some of them for further analysis
+We can select some of the transcripts for further analysis using the *tidygate* package.
 
 ```{r, eval=FALSE}
 de_gate = 
@@ -169,13 +165,12 @@ de_gate =
     feature,
     edgerQLT_PValue, 
     deseq2_pvalue, 
-    opacity =0.3, 
+    opacity=0.3, 
     how_many_gates = 2 
   )
 ```
 
 ```{r, echo=FALSE}
-
 de_gate = 
   de_all %>%
   
@@ -188,14 +183,13 @@ de_gate =
   )
 
 de_gate
-
 ```
 
 ```{r, echo=FALSE}
 knitr::include_graphics("../inst/vignettes/comparison_different_DE_methods_gates.png")
 ```
 
-We can now select the transcript from the two gates (i.e. over significant in DESeq2  and oversignificant in edgeR)
+We can now select the transcripts from the two gates (i.e. oversignificant in DESeq2  and oversignificant in edgeR)
 
 ```{r}
 
@@ -223,7 +217,7 @@ de_gate %>%
 ```
 
 
-For example DESeq2 performed a more conservative statistics for the transcript `FBgn0052939`
+For example DESeq2 produces a more conservative statistic for the transcript `FBgn0052939`.
 
 ```{r}
 de_gate %>%
