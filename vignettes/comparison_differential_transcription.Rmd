@@ -1,0 +1,249 @@
+---
+title: "Case study - comparison methods"
+author:
+  - Maria Doyle, Peter MacCallum Cancer Centre^[maria.doyle@petermac.org]
+  - Stefano Mangiola, Walter and Eliza Hall Institute^[mangiola.s@wehi.edu.au]
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Case study - comparison methods}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+
+# bibliography: "`r file.path(system.file(package='tidytranscriptomics', 'vignettes'), 'workshop_1_hour.bib')`"
+
+```
+
+Recommended Background Reading
+[Introduction to R for Biologists](https://melbournebioinformatics.github.io/r-intro-biologists/intro_r_biologists.html)
+
+```{r, echo=FALSE, out.width = "200px"}
+knitr::include_graphics("../inst/vignettes/tidybulk_logo.png")
+```
+
+```{r}
+library(tidyverse)
+library(tidybulk)
+library(GGally)
+library(tidygate)
+library(plotly)
+```
+
+```{r, echo = FALSE}
+custom_theme = 	
+  list(
+  	theme_bw() +
+  	theme(
+  		panel.border = element_blank(),
+  		axis.line = element_line(),
+  		panel.grid.major = element_line(size = 0.2),
+  		panel.grid.minor = element_line(size = 0.1),
+  		text = element_text(size=12),
+  		legend.position="bottom",
+  		aspect.ratio=1,
+  		strip.background = element_blank(),
+  		axis.title.x  = element_text(margin = margin(t = 10, r = 10, b = 10, l = 10)),
+  		axis.title.y  = element_text(margin = margin(t = 10, r = 10, b = 10, l = 10)),
+  		axis.text.x = element_text(angle = 90)
+  	),
+	  scale_color_brewer(palette = "Set1"),
+  	scale_fill_brewer(palette = "Set1")
+  )
+```
+
+## Introduction
+`tidybulk` integrates several method for differential transcript abundance testing.
+
+### Comparison of methods
+We can serially perform differential analyses with several methods, which results will be added to the original datasets. 
+
+We first pre-process the data, creating a tibble and identifying abundant genes.
+```{r}
+pasilla_de = 
+  rpharma2020tidytranscriptomics::pasilla %>% 
+  
+  # Convert SE object to tibble
+  tidybulk %>%
+  
+   # Scale abundance for plotting
+  identify_abundant(factor_of_interest=condition) 
+```
+
+This is an example for the default method for differential transcriptional testing
+```{r}
+pasilla_de %>%
+  
+  # Test differential composition
+  test_differential_abundance(
+    ~ condition + type, 
+    action="get"
+  ) %>%
+  arrange(FDR)
+```
+
+Now let's try to perform multiple methods to the same dataset.
+```{r}
+de_all = 
+  
+  pasilla_de %>%
+  
+  # Test differential composition
+  test_differential_abundance(
+    ~ condition + type, 
+    method = "edger_quasi_likelihood",
+    prefix = "edgerQLT_"
+  )  %>%
+  
+  # Test differential composition
+  test_differential_abundance(
+    ~ condition + type, 
+    method = "edger_likelihood_ratio",
+    prefix = "edgerLR_"
+  )  %>%
+  
+  # Test differential composition
+  test_differential_abundance(
+    ~ condition + type, 
+    method = "limma_voom",
+    prefix = "voom_"
+  ) %>%
+  
+  # Test differential composition
+  test_differential_abundance(
+    ~ condition + type, 
+    method = "deseq2",
+    prefix = "deseq2_"
+  ) 
+```
+We can visually compare the estimate difference for all methods. We will notice that the consistency of the estimates is really high
+
+```{r}
+de_all %>%
+  keep_abundant() %>%
+  pivot_transcript() %>%
+  select(edgerQLT_logFC, edgerLR_logFC, voom_logFC, deseq2_log2FoldChange, feature ) %>%
+  ggpairs(1:4)
+```
+
+Similarly, we can visually compare the significance for all methods. In this case the difference is larger.
+```{r}
+de_all %>%
+  keep_abundant() %>%
+  pivot_transcript() %>%
+  select(edgerQLT_PValue, edgerLR_PValue, voom_P.Value, deseq2_pvalue, feature ) %>%
+  ggpairs(1:4)
+
+```
+
+We can investigate some of the genes that are less consistent between methods, for example edgeR QLT and DESeq2. In this case we can use plotly to produce an interactive plot.
+
+```{r}
+# Produce the ggplot
+(
+  de_all %>%
+    keep_abundant() %>%
+    ggplot(aes(edgerQLT_PValue, deseq2_pvalue, label = feature)) + 
+    geom_point()
+) %>% 
+  
+  # Make it interactive
+  ggplotly()
+
+```
+
+We can select some of them for further analysis
+
+```{r, eval=FALSE}
+de_gate = 
+  de_all %>%
+  
+  keep_abundant() %>%
+  
+  gate(
+    feature,
+    edgerQLT_PValue, 
+    deseq2_pvalue, 
+    opacity =0.3, 
+    how_many_gates = 2 
+  )
+```
+
+```{r, echo=FALSE}
+
+de_gate = 
+  de_all %>%
+  
+  keep_abundant() %>%
+  
+  gate(
+    feature,
+    edgerQLT_PValue, 
+    deseq2_pvalue, gate_list = rpharma2020tidytranscriptomics::de_gate_gates
+  )
+
+de_gate
+
+```
+
+```{r, echo=FALSE}
+knitr::include_graphics("../inst/vignettes/comparison_different_DE_methods_gates.png")
+```
+
+We can now select the transcript from the two gates (i.e. over significant in DESeq2  and oversignificant in edgeR)
+
+```{r}
+
+de_gate %>% 
+  scale_abundance() %>%
+  
+  # Filter only transcripts within the gates
+  filter(gate > 0) %>% 
+  
+  # Rename for clarity
+  mutate(gate = case_when(
+    gate == 1 ~ "more in edgeR",
+    gate == 2 ~ "more in DESeq2",
+    TRUE ~ gate
+  )) %>%
+  
+  # Rearrange order
+  mutate(feature = fct_reorder(feature, edgerQLT_PValue, min)) %>%
+  
+  # Plot
+  ggplot(aes(condition, counts_scaled, color=gate)) +
+  geom_point() +
+  facet_wrap(~feature, scale="free_y") +
+  custom_theme
+```
+
+
+For example DESeq2 performed a more conservative statistics for the transcript `FBgn0052939`
+
+```{r}
+de_gate %>%
+  pivot_transcript %>%
+  filter(feature == "FBgn0052939")%>%
+  select(edgerQLT_logFC, deseq2_log2FoldChange)
+
+```
+
+
+
+
+## Contributing
+If you want to suggest improvements for this workshop or ask questions, you can do so as described [here](https://github.com/stemangiola/tidytranscriptomics/blob/master/CONTRIBUTING.md).
+
+## Reproducibility
+Record package and version information with `sessionInfo`
+
+```{r}
+sessionInfo()
+```
+
+## References
