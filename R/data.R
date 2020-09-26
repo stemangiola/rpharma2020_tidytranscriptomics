@@ -14,3 +14,13 @@
 #' @format  A list of gates to use. Gates consist of x and y corordinates.
 #' @usage data(de_gate_gates)
 "de_gate_gates"
+
+
+#' cell_type_df
+#'
+#' Stefano's cell type df
+#'
+#' @format  A list of gates to use. Gates consist of x and y corordinates.
+#' @usage data(cell_type_df)
+"cell_type_df"
+
