@@ -3,7 +3,7 @@
 [![.github/workflows/basic_checks.yaml](https://github.com/stemangiola/rpharma2020_tidytranscriptomics/workflows/.github/workflows/basic_checks.yaml/badge.svg)](https://github.com/stemangiola/rpharma2020_tidytranscriptomics/actions) [![Docker](https://github.com/Bioconductor/rpharma2020/raw/master/docs/images/docker_icon.png)](https://hub.docker.com/repository/docker/stemangiola/rpharma2020_tidytranscriptomics) 	
 <!-- badges: end -->
 
-# A Tidy Transcriptomics introduction to RNA sequencing analyses
+# Introduction to Tidy Transcriptomics
 
 <img width="100" alt="rpharma2020" src="rpharma_logo.png"/> 
 <img width="100" alt="tidybulk" src="https://github.com/Bioconductor/BiocStickers/blob/master/tidybulk/tidybulk.png?raw=true"/>
