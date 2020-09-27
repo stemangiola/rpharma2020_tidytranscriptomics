@@ -2,10 +2,13 @@ pandoc: 2.7.3
 pkgdown: 1.6.1
 pkgdown_sha: ~
 articles:
+  comparison_differential_transcription: comparison_differential_transcription.html
+  nesting: nesting.html
   solutions: solutions.html
   supplementary: supplementary.html
+  tidysinglecell: tidysinglecell.html
   tidytranscriptomics: tidytranscriptomics.html
-last_built: 2020-09-26T07:08Z
+last_built: 2020-09-27T07:12Z
 urls:
   reference: https://stemangiola.github.io/rpharma2020_tidytranscriptomics/reference
   article: https://stemangiola.github.io/rpharma2020_tidytranscriptomics/articles
