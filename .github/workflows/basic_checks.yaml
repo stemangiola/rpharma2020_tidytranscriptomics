@@ -26,8 +26,8 @@ jobs:
         uses: actions/cache@v1
         with:
           path: /usr/local/lib/R/site-library
-          key: ${{ runner.os }}-r-1-${{ hashFiles('.github/depends.Rds') }}
-          restore-keys: ${{ runner.os }}-r-1-
+          key: ${{ runner.os }}-r-2-${{ hashFiles('.github/depends.Rds') }}
+          restore-keys: ${{ runner.os }}-r-2-
           
       - name: Install dependencies
         run: |
