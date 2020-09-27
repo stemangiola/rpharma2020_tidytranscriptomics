@@ -1,5 +1,5 @@
 Package: rpharma2020tidytranscriptomics
-Title: A Tidy Transcriptomics introduction to RNA-Seq analyses
+Title: Introduction to Tidy Transcriptomics
 Version: 1.0.6
 Authors@R: c(
     person("Maria", "Doyle", email="maria.doyle@petermac.org",
