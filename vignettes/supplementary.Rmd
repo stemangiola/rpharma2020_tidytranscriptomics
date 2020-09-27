@@ -1,5 +1,5 @@
 ---
-title: "Supplementary Material"
+title: "Supplementary"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{Supplementary}

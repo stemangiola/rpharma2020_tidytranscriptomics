@@ -1,5 +1,5 @@
 ---
-title: "rpharma2020 Tidytranscriptomics Solutions"
+title: "Solutions"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{Solutions}

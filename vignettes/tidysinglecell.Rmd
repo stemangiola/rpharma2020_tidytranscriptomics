@@ -1,16 +1,13 @@
 ---
 title: "Overview of the tidyseurat package"
 author: "Stefano Mangiola"
-date: "`r Sys.Date()`"
-package: tidyseurat
-output:
-  BiocStyle::html_document:
-    toc_float: true
-bibliography: tidyseurat.bib
+output: rmarkdown::html_vignette
+bibliography: "`r file.path(system.file(package='rpharma2020tidytranscriptomics', 'vignettes'), 'tidytranscriptomics.bib')`"
 vignette: >
-  %\VignetteEngine{knitr::knitr}
+  %\VignetteEngine{knitr::rmarkdown}
   %\VignetteIndexEntry{Overview of the tidyseurat package}
-  %\usepackage[UTF-8]{inputenc}
+  %\VignetteEncoding{UTF-8}
+
 ---
 
 **Brings Seurat to the tidyverse!** 

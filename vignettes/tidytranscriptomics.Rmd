@@ -6,7 +6,7 @@ author:
 output: rmarkdown::html_vignette
 bibliography: "`r file.path(system.file(package='rpharma2020tidytranscriptomics', 'vignettes'), 'tidytranscriptomics.bib')`"
 vignette: >
-  %\VignetteIndexEntry{rpharma2020tidytranscriptomics}
+  %\VignetteIndexEntry{A Tidy Transcriptomics introduction to RNA-Seq analyses}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
