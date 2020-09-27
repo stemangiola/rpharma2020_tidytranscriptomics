@@ -142,7 +142,7 @@ counts_de <-
 # maplot, minimal
 counts_de %>%
 	pivot_transcript() %>%
-	ggplot(aes(x=logCPM, y=-logFC, colour=significant)) +
+	ggplot(aes(x=logCPM, y=-logFC, colour=FDR < 0.05)) +
 	geom_point()+
 	theme_bw()
 ```

@@ -93,7 +93,7 @@ counts_de <-
 
 ```{r}
 counts_de %>% 
-  filter(significant == TRUE) %>% 
+  filter(FDR < 0.05) %>% 
   summarise(num_de = n_distinct(feature))
 ```
 
