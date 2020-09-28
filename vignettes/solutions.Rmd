@@ -33,6 +33,7 @@ library(tidyHeatmap)
 library(tidybulk)
 library(ggrepel)
 library(plotly)
+library(purrr)
 
 # load data
 data("pasilla", package = "rpharma2020tidytranscriptomics")
@@ -192,3 +193,118 @@ counts_scaled %>%
 	      transform = log1p 
 	  )
 ```
+
+X. How can I compare the amount of differential abundant transcripts for the different methods?
+
+```{r}
+# Set up data
+pasilla_de <- 
+  rpharma2020tidytranscriptomics::pasilla %>% 
+  
+  # Convert SE object to tibble
+  tidybulk %>%
+  
+   # Scale abundance for plotting
+  identify_abundant(factor_of_interest=condition) 
+
+de_all <- 
+  
+  pasilla_de %>%
+  
+  # edgeR QLT
+  test_differential_abundance(
+    ~ condition + type, 
+    method = "edger_quasi_likelihood",
+    prefix = "edgerQLT_"
+  )  %>%
+  
+  # edgeR LRT
+  test_differential_abundance(
+    ~ condition + type, 
+    method = "edger_likelihood_ratio",
+    prefix = "edgerLR_"
+  )  %>%
+  
+  # limma-voom
+  test_differential_abundance(
+    ~ condition + type, 
+    method = "limma_voom",
+    prefix = "voom_"
+  ) %>%
+  
+  # DESeq2
+  test_differential_abundance(
+    ~ condition + type, 
+    method = "deseq2",
+    prefix = "deseq2_"
+  ) 
+```
+
+```{r out.width = "70%"}
+de_all %>%
+	
+	# Subset transcript information
+	pivot_transcript() %>%
+	
+	# Reshape for nesting
+	pivot_longer(
+		cols = -c(feature, .abundant),
+		names_sep = "_", 
+		names_to = c("method", "statistic"), 
+		values_to = "value"
+	) %>%
+	
+	# Filter statictic
+	filter(statistic %in% c("FDR", "adj.P.Val", "padj")) %>%
+	filter(value < 0.05) %>%
+	
+	# Nesting
+	count(method)
+	
+```
+
+X. How can I trace the adjusted p-value rank for methods?
+
+```{r out.width = "70%"}
+# significance trend
+trend_plot = 
+	de_all %>%
+	
+	# Subset transcript information
+	pivot_transcript() %>%
+	
+	# Reshape for nesting
+	pivot_longer(
+		cols = -c(feature, .abundant),
+		names_sep = "_", 
+		names_to = c("method", "statistic"), 
+		values_to = "value"
+	) %>%
+	
+	# Filter statictic
+	filter(statistic %in% c("FDR", "adj.P.Val", "padj")) %>%
+	filter(value %>% is.na %>% `!`) %>%
+
+	# Nesting
+	nest(data = -method) %>%
+	mutate(data = map(
+		data,
+		~ .x %>% 
+			arrange(value) %>%
+			mutate(rank = 1:n())
+	)) %>%
+	unnest(data) %>%
+	
+	ggplot(aes(rank, value, color = method)) + 
+	geom_line() 
+
+trend_plot
+
+# Zooming on highly significant events
+trend_plot + 
+	scale_x_log10() + 
+	scale_y_log10()
+	
+```
+
+
