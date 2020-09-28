@@ -66,25 +66,30 @@ library(plotly)
 library(airway)
 ```
 
-```{r}
-custom_theme <- 	
+Plot settings
+
+```{r, echo = FALSE}
+# Use colourblind-friendly colours
+friendly_cols <- dittoSeq::dittoColors()
+
+# Set theme
+custom_theme <-
   list(
-  	theme_bw() +
-  	theme(
-  		panel.border = element_blank(),
-  		axis.line = element_line(),
-  		panel.grid.major = element_line(size = 0.2),
-  		panel.grid.minor = element_line(size = 0.1),
-  		text = element_text(size=12),
-  		legend.position="bottom",
-  		aspect.ratio=1,
-  		strip.background = element_blank(),
-  		axis.title.x  = element_text(margin = margin(t = 10, r = 10, b = 10, l = 10)),
-  		axis.title.y  = element_text(margin = margin(t = 10, r = 10, b = 10, l = 10)),
-  		axis.text.x = element_text(angle = 90)
-  	),
-	  scale_color_brewer(palette = "Set1"),
-  	scale_fill_brewer(palette = "Set1")
+    scale_fill_manual(values = friendly_cols),
+    scale_color_manual(values = friendly_cols),
+    theme_bw() +
+      theme(
+        panel.border = element_blank(),
+        axis.line = element_line(),
+        panel.grid.major = element_line(size = 0.2),
+        panel.grid.minor = element_line(size = 0.1),
+        text = element_text(size = 12),
+        legend.position = "bottom",
+        aspect.ratio = 1,
+        strip.background = element_blank(),
+        axis.title.x = element_text(margin = margin(t = 10, r = 10, b = 10, l = 10)),
+        axis.title.y = element_text(margin = margin(t = 10, r = 10, b = 10, l = 10))
+      )
   )
 ```
 
@@ -185,7 +190,7 @@ counts_scaled %>%
 	geom_density() +
 	facet_wrap(~source) +
 	scale_x_log10() +
-	theme_bw()
+	custom_theme
 ```
 
 In this dataset the distributions of the counts are not very different to each other before scaling but scaling does make the distributions more similar. If we saw a sample with a very different distribution we may need to investigate it.
@@ -204,7 +209,7 @@ airway %>%
 	geom_density() +
 	facet_wrap(~source) +
 	scale_x_log10() +
-	theme_bw()
+	custom_theme
 ```
 
 
@@ -283,7 +288,7 @@ counts_scal_PCA %>%
 	ggplot(aes(x=PC1, y=PC2, colour=dex, shape=cell)) +
 	geom_point() +
 	geom_text_repel(aes(label=sample), show.legend = FALSE) +
-	theme_bw()
+	custom_theme
 ```
 
 The samples separate by treatment on PC1 which is what we hope to see. PC2 separates the N080611 cell line from the other samples, indicating a greater difference between that cell line and the others.
@@ -439,7 +444,7 @@ counts_de %>%
 	ggplot(aes(x=logFC, y=PValue, colour=FDR < 0.05)) +
 	geom_point() +
 	scale_y_continuous(trans = "log10_reverse") +
-	theme_bw()
+	custom_theme
 
 ```
 
@@ -462,7 +467,7 @@ counts_de %>%
 	scale_y_continuous(trans = "log10_reverse") +
 	scale_color_manual(values=c("black", "#e11f28")) +
 	scale_size_discrete(range = c(0, 2)) +
-	theme_bw()
+	custom_theme
 ```
 
 ### Stripcharts
@@ -484,7 +489,7 @@ strip_chart <-
 	geom_jitter() +
 	facet_wrap(~transcript) +
 	scale_y_log10()+
-	theme_bw()
+	custom_theme
 
 strip_chart
 ```
@@ -533,7 +538,7 @@ strip_chart %>% ggplotly(tooltip = c("label", "y"))
 - Density plots, volcano plots, strip-charts and heatmaps are useful visualisation tools for evaluating the hypothesis testing.
 
 ## Supplementary
-Some things we didn't have time to cover in Part 1 of this workshop can be found in the [Supplementary material](https://stemangiola.github.io/rpharma2020_tidytranscriptomics/articles/supplementary.html).
+Some things we don't have time to cover in Part 1 of this workshop can be found in the [Supplementary material](https://stemangiola.github.io/rpharma2020_tidytranscriptomics/articles/supplementary.html).
 
 ## Exercises
 
@@ -557,37 +562,12 @@ Questions:
 6. What code can generate a heatmap of the top 100 differentially expressed genes?  
 
 
-```{r, echo = FALSE}
-# Use colourblind-friendly colours
-friendly_cols <- dittoSeq::dittoColors()
-
-# Set theme
-custom_theme <-
-  list(
-    scale_fill_manual(values = friendly_cols),
-    scale_color_manual(values = friendly_cols),
-    theme_bw() +
-      theme(
-        panel.border = element_blank(),
-        axis.line = element_line(),
-        panel.grid.major = element_line(size = 0.2),
-        panel.grid.minor = element_line(size = 0.1),
-        text = element_text(size = 12),
-        legend.position = "bottom",
-        aspect.ratio = 1,
-        strip.background = element_blank(),
-        axis.title.x = element_text(margin = margin(t = 10, r = 10, b = 10, l = 10)),
-        axis.title.y = element_text(margin = margin(t = 10, r = 10, b = 10, l = 10))
-      )
-  )
-```
-
 # Part 2 Bulk RNA-seq Extended
 
 `tidybulk` integrates several methods for differential transcript abundance testing.
 
-### Comparison of methods
-We can serially perform differential analyses with several methods, and the results will be added to the original dataset. 
+## Comparison of differential analysis methods
+We can perform differential analysis with several methods, and the results will be added to the original dataset. 
 
 ```{r}
 library(forcats)
@@ -596,6 +576,7 @@ library(GGally)
 ```
 
 We first pre-process the data, creating a tibble and identifying abundant genes.
+
 ```{r}
 pasilla_de <- 
   rpharma2020tidytranscriptomics::pasilla %>% 
@@ -608,6 +589,7 @@ pasilla_de <-
 ```
 
 This is an example for the default method for differential transcriptional testing. It uses the edgeR method.
+
 ```{r}
 pasilla_de %>%
   
@@ -620,6 +602,7 @@ pasilla_de %>%
 ```
 
 Now let's try to perform multiple methods on the same dataset.
+
 ```{r message=FALSE}
 de_all <- 
   
@@ -653,6 +636,7 @@ de_all <-
     prefix = "deseq2_"
   ) 
 ```
+
 We can visually compare the log fold change (logFC) of transcript abundance for the comparison of interest (treated vs untreated) for all methods. We will notice that the consistency of the logFC is really high for the methods.
 
 ```{r}
@@ -664,6 +648,7 @@ de_all %>%
 ```
 
 Similarly, we can visually compare the significance for all methods. In this case the difference is larger.
+
 ```{r}
 de_all %>%
   keep_abundant() %>%
@@ -712,7 +697,6 @@ knitr::include_graphics("../inst/vignettes/comparison_different_DE_methods_gates
 We can now select the transcripts from the two gates (i.e. oversignificant in DESeq2  and oversignificant in edgeR)
 
 ```{r}
-
 de_gate %>% 
   scale_abundance() %>%
   
@@ -752,7 +736,8 @@ de_gate %>%
 
 `tidybulk` allows for data nesting, using the `tidyr` utility `nest`. This is an extremely powerful tool as allows functional programming on transcriptomic data.
 
-### Nesting for performing the same analyses independently for subsets
+### Perform same analysis on subsets
+
 Let's suppose we want to perform differential transcript abundance analysis independently for two different data subsets to compare results after the test
 
 ```{r}
@@ -811,11 +796,12 @@ pasilla_de %>%
   geom_point() + 
   facet_wrap(~feature) +
   scale_y_log10() +
-  theme_bw()
+  custom_theme
 
 ```
 
-### Nesting for applying to the full data frame analyses done of part of the data frame
+### Perform analysis on subset and apply to full dataset
+
 Let's suppose we want to indentify the markers that distingush epithelial from endothelial cells, but we want to then visualising those genes across many cell types to understand the background transcription.
 
 ```{r}
@@ -869,7 +855,10 @@ Now we can plot our markers including the background
 
 ```{r}
 markers_df %>%
-  ggplot(aes(cell_type, count_scaled +1 )) + geom_boxplot() + scale_y_log10() + theme_bw()
+    ggplot(aes(cell_type, count_scaled +1 )) + 
+    geom_boxplot() + 
+    scale_y_log10() + 
+    custom_theme
 ```
 
 
@@ -906,7 +895,7 @@ pbmc_small_tidy@assays
 ```
 
 
-# Preprocess the dataset
+## Preprocess the dataset
 
 
 ```{r preprocess}
@@ -920,7 +909,7 @@ pbmc_small_pca
 ```
 
 
-# Identify clusters 
+## Identify clusters 
 
 We proceed with cluster identification with Seurat.
 
@@ -958,7 +947,7 @@ pbmc_small_cluster %>%
   )
 ```
 
-# Reduce dimensions
+## Reduce dimensions
 
 We can calculate the first 3 UMAP dimensions using the Seurat framework.
 
@@ -1028,7 +1017,7 @@ pbmc_small_cell_type %>%
 ```
 
 
-#  Nested analyses
+##  Nested analyses
 
 A powerful tool we can use with tidyseurat is `nest`. We can easily perform independent analyses on subsets of the dataset. First we classify cell types in lymphoid and myeloid; then, nest based on the new classification
 
@@ -1060,14 +1049,14 @@ pbmc_small_nested_reanalysed
 ```
 
 
-## Contributing
+# Contributing
 If you want to suggest improvements for this workshop or ask questions, you can do so as described [here](https://github.com/stemangiola/rpharma2020_tidytranscriptomics/blob/master/CONTRIBUTING.md).
 
-## Reproducibility
+# Reproducibility
 Record package and version information with `sessionInfo`
 
 ```{r}
 sessionInfo()
 ```
 
-## References
+# References
