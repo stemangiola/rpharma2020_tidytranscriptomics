@@ -192,3 +192,29 @@ counts_scaled %>%
 	      transform = log1p 
 	  )
 ```
+
+X. How can I compare the amount of differential abundant transcripts for the different methods?
+
+```{r out.width = "70%"}
+de_all %>%
+	
+	# Subset transcript information
+	pivot_transcript() %>%
+	
+	# Reshape for nesting
+	pivot_longer(
+		cols = -c(feature, .abundant),
+		names_sep = "_", 
+		names_to = c("method", "statistic"), 
+		values_to = "value"
+	) %>%
+	
+	# Filter statictic
+	filter(statistic %in% c("FDR", "adj.P.Val", "padj")) %>%
+	filter(value < 0.05) %>%
+	
+	# Nesting
+	count(method)
+	
+	
+```
