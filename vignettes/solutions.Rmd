@@ -196,6 +196,50 @@ counts_scaled %>%
 
 X. How can I compare the amount of differential abundant transcripts for the different methods?
 
+```{r}
+# Set up data
+pasilla_de <- 
+  rpharma2020tidytranscriptomics::pasilla %>% 
+  
+  # Convert SE object to tibble
+  tidybulk %>%
+  
+   # Scale abundance for plotting
+  identify_abundant(factor_of_interest=condition) 
+
+de_all <- 
+  
+  pasilla_de %>%
+  
+  # edgeR QLT
+  test_differential_abundance(
+    ~ condition + type, 
+    method = "edger_quasi_likelihood",
+    prefix = "edgerQLT_"
+  )  %>%
+  
+  # edgeR LRT
+  test_differential_abundance(
+    ~ condition + type, 
+    method = "edger_likelihood_ratio",
+    prefix = "edgerLR_"
+  )  %>%
+  
+  # limma-voom
+  test_differential_abundance(
+    ~ condition + type, 
+    method = "limma_voom",
+    prefix = "voom_"
+  ) %>%
+  
+  # DESeq2
+  test_differential_abundance(
+    ~ condition + type, 
+    method = "deseq2",
+    prefix = "deseq2_"
+  ) 
+```
+
 ```{r out.width = "70%"}
 de_all %>%
 	
