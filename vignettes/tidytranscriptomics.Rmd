@@ -19,67 +19,12 @@ knitr::opts_chunk$set(
 )
 ```
 
-## Workshop Description
+# Part 1 Bulk RNA-seq Core
 
 This workshop will present how to perform analysis of RNA sequencing data following the tidy data paradigm [@wickham2014tidy]. The tidy data paradigm provides a standard way to organise data values within a dataset, where each variable is a column, each observation is a row, and data is manipulated using an easy-to-understand vocabulary. Most importantly, the data structure remains consistent across manipulation and analysis functions.
 
 This can be achieved for RNA sequencing data with the [tidybulk](https://stemangiola.github.io/tidybulk/), [tidyHeatmap](https://stemangiola.github.io/tidyHeatmap) [@mangiola2020tidyheatmap] and [tidyverse](https://www.tidyverse.org/) [@wickham2019welcome] packages. The tidybulk package provides a tidy data structure and a modular framework for bulk transcriptional analyses. tidyHeatmap provides a tidy implementation of ComplexHeatmap. These packages are part of the tidytranscriptomics suite that introduces a tidy approach to RNA sequencing data representation and analysis
 
-The topics presented in this workshop will be
-
-- Data exploration
-- Data dimensionality reduction and clustering
-- Differential gene expression analysis
-- Data visualisation
-
-### Pre-requisites
-
-* Basic knowledge of RStudio
-* Familiarity with tidyverse syntax
-
-Recommended Background Reading
-[Introduction to R for Biologists](https://melbournebioinformatics.github.io/r-intro-biologists/intro_r_biologists.html)
-
-### Workshop Participation
-
-The workshop length is 55 min. It consists of a 30 min demo followed by 25 min opportunity for attendees to try out the code, exercises and Q&A.
-
-### _R_ / _Bioconductor_ packages used
-
-* tidyverse
-* tidybulk
-* tidyHeatmap
-* edgeR
-* ggrepel
-* airway
-
-### Time outline
-
-| Activity                                           | Time |
-|----------------------------------------------------|------|
-| Demo                                               | 30m  |
-|     *Introduction and Data preprocessing*          |      |
-|     *Data dimensionality reduction and clustering* |      |
-|     *Differential gene expression*                 |      |
-|     *Data visualisation*                           |      |
-| Try out code, Exercises, Q&A                       | 25m  |
-
-### Workshop goals and objectives
-
-In exploring and analysing RNA sequencing data, there are a number of key concepts, such as filtering, scaling, dimensionality reduction, hypothesis testing, clustering and visualisation, that need to be understood. These concepts can be intuitively explained to new users, however, (i) the use of a heterogeneous vocabulary and jargon by methodologies/algorithms/packages, (ii) the complexity of data wrangling, and (iii) the coding burden, impede effective learning of the statistics and biology underlying an informed analysis.
-
-The tidytranscriptomics approach abstracts out the coding-related complexity and provides tools that use an intuitive and jargon-free vocabulary, enabling focus on the statistical and biological challenges.
-
-#### Learning goals
-
-* To understand the key concepts and steps of bulk RNA sequencing data analysis
-* To approach data representation and analysis though a tidy data paradigm, integrating tidyverse with tidybulk and tidyHeatmap.
-
-#### Learning objectives
-
-* Recall the key concepts of RNA sequencing data analysis
-* Apply the concepts to publicly available data
-* Create plots that summarise the information content of the data and analysis results
 
 ### Acknowledgements
 This material was adapted from an R for RNA sequencing workshop first run [here](http://combine-australia.github.io/2016-05-11-RNAseq/). Use of the airway and pasilla datasets was inspired by the [DESeq2 vignette](http://bioconductor.org/packages/devel/bioc/vignettes/DESeq2/inst/doc/DESeq2.html).
@@ -578,25 +523,6 @@ We can also specify which parameters from the `aes` we want to show up when we h
 strip_chart %>% ggplotly(tooltip = c("label", "y"))
 ```
 
-# Extended
-
-## Differential testing methods
-
-With tidybulk you can choose to run one or more of the three most popular algorithms for RNA-sequencing differential expression, edgeR, limma-voom, DESeq2.
-
-```{r}
-# edgeR (default method)
-counts_de_edger <- counts_filtered %>%
-    test_differential_abundance(.formula=~dex)
-
-# limma-voom
-counts_de_voom <- counts_filtered %>%
- test_differential_abundance(.formula=~dex, method="limma_voom")
-
-# DESeq2
-counts_de_deseq2 <- counts_filtered %>%
-    test_differential_abundance(.formula=~dex, method="DESeq2")
-```
 
 ## Key Points
 - RNA sequencing data can be represented and analysed in a 'tidy' way using tidybulk and the tidyverse
@@ -607,7 +533,7 @@ counts_de_deseq2 <- counts_filtered %>%
 - Density plots, volcano plots, strip-charts and heatmaps are useful visualisation tools for evaluating the hypothesis testing.
 
 ## Supplementary
-Some things we didn't have time to cover in this workshop can be found in the [Supplementary material](https://stemangiola.github.io/rpharma2020_tidytranscriptomics/articles/supplementary.html).
+Some things we didn't have time to cover in Part 1 of this workshop can be found in the [Supplementary material](https://stemangiola.github.io/rpharma2020_tidytranscriptomics/articles/supplementary.html).
 
 ## Exercises
 
@@ -629,6 +555,510 @@ Questions:
 4. What code can you use to visualise expression of the pasilla gene (gene id: FBgn0261552)  
 5. What code can generate an interactive volcano plot that has gene ids showing on hover?  
 6. What code can generate a heatmap of the top 100 differentially expressed genes?  
+
+
+```{r, echo = FALSE}
+# Use colourblind-friendly colours
+friendly_cols <- dittoSeq::dittoColors()
+
+# Set theme
+custom_theme <-
+  list(
+    scale_fill_manual(values = friendly_cols),
+    scale_color_manual(values = friendly_cols),
+    theme_bw() +
+      theme(
+        panel.border = element_blank(),
+        axis.line = element_line(),
+        panel.grid.major = element_line(size = 0.2),
+        panel.grid.minor = element_line(size = 0.1),
+        text = element_text(size = 12),
+        legend.position = "bottom",
+        aspect.ratio = 1,
+        strip.background = element_blank(),
+        axis.title.x = element_text(margin = margin(t = 10, r = 10, b = 10, l = 10)),
+        axis.title.y = element_text(margin = margin(t = 10, r = 10, b = 10, l = 10))
+      )
+  )
+```
+
+# Part 2 Bulk RNA-seq Extended
+
+`tidybulk` integrates several methods for differential transcript abundance testing.
+
+### Comparison of methods
+We can serially perform differential analyses with several methods, and the results will be added to the original dataset. 
+
+```{r}
+library(forcats)
+library(tidygate)
+library(GGally)
+```
+
+We first pre-process the data, creating a tibble and identifying abundant genes.
+```{r}
+pasilla_de <- 
+  rpharma2020tidytranscriptomics::pasilla %>% 
+  
+  # Convert SE object to tibble
+  tidybulk %>%
+  
+   # Scale abundance for plotting
+  identify_abundant(factor_of_interest=condition) 
+```
+
+This is an example for the default method for differential transcriptional testing. It uses the edgeR method.
+```{r}
+pasilla_de %>%
+  
+  # Test differential composition
+  test_differential_abundance(
+    ~ condition + type, 
+    action="get"
+  ) %>%
+  arrange(FDR)
+```
+
+Now let's try to perform multiple methods on the same dataset.
+```{r message=FALSE}
+de_all <- 
+  
+  pasilla_de %>%
+  
+  # edgeR QLT
+  test_differential_abundance(
+    ~ condition + type, 
+    method = "edger_quasi_likelihood",
+    prefix = "edgerQLT_"
+  )  %>%
+  
+  # edgeR LRT
+  test_differential_abundance(
+    ~ condition + type, 
+    method = "edger_likelihood_ratio",
+    prefix = "edgerLR_"
+  )  %>%
+  
+  # limma-voom
+  test_differential_abundance(
+    ~ condition + type, 
+    method = "limma_voom",
+    prefix = "voom_"
+  ) %>%
+  
+  # DESeq2
+  test_differential_abundance(
+    ~ condition + type, 
+    method = "deseq2",
+    prefix = "deseq2_"
+  ) 
+```
+We can visually compare the log fold change (logFC) of transcript abundance for the comparison of interest (treated vs untreated) for all methods. We will notice that the consistency of the logFC is really high for the methods.
+
+```{r}
+de_all %>%
+  keep_abundant() %>%
+  pivot_transcript() %>%
+  select(edgerQLT_logFC, edgerLR_logFC, voom_logFC, deseq2_log2FoldChange, feature ) %>%
+  ggpairs(1:4)
+```
+
+Similarly, we can visually compare the significance for all methods. In this case the difference is larger.
+```{r}
+de_all %>%
+  keep_abundant() %>%
+  pivot_transcript() %>%
+  select(edgerQLT_PValue, edgerLR_PValue, voom_P.Value, deseq2_pvalue, feature ) %>%
+  ggpairs(1:4)
+
+```
+
+We can select some of the transcripts for further analysis using the *tidygate* package.
+
+```{r, eval=FALSE}
+de_gate = 
+  de_all %>%
+  
+  keep_abundant() %>%
+  
+  gate(
+    feature,
+    edgerQLT_PValue, 
+    deseq2_pvalue, 
+    opacity=0.3, 
+    how_many_gates = 2 
+  )
+```
+
+```{r, echo=FALSE}
+de_gate = 
+  de_all %>%
+  
+  keep_abundant() %>%
+  
+  gate(
+    feature,
+    edgerQLT_PValue, 
+    deseq2_pvalue, gate_list = rpharma2020tidytranscriptomics::de_gate_gates
+  )
+
+de_gate
+```
+
+```{r, echo=FALSE}
+knitr::include_graphics("../inst/vignettes/comparison_different_DE_methods_gates.png")
+```
+
+We can now select the transcripts from the two gates (i.e. oversignificant in DESeq2  and oversignificant in edgeR)
+
+```{r}
+
+de_gate %>% 
+  scale_abundance() %>%
+  
+  # Filter only transcripts within the gates
+  filter(gate > 0) %>% 
+  
+  # Rename for clarity
+  mutate(gate = case_when(
+    gate == 1 ~ "more in edgeR",
+    gate == 2 ~ "more in DESeq2",
+    TRUE ~ gate
+  )) %>%
+  
+  # Rearrange order
+  mutate(feature = fct_reorder(feature, edgerQLT_PValue, min)) %>%
+  
+  # Plot
+  ggplot(aes(condition, counts_scaled, color=gate)) +
+  geom_point() +
+  facet_wrap(~feature, scale="free_y") +
+  custom_theme
+```
+
+
+For example DESeq2 produces a more conservative statistic for the transcript `FBgn0052939`.
+
+```{r}
+de_gate %>%
+  pivot_transcript %>%
+  filter(feature == "FBgn0052939")%>%
+  select(edgerQLT_logFC, deseq2_log2FoldChange)
+
+```
+
+
+## Nested analyses
+
+`tidybulk` allows for data nesting, using the `tidyr` utility `nest`. This is an extremely powerful tool as allows functional programming on transcriptomic data.
+
+### Nesting for performing the same analyses independently for subsets
+Let's suppose we want to perform differential transcript abundance analysis independently for two different data subsets to compare results after the test
+
+```{r}
+library(purrr)
+```
+
+```{r}
+pasilla_de = 
+  rpharma2020tidytranscriptomics::pasilla %>% 
+  
+  # Convert SE object to tibble
+  tidybulk %>%
+  
+   # Scale abundance for plotting
+  identify_abundant(factor_of_interest=condition) %>%
+  scale_abundance() %>%
+  
+  # Nest
+  nest(data = -type) %>%
+  
+  # Differential analysis
+  mutate(data = map(
+    data,
+    ~  test_differential_abundance(.x, ~ condition) 
+  )) %>%
+  
+  unnest(data)
+```
+
+Now we can for example compare the number of differentially transcribed genes and their co-expression
+
+```{r}
+pasilla_de %>%
+  nest(data = -type) %>%
+  mutate(
+    number_of_differential = map_int(
+      data, ~ .x %>% pivot_transcript() %>% filter(FDR < 0.05) %>% nrow
+    ))
+```
+
+We can easily see which genes overlap, and plot them
+
+```{r}
+pasilla_de %>%
+  filter(FDR < 0.05) %>%
+  nest(data = -feature) %>%
+  mutate(occurrences = map_int(data, ~ .x %>% distinct(type) %>% nrow)) %>%
+  
+  # We filter some of them
+  filter(occurrences == 2) %>%
+  dplyr::slice(1:6) %>%
+  unnest(data) %>%
+  
+  # And plot
+  ggplot(aes(type, counts_scaled +1, color=condition)) + 
+  geom_point() + 
+  facet_wrap(~feature) +
+  scale_y_log10() +
+  theme_bw()
+
+```
+
+### Nesting for applying to the full data frame analyses done of part of the data frame
+Let's suppose we want to indentify the markers that distingush epithelial from endothelial cells, but we want to then visualising those genes across many cell types to understand the background transcription.
+
+```{r}
+cell_type_tt = rpharma2020tidytranscriptomics::cell_type_df %>% tidybulk(sample, symbol, count)
+
+markers_df = 
+  cell_type_tt %>%
+  
+  # Scale abundance for plotting
+  identify_abundant(factor_of_interest=cell_type) %>%
+  scale_abundance() %>%
+  
+  # Nest
+  nest(data = everything()) %>%
+  
+  # investigate one cell type pair
+  mutate(comparison_data = map(
+    data,
+    ~ .x %>%
+      filter(cell_type %in% c("endothelial", "epithelial")) %>%
+      mutate(cell_type = as.character(cell_type) ) 
+  )) %>%
+  
+  #test. We run on the two populations but we select data for all populations
+  mutate(markers = map(
+    comparison_data,
+    ~ .x %>%
+      
+      # Differential transcription
+      test_differential_abundance(
+        ~ 0 + cell_type, 
+        .contrasts = c("cell_typeendothelial - cell_typeepithelial"),
+        action="only", 
+        omit_contrast_in_colnames = TRUE
+      ) %>%
+      
+      # Select markers
+      filter(logFC > 2) %>% 
+      dplyr::slice(1:10) %>% 
+      pull(symbol)
+    
+  )) %>%
+  
+  # Add marker info to original data
+  mutate(data = map2(data, markers, ~ .x %>% filter(symbol%in% .y))) %>%
+  select(data) %>%
+  unnest(data) 
+```
+
+Now we can plot our markers including the background
+
+```{r}
+markers_df %>%
+  ggplot(aes(cell_type, count_scaled +1 )) + geom_boxplot() + scale_y_log10() + theme_bw()
+```
+
+
+# Part 3 Single-cell RNA-seq
+
+tidyseurat provides a bridge between the Seurat single-cell package [@butler2018integrating; @stuart2019comprehensive] and the tidyverse [@wickham2019welcome]. It creates an invisible layer that enables viewing the
+Seurat object as a tidyverse tibble, and provides Seurat-compatible *dplyr*, *tidyr*, *ggplot* and *plotly* functions.
+
+
+```{r}
+library(Seurat)
+library(tidyseurat)
+```
+
+
+## Create `tidyseurat`, the best of both worlds!
+
+This is a seurat object but it is evaluated as tibble. So it is fully compatible both with Seurat and tidyverse APIs. 
+
+```{r}
+pbmc_small_tidy <- tidyseurat::pbmc_small %>% tidy()
+```
+
+**It looks like a tibble**
+
+```{r}
+pbmc_small_tidy
+```
+
+**But it is a Seurat object after all**
+
+```{r}
+pbmc_small_tidy@assays
+```
+
+
+# Preprocess the dataset
+
+
+```{r preprocess}
+pbmc_small_pca <-
+  pbmc_small_tidy %>%
+  SCTransform(verbose = FALSE) %>%
+  FindVariableFeatures(verbose = FALSE) %>%
+  RunPCA(verbose = FALSE)
+
+pbmc_small_pca
+```
+
+
+# Identify clusters 
+
+We proceed with cluster identification with Seurat.
+
+```{r cluster}
+pbmc_small_cluster <-
+  pbmc_small_pca %>%
+  FindNeighbors(verbose = FALSE) %>%
+  FindClusters(method = "igraph", verbose = FALSE)
+
+pbmc_small_cluster
+```
+
+Now we can interrogate the object as if it was a regular tibble data frame.
+
+```{r cluster count}
+pbmc_small_cluster %>%
+  tidyseurat::count(groups, seurat_clusters)
+```
+
+We can identify cluster markers using Seurat.
+
+```{r}
+# Identify top 10 markers per cluster
+markers <-
+  pbmc_small_cluster %>%
+  FindAllMarkers(only.pos = TRUE, min.pct = 0.25, thresh.use = 0.25) %>%
+  group_by(cluster) %>%
+  top_n(10, avg_logFC)
+
+# Plot heatmap
+pbmc_small_cluster %>%
+  DoHeatmap(
+    features = markers$gene,
+    group.colors = friendly_cols
+  )
+```
+
+# Reduce dimensions
+
+We can calculate the first 3 UMAP dimensions using the Seurat framework.
+
+```{r umap}
+pbmc_small_UMAP <-
+  pbmc_small_cluster %>%
+  RunUMAP(reduction = "pca", dims = 1:15, n.components = 3L, )
+```
+
+And we can plot them using 3D plot using plotly.
+
+```{r umap plot, eval=FALSE}
+pbmc_small_UMAP %>%
+  plot_ly(
+    x = ~`UMAP_1`,
+    y = ~`UMAP_2`,
+    z = ~`UMAP_3`,
+    color = ~seurat_clusters,
+    colors = friendly_cols[1:4]
+  )
+```
+
+```{r, echo=FALSE}
+knitr::include_graphics("../inst/vignettes/plotly.png")
+```
+
+
+## Cell type prediction
+
+We can infer cell type identities using *SingleR* [@aran2019reference] and manipulate the output using tidyverse.
+
+```{r eval=FALSE}
+# Get cell type reference data
+blueprint <- celldex::BlueprintEncodeData()
+
+# Infer cell identities
+cell_type_df <-
+  pbmc_small_UMAP@assays[["SCT"]]@counts %>%
+  log1p() %>%
+  Matrix::Matrix(sparse = TRUE) %>%
+  SingleR::SingleR(
+    ref = blueprint,
+    labels = blueprint$label.main,
+    method = "single"
+  ) %>%
+  as.data.frame() %>%
+  as_tibble(rownames = "cell") %>%
+  select(cell, first.labels)
+```
+
+```{r}
+# Join UMAP and cell type info
+pbmc_small_cell_type <-
+  pbmc_small_UMAP %>%
+  left_join(cell_type_df, by = "cell")
+
+# Reorder columns
+pbmc_small_cell_type %>%
+  tidyseurat::select(cell, first.labels, everything())
+```
+
+We can easily summarise the results. For example, we can see how cell type classification overlaps with cluster classification.
+
+```{r}
+pbmc_small_cell_type %>%
+  count(seurat_clusters, first.labels)
+```
+
+
+#  Nested analyses
+
+A powerful tool we can use with tidyseurat is `nest`. We can easily perform independent analyses on subsets of the dataset. First we classify cell types in lymphoid and myeloid; then, nest based on the new classification
+
+```{r}
+pbmc_small_nested <-
+  pbmc_small_cell_type %>%
+  filter(first.labels != "Erythrocytes") %>%
+  mutate(cell_class = if_else(`first.labels` %in% c("Macrophages", "Monocytes"), "myeloid", "lymphoid")) %>%
+  nest(data = -cell_class)
+
+pbmc_small_nested
+```
+
+Now we can independently for the lymphoid and myeloid subsets (i) find variable features, (ii) reduce dimensions, and (iii) cluster using both tidyverse and SingleCellExperiment seamlessly.
+
+```{r}
+pbmc_small_nested_reanalysed <-
+  pbmc_small_nested %>%
+  mutate(data = map(
+    data, ~ .x %>%
+      FindVariableFeatures(verbose = FALSE) %>%
+      RunPCA(npcs = 10, verbose = FALSE) %>%
+      FindNeighbors(verbose = FALSE) %>%
+      FindClusters(method = "igraph", verbose = FALSE) %>%
+      RunUMAP(reduction = "pca", dims = 1:10, n.components = 3L, verbose = FALSE)
+  ))
+
+pbmc_small_nested_reanalysed
+```
+
 
 ## Contributing
 If you want to suggest improvements for this workshop or ask questions, you can do so as described [here](https://github.com/stemangiola/rpharma2020_tidytranscriptomics/blob/master/CONTRIBUTING.md).

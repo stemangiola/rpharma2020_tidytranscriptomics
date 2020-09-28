@@ -24,7 +24,7 @@ More details on the workshop are below.
 
 ## Workshop package installation 
 
-This is necessary in order to reproduce the code shown in the workshop. The workshop is designed for R `4.0` and packages from the 3.12 `devel` branch of Bioconductor. It can be installed using one of the two ways below.
+This is necessary in order to reproduce the code shown in the workshop. The workshop is designed for R `4.0` and can be installed using one of the two ways below.
 
 ### Via Docker image
 
@@ -46,9 +46,9 @@ You should see the Rmarkdown file with all the workshop code which you can run.
 Alternatively, you could install the workshop using the commands below in R `4.0`.
 
 ```
-devtools::install_github("stemangiola/tidybulk")
-devtools::install_github("stemangiola/tidyseurat")
-devtools::install_github("stemangiola/rpharma2020_tidytranscriptomics", build_vignettes = TRUE)
+# install.packages('remotes')
+remotes::install_github("stemangiola/tidybulk@v1.1.8")
+remotes::install_github("stemangiola/rpharma2020_tidytranscriptomics", build_vignettes = TRUE)
 library(rpharma2020tidytranscriptomics)
 browseVignettes("rpharma2020tidytranscriptomics")
 ```
@@ -61,26 +61,6 @@ This workshop will present how to perform analysis of RNA sequencing data follow
 
 This can be achieved for RNA sequencing data with the [tidybulk](https://stemangiola.github.io/tidybulk/), [tidyseurat](https://stemangiola.github.io/tidyseurat/),  [tidyHeatmap](https://stemangiola.github.io/tidyHeatmap/) and [tidyverse](https://www.tidyverse.org/) packages. The tidybulk package provides a tidy data structure and a modular framework for bulk transcriptional analyses, the tidyseurat package provides similar for single-cell transcriptional analyses, and tidyHeatmap provides a tidy implementation of ComplexHeatmap. These packages are part of the tidytranscriptomics suite that introduces a tidy approach to RNA sequencing data.
 
-The topics presented in this workshop will be
-
-(DRAFT subject to change)
-
-Part 1 
-- Data exploration
-- Data dimensionality reduction and clustering
-- Differential gene expression analysis
-- Data visualisation
-
-Part 2
-- Comparison of differential testing tools
-- Comparison of normalisation
-- Example of nested analysis               
-
-Part 3
-- A very brief introduction to single-cell RNA-seq
-- tidyseurat
-
-
 ### Pre-requisites
 
 * Basic knowledge of RStudio
@@ -91,19 +71,24 @@ Recommended Background Reading
 
 ### Workshop Participation
 
-The workshop format is a 2 hour session consisting of demos, exercises and Q&A.
+The workshop format is a 2.5-3 hour session consisting of demos, exercises and Q&A.
 
 ### _R_ / _Bioconductor_ packages used
 
 * tidyverse
 * tidybulk
-* tidyHeatmap
 * tidyseurat
-* edgeR
+* tidyHeatmap
+* tidygate
 * limma
+* edgeR
 * DESeq2
-* ggrepel
 * airway
+* dittoSeq
+* ggrepel
+* GGally
+* plotly
+
 
 ### Time outline
 
@@ -116,16 +101,17 @@ The workshop format is a 2 hour session consisting of demos, exercises and Q&A.
 |  *Differential gene expression*                     |      |
 |  *Data visualisation*                               |      |
 |  *Questions and exercises*                          |      |
-| _Break_                                               |  5m  |
-| **Part 2 Bulk RNA-seq Extended**                    | 25m  |
+| _Break_                                             |  5m  |
+| **Part 2 Bulk RNA-seq Extended**                    | 40m  |
 |  *Comparison of differential testing tools*         |      |
 |  *Comparison of normalisation*                      |      |
 |  *Example of nested analysis*                       |      |
 |  *Questions and exercises*                          |      |
-| **Part 3 Single-cell RNA-seq**                      | 30m  |
+| _Break_                                             |  5m  |
+| **Part 3 Single-cell RNA-seq**                      | 40m  |
 |  *Brief introduction to single-cell RNA-seq*        |      |
 |  *Brief introduction to tidyseurat*                 |      |
-|  *Questions and exercises*                          |      |
+|  *Questions and exercises*                          | 30m  |
 
 
 ### Workshop goals and objectives
