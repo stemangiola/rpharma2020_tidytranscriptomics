@@ -33,6 +33,7 @@ library(tidyHeatmap)
 library(tidybulk)
 library(ggrepel)
 library(plotly)
+library(purrr)
 
 # load data
 data("pasilla", package = "rpharma2020tidytranscriptomics")
@@ -216,5 +217,50 @@ de_all %>%
 	# Nesting
 	count(method)
 	
+```
+
+X. How can I trace the adjusted p-value rank for methods?
+
+```{r out.width = "70%"}
+# significance trend
+trend_plot = 
+	de_all %>%
+	
+	# Subset transcript information
+	pivot_transcript() %>%
+	
+	# Reshape for nesting
+	pivot_longer(
+		cols = -c(feature, .abundant),
+		names_sep = "_", 
+		names_to = c("method", "statistic"), 
+		values_to = "value"
+	) %>%
+	
+	# Filter statictic
+	filter(statistic %in% c("FDR", "adj.P.Val", "padj")) %>%
+	filter(value %>% is.na %>% `!`) %>%
+
+	# Nesting
+	nest(data = -method) %>%
+	mutate(data = map(
+		data,
+		~ .x %>% 
+			arrange(value) %>%
+			mutate(rank = 1:n())
+	)) %>%
+	unnest(data) %>%
+	
+	ggplot(aes(rank, value, color = method)) + 
+	geom_line() 
+
+trend_plot
+
+# Zooming on highly significant events
+trend_plot + 
+	scale_x_log10() + 
+	scale_y_log10()
 	
 ```
+
+
