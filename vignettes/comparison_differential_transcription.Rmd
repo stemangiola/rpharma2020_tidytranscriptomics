@@ -29,7 +29,6 @@ library(forcats)
 library(tidybulk)
 library(tidygate)
 library(GGally)
-library(plotly)
 ```
 
 ```{r, echo = FALSE}
@@ -135,22 +134,6 @@ de_all %>%
   pivot_transcript() %>%
   select(edgerQLT_PValue, edgerLR_PValue, voom_P.Value, deseq2_pvalue, feature ) %>%
   ggpairs(1:4)
-
-```
-
-We can investigate some of the genes that are less consistent between methods, for example between edgeR QLT and DESeq2. In this case we can use plotly to produce an interactive plot.
-
-```{r}
-# Produce the ggplot
-(
-  de_all %>%
-    keep_abundant() %>%
-    ggplot(aes(edgerQLT_PValue, deseq2_pvalue, label = feature)) + 
-    geom_point()
-) %>% 
-  
-  # Make it interactive
-  ggplotly()
 
 ```
 
