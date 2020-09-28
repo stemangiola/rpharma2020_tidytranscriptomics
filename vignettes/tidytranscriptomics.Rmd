@@ -337,9 +337,10 @@ counts_scaled %>%
 	      .column = sample,
 	      .row = feature,
 	      .value = counts_scaled,
-	      annotation = c(dex, cell),
 	      transform = log1p
-	  )
+	) %>%
+        add_tile(dex) %>%
+        add_tile(cell)
 ```
 
 In the heatmap we can see the samples cluster into two groups, treated and untreated, for three of the cell lines, and the cell line (N080611) again is further away from the others.
