@@ -4,9 +4,10 @@
 <!-- badges: end -->
 
 # Introduction to Tidy Transcriptomics
-
-<img width="100" alt="rpharma2020" src="rpharma_logo.png"/> 
-<img width="100" alt="tidybulk" src="https://github.com/Bioconductor/BiocStickers/blob/master/tidybulk/tidybulk.png?raw=true"/>
+<p float="left">
+<img height="100" alt="rpharma2020" src="rpharma_logo.png"/> 
+<img height="100" alt="tidybulk" src="https://github.com/Bioconductor/BiocStickers/blob/master/tidybulk/tidybulk.png?raw=true"/>
+</p>
 
 ## Instructor names and contact information
 
