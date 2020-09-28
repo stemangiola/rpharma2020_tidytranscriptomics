@@ -12,7 +12,7 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
 <!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="pkgdown.css" rel="stylesheet">
 <script src="pkgdown.js"></script><meta property="og:title" content="TidyTranscriptomics">
-<meta property="og:description" content="This workshop will present how to perform analysis of RNA sequencing data following the tidy data paradigm, using      the tidybulk, tidyHeatmap and tidyverse packages.">
+<meta property="og:description" content="This workshop will present how to perform analysis of RNA sequencing data following the tidy data paradigm, using the tidybulk, tidyseurat, tidyHeatmap and tidyverse packages.">
 <!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
@@ -101,7 +101,7 @@
 <div id="workshop-package-installation" class="section level2">
 <h2 class="hasAnchor">
 <a href="#workshop-package-installation" class="anchor"></a>Workshop package installation</h2>
-<p>This is necessary in order to reproduce the code shown in the workshop. The workshop is designed for R <code>4.0</code> and packages from the 3.12 <code>devel</code> branch of Bioconductor. It can be installed using one of the two ways below.</p>
+<p>This is necessary in order to reproduce the code shown in the workshop. The workshop is designed for R <code>4.0</code> and can be installed using one of the two ways below.</p>
 <div id="via-docker-image" class="section level3">
 <h3 class="hasAnchor">
 <a href="#via-docker-image" class="anchor"></a>Via Docker image</h3>
@@ -115,9 +115,9 @@
 <h3 class="hasAnchor">
 <a href="#via-github" class="anchor"></a>Via GitHub</h3>
 <p>Alternatively, you could install the workshop using the commands below in R <code>4.0</code>.</p>
-<pre><code><a href="https://devtools.r-lib.org//reference/remote-reexports.html">devtools::install_github("stemangiola/tidybulk")
-devtools::install_github("stemangiola/tidyseurat")
-devtools::install_github("stemangiola/rpharma2020_tidytranscriptomics", build_vignettes = TRUE)
+<pre><code><a href="https://remotes.r-lib.org/reference/install_github.html"># install.packages('remotes')
+remotes::install_github("stemangiola/tidybulk@v1.1.8")
+remotes::install_github("stemangiola/rpharma2020_tidytranscriptomics", build_vignettes = TRUE)
 library(rpharma2020tidytranscriptomics)
 browseVignettes("rpharma2020tidytranscriptomics")</a></code></pre>
 <p>To run the code, you could then copy and paste the code from the workshop <a href="https://raw.githubusercontent.com/stemangiola/rpharma2020_tidytranscriptomics/master/vignettes/tidytranscriptomics.Rmd">R markdown file</a> into a new R Markdown file on your computer.</p>
@@ -128,26 +128,6 @@ browseVignettes("rpharma2020tidytranscriptomics")</a></code></pre>
 <a href="#workshop-description" class="anchor"></a>Workshop Description</h2>
 <p>This workshop will present how to perform analysis of RNA sequencing data following the tidy data paradigm. The tidy data paradigm provides a standard way to organise data values within a dataset, where each variable is a column, each observation is a row, and data is manipulated using an easy-to-understand vocabulary. Most importantly, the data structure remains consistent across manipulation and analysis functions.</p>
 <p>This can be achieved for RNA sequencing data with the <a href="https://stemangiola.github.io/tidybulk/">tidybulk</a>, <a href="https://stemangiola.github.io/tidyseurat/">tidyseurat</a>, <a href="https://stemangiola.github.io/tidyHeatmap/">tidyHeatmap</a> and <a href="https://www.tidyverse.org/">tidyverse</a> packages. The tidybulk package provides a tidy data structure and a modular framework for bulk transcriptional analyses, the tidyseurat package provides similar for single-cell transcriptional analyses, and tidyHeatmap provides a tidy implementation of ComplexHeatmap. These packages are part of the tidytranscriptomics suite that introduces a tidy approach to RNA sequencing data.</p>
-<p>The topics presented in this workshop will be</p>
-<p>(DRAFT subject to change)</p>
-<p>Part 1</p>
-<ul>
-<li>Data exploration</li>
-<li>Data dimensionality reduction and clustering</li>
-<li>Differential gene expression analysis</li>
-<li>Data visualisation</li>
-</ul>
-<p>Part 2</p>
-<ul>
-<li>Comparison of differential testing tools</li>
-<li>Comparison of normalisation</li>
-<li>Example of nested analysis</li>
-</ul>
-<p>Part 3</p>
-<ul>
-<li>A very brief introduction to single-cell RNA-seq</li>
-<li>tidyseurat</li>
-</ul>
 <div id="pre-requisites" class="section level3">
 <h3 class="hasAnchor">
 <a href="#pre-requisites" class="anchor"></a>Pre-requisites</h3>
@@ -160,7 +140,7 @@ browseVignettes("rpharma2020tidytranscriptomics")</a></code></pre>
 <div id="workshop-participation" class="section level3">
 <h3 class="hasAnchor">
 <a href="#workshop-participation" class="anchor"></a>Workshop Participation</h3>
-<p>The workshop format is a 2 hour session consisting of demos, exercises and Q&amp;A.</p>
+<p>The workshop format is a 2.5-3 hour session consisting of demos, exercises and Q&amp;A.</p>
 </div>
 <div id="r--bioconductor-packages-used" class="section level3">
 <h3 class="hasAnchor">
@@ -168,13 +148,17 @@ browseVignettes("rpharma2020tidytranscriptomics")</a></code></pre>
 <ul>
 <li>tidyverse</li>
 <li>tidybulk</li>
-<li>tidyHeatmap</li>
 <li>tidyseurat</li>
-<li>edgeR</li>
+<li>tidyHeatmap</li>
+<li>tidygate</li>
 <li>limma</li>
+<li>edgeR</li>
 <li>DESeq2</li>
-<li>ggrepel</li>
 <li>airway</li>
+<li>dittoSeq</li>
+<li>ggrepel</li>
+<li>GGally</li>
+<li>plotly</li>
 </ul>
 </div>
 <div id="time-outline" class="section level3">
@@ -220,7 +204,7 @@ browseVignettes("rpharma2020tidytranscriptomics")</a></code></pre>
 </tr>
 <tr class="odd">
 <td><strong>Part 2 Bulk RNA-seq Extended</strong></td>
-<td>25m</td>
+<td>40m</td>
 </tr>
 <tr class="even">
 <td><em>Comparison of differential testing tools</em></td>
@@ -239,20 +223,24 @@ browseVignettes("rpharma2020tidytranscriptomics")</a></code></pre>
 <td></td>
 </tr>
 <tr class="even">
-<td><strong>Part 3 Single-cell RNA-seq</strong></td>
-<td>30m</td>
+<td><em>Break</em></td>
+<td>5m</td>
 </tr>
 <tr class="odd">
+<td><strong>Part 3 Single-cell RNA-seq</strong></td>
+<td>40m</td>
+</tr>
+<tr class="even">
 <td><em>Brief introduction to single-cell RNA-seq</em></td>
 <td></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td><em>Brief introduction to tidyseurat</em></td>
 <td></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td><em>Questions and exercises</em></td>
-<td></td>
+<td>30m</td>
 </tr>
 </tbody>
 </table>
