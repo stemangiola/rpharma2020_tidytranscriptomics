@@ -569,7 +569,8 @@ Questions:
 ## Comparison of differential analysis methods
 We can perform differential analysis with several methods, and the results will be added to the original dataset. 
 
-```{r}
+```{r message=FALSE, warning=FALSE}
+# load additional libraries
 library(forcats)
 library(tidygate)
 library(GGally)
@@ -740,7 +741,8 @@ de_gate %>%
 
 Let's suppose we want to perform differential transcript abundance analysis independently for two different data subsets to compare results after the test
 
-```{r}
+```{r message=FALSE, warning=FALSE}
+# load additional libraries
 library(purrr)
 ```
 
@@ -868,7 +870,8 @@ tidyseurat provides a bridge between the Seurat single-cell package [@butler2018
 Seurat object as a tidyverse tibble, and provides Seurat-compatible *dplyr*, *tidyr*, *ggplot* and *plotly* functions.
 
 
-```{r}
+```{r message=FALSE, warning=FALSE}
+# load additional libraries
 library(Seurat)
 library(tidyseurat)
 ```
