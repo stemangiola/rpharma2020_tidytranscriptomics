@@ -121,6 +121,28 @@ library(plotly)
 library(airway)
 ```
 
+```{r}
+custom_theme <- 	
+  list(
+  	theme_bw() +
+  	theme(
+  		panel.border = element_blank(),
+  		axis.line = element_line(),
+  		panel.grid.major = element_line(size = 0.2),
+  		panel.grid.minor = element_line(size = 0.1),
+  		text = element_text(size=12),
+  		legend.position="bottom",
+  		aspect.ratio=1,
+  		strip.background = element_blank(),
+  		axis.title.x  = element_text(margin = margin(t = 10, r = 10, b = 10, l = 10)),
+  		axis.title.y  = element_text(margin = margin(t = 10, r = 10, b = 10, l = 10)),
+  		axis.text.x = element_text(angle = 90)
+  	),
+	  scale_color_brewer(palette = "Set1"),
+  	scale_fill_brewer(palette = "Set1")
+  )
+```
+
 ### Airway RNA sequencing dataset
 Here we will perform our analysis using the data from the *airway* package. The airway data comes from the paper by [@himes2014rna]; and it includes 8 samples from human airway smooth muscle cells, from 4 cell lines. For each cell line treated (with dexamethasone) and untreated (negative control) a sample has undergone RNA sequencing and gene counts have been generated.
 
@@ -520,6 +542,30 @@ strip_chart <-
 	theme_bw()
 
 strip_chart
+```
+
+```{r}
+counts_scaled %>%
+
+	# extract counts for top differentially expressed genes
+	filter(transcript %in% topgenes_symbols) %>%
+
+  # High level reshaping of the data. 
+  # All three count columns are shaped as two columns: 
+  # (i) the columns name and (ii) the value of those columns
+  pivot_longer(
+  	c(counts, counts_scaled), 
+  	names_to = "Stage", 
+  	values_to = "count"
+  ) %>%
+
+  # This allows the faceted plot
+  ggplot(aes(x = Stage, y = count + 1, fill = dex)) +
+	geom_boxplot() +
+  facet_wrap(~transcript) +
+  scale_y_log10() +
+	custom_theme
+
 ```
 
 ## Interactive Plots
