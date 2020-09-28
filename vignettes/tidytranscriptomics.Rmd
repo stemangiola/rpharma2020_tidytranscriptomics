@@ -203,7 +203,7 @@ counts_tt <-
 
 From this tidybulk tibble, we can perform differential expression analysis with the tidybulk package.
 
-## Filtering lowly expressed genes  
+## Filtering lowly transcribed genes  
 Genes with very low counts across all libraries provide little evidence for differential expression and they interfere with some of the statistical approximations that are used later in the pipeline. They also add to the multiple testing burden when estimating false discovery rates, reducing power to detect differentially expressed genes. These genes should be filtered out prior to further analysis.
 
 Tidybulk `keep_abundant` can use the *edgeR* `filterByExpr` function described in [@law2016rna] to keep the genes with adequate abundance for differential expression testing. By default, this will keep genes with ~10 counts in a minimum number of samples, the number of the samples in the smallest group. In this dataset the smallest group size is four (as we have four dex-treated samples vs four untreated). Alternatively, we could use `identify_abundant` to identify which genes are abundant or not (TRUE/FALSE), rather than just keeping the abundant ones. 

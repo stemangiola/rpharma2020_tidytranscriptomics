@@ -31,7 +31,7 @@ library(tidygate)
 library(GGally)
 ```
 
-```{r, echo = FALSE}
+```{r}
 custom_theme <- 	
   list(
   	theme_bw() +
