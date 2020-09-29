@@ -48,6 +48,13 @@ First, let’s load all the packages we will need to analyse the data. Note that
 ```{r message=FALSE, warning=FALSE}
 # load libraries
 
+# dataset
+library(airway)
+
+# annotation
+library(org.Hs.eg.db)
+library(org.Dm.eg.db)
+
 # tidyverse core packages
 library(tibble)
 library(dplyr)
@@ -61,14 +68,11 @@ library(tidyHeatmap)
 library(tidybulk)
 library(ggrepel)
 library(plotly)
-
-# dataset
-library(airway)
 ```
 
-Plot settings
+Plot settings. Set the colours and theme we will use for our plots.
 
-```{r, echo = FALSE}
+```{r}
 # Use colourblind-friendly colours
 friendly_cols <- dittoSeq::dittoColors()
 
@@ -130,10 +134,10 @@ counts_format <- counts_airway %>%
 
 ### Adding gene symbols
 
-We can get the gene symbols for these Ensembl gene ids with tidybulk's `ensembl_to_symbol`. This works for human and mouse.
+We can get the gene symbols for these Ensembl gene ids using the Bioconductor annotation package for human, `org.Hs.eg.db` and add them as a column using `mutate` again.
 
 ```{r}
-counts_tt <- ensembl_to_symbol(counts_format, feature)
+counts_tt <- counts_format %>% mutate(symbol = mapIds(org.Hs.eg.db, keys = as.character(feature), keytype = "ENSEMBL", column="SYMBOL", multiVals = "first"))
 counts_tt
 ```
 
@@ -148,7 +152,7 @@ counts_tt <-
 	airway %>%
 	tidybulk() %>%
 	mutate(sample=str_remove(sample, "SRR1039")) %>%
-	ensembl_to_symbol(feature)
+	mutate(symbol = AnnotationDbi::mapIds(org.Hs.eg.db::org.Hs.eg.db, keys = as.character(feature), keytype = "ENSEMBL", column="SYMBOL", multiVals = "first"))
 ```
 
 From this tidybulk tibble, we can perform differential expression analysis with the tidybulk package.
@@ -203,6 +207,7 @@ As tidybulk smoothly integrates with ggplot2 and other tidyverse packages it can
 # tidybulk
 airway %>%
 	tidybulk() %>%
+    keep_abundant(factor_of_interest=dex) %>%
 	scale_abundance() %>%
 	pivot_longer(cols = c("counts", "counts_scaled"), names_to = "source", values_to = "abundance") %>%
 	ggplot(aes(x=abundance + 1, color=sample)) +
@@ -408,7 +413,7 @@ We can count how many differentially expressed genes there are. We'll filter on 
 ```{r}
 counts_de %>%
   filter(FDR < 0.05) %>%
-  summarise(num_de = n_distinct(transcript))
+  summarise(num_de = n_distinct(feature))
 ```
 
 ### Extracting top differentially expressed genes
@@ -426,7 +431,7 @@ topgenes
 
 We can extract the symbols for these top genes to use in some of the plots we will make.
 ```{r}
-topgenes_symbols <- topgenes %>% pull(transcript)
+topgenes_symbols <- topgenes %>% pull(symbol)
 
 # take a look
 topgenes_symbols
@@ -456,18 +461,18 @@ counts_de %>%
 
   # Subset data
 	mutate(significant = FDR<0.05 & abs(logFC) >=2) %>%
-	mutate(transcript = ifelse(transcript %in% topgenes_symbols, as.character(transcript), "")) %>%
+	mutate(symbol = ifelse(symbol %in% topgenes_symbols, as.character(symbol), "")) %>%
 
   # Plot
-	ggplot(aes(x = logFC, y = PValue, label=transcript)) +
+	ggplot(aes(x = logFC, y = PValue, label=symbol)) +
 	geom_point(aes(color = significant, size = significant, alpha=significant)) +
 	geom_text_repel() +
 
 	# Custom scales
+    custom_theme +
 	scale_y_continuous(trans = "log10_reverse") +
 	scale_color_manual(values=c("black", "#e11f28")) +
-	scale_size_discrete(range = c(0, 2)) +
-	custom_theme
+	scale_size_discrete(range = c(0, 2))
 ```
 
 ### Stripcharts
@@ -481,41 +486,40 @@ strip_chart <-
 	counts_scaled %>%
 
 	# extract counts for top differentially expressed genes
-	filter(transcript %in% topgenes_symbols) %>%
+	filter(symbol %in% topgenes_symbols) %>%
 
-	# make stripchart
+	# make faceted stripchart
 	ggplot(aes(x = dex, y = counts_scaled + 1, fill = dex, label = sample)) +
 	geom_boxplot() +
 	geom_jitter() +
-	facet_wrap(~transcript) +
+	facet_wrap(~symbol) +
 	scale_y_log10()+
 	custom_theme
 
 strip_chart
 ```
 
+We can also easily check the raw and scaled counts for these genes.
+
 ```{r}
 counts_scaled %>%
 
-	# extract counts for top differentially expressed genes
-	filter(transcript %in% topgenes_symbols) %>%
+  # extract counts for top differentially expressed genes
+  filter(symbol %in% topgenes_symbols) %>%
 
-  # High level reshaping of the data. 
-  # All three count columns are shaped as two columns: 
-  # (i) the columns name and (ii) the value of those columns
+  # reshape to create column ("source") containing the raw and scaled counts     
   pivot_longer(
   	c(counts, counts_scaled), 
-  	names_to = "Stage", 
+  	names_to = "source", 
   	values_to = "count"
   ) %>%
 
-  # This allows the faceted plot
-  ggplot(aes(x = Stage, y = count + 1, fill = dex)) +
+  # make faceted stripchart
+  ggplot(aes(x = source, y = count + 1, fill = dex)) +
 	geom_boxplot() +
-  facet_wrap(~transcript) +
-  scale_y_log10() +
+    facet_wrap(~symbol) +
+    scale_y_log10() +
 	custom_theme
-
 ```
 
 ## Interactive Plots
@@ -547,16 +551,18 @@ Load the data and create the tidybulk object with:
 ```{r}
 data("pasilla", package = "rpharma2020tidytranscriptomics")
 counts_tt <-
-  pasilla %>%
-  tidybulk()
+    pasilla %>%
+    tidybulk() %>%
+    mutate(symbol = mapIds(org.Dm.eg.db, keys=as.character(feature), keytype = "FLYBASE", column="SYMBOL", multiVals = "first"))
 ```
 
-Note that as this is fly data you can't use ensembl_to_symbol to get gene symbols, just work with the gene ids.
 
 Questions:  
 1. What is the Fraction of Variance for PC1 and PC2? What do PC1 and PC2 represent?  
 2. How many differentially expressed genes are there for treated vs untreated (false discovery rate < 0.05)? What is the top differentially expressed gene by p-value?
 3. What code can generate a heatmap of variable genes (starting from `count_scaled`)?  
+
+Extra
 4. What code can you use to visualise expression of the pasilla gene (gene id: FBgn0261552)  
 5. What code can generate an interactive volcano plot that has gene ids showing on hover?  
 6. What code can generate a heatmap of the top 100 differentially expressed genes?  
@@ -564,9 +570,16 @@ Questions:
 
 # Part 2 Bulk RNA-seq Extended
 
-`tidybulk` integrates several methods for differential transcript abundance testing.
+*tidybulk* integrates several popular methods for differential transcript abundance testing: edgeR, limma-voom and DESeq2. A common question is which method to choose. Mike Love, DESeq2 author has this advice in his [blog](https://mikelove.wordpress.com/2016/09/28/deseq2-or-edger).
+
+```{r, echo=FALSE, out.width = "350px"}
+knitr::include_graphics("../inst/vignettes/which_method.png")
+```
+
+tidybulk can help you decide which method (or methods) to use, as it provides an easy way to run multiple and see how they compare.
 
 ## Comparison of differential analysis methods
+
 We can perform differential analysis with several methods, and the results will be added to the original dataset. 
 
 ```{r message=FALSE, warning=FALSE}
@@ -576,20 +589,23 @@ library(tidygate)
 library(GGally)
 ```
 
-We first pre-process the data, creating a tibble and identifying abundant genes.
+As before, we first pre-process the data, creating a tibble and identifying abundant genes.
 
 ```{r}
 pasilla_de <- 
   rpharma2020tidytranscriptomics::pasilla %>% 
   
-  # Convert SE object to tibble
+  # Convert SummarizedExperiment object to tibble
   tidybulk %>%
+    
+  # Add gene symbols
+  mutate(symbol = mapIds(org.Dm.eg.db,   keys=as.character(feature), keytype = "FLYBASE", column="SYMBOL", multiVals = "first")) %>%
   
-   # Scale abundance for plotting
-  identify_abundant(factor_of_interest=condition) 
+  # Scale abundance
+  keep_abundant(factor_of_interest=condition) 
 ```
 
-This is an example for the default method for differential transcriptional testing. It uses the edgeR method.
+This is an example for the default method for differential abundance testing. It uses the edgeR quasi-likelihood method.
 
 ```{r}
 pasilla_de %>%
@@ -599,7 +615,9 @@ pasilla_de %>%
     ~ condition + type, 
     action="get"
   ) %>%
-  arrange(FDR)
+
+  # Sort by P value        
+  arrange(PValue)
 ```
 
 Now let's try to perform multiple methods on the same dataset.
@@ -636,15 +654,33 @@ de_all <-
     method = "deseq2",
     prefix = "deseq2_"
   ) 
+
+# take a look
+
+de_all
 ```
+
+
+
+***
+
+####Note 
+
+You may notice that the methods produce columns with different names for similar outputs, for example edgerQLT_PValue vs deseq2_pvalue and edgerQLT_FDR vs deseq2_padj. If you wish to make these consistent you can do that with tidyverse `rename`.
+
+```{r}
+# example of renaming DESeq2 columns
+de_all %>%
+rename(deseq2_PValue = deseq2_pvalue, deseq2_FDR = deseq2_padj)
+```
+***
 
 We can visually compare the log fold change (logFC) of transcript abundance for the comparison of interest (treated vs untreated) for all methods. We will notice that the consistency of the logFC is really high for the methods.
 
 ```{r}
 de_all %>%
-  keep_abundant() %>%
   pivot_transcript() %>%
-  select(edgerQLT_logFC, edgerLR_logFC, voom_logFC, deseq2_log2FoldChange, feature ) %>%
+  select(edgerQLT_logFC, edgerLR_logFC, voom_logFC, deseq2_log2FoldChange, feature) %>%
   ggpairs(1:4)
 ```
 
@@ -652,20 +688,17 @@ Similarly, we can visually compare the significance for all methods. In this cas
 
 ```{r}
 de_all %>%
-  keep_abundant() %>%
   pivot_transcript() %>%
   select(edgerQLT_PValue, edgerLR_PValue, voom_P.Value, deseq2_pvalue, feature ) %>%
   ggpairs(1:4)
 
 ```
 
-We can select some of the transcripts for further analysis using the *tidygate* package.
+We can select some of the transcripts for further analysis using the [*tidygate*](https://github.com/stemangiola/tidygate) package.
 
 ```{r, eval=FALSE}
-de_gate = 
+de_gate <- 
   de_all %>%
-  
-  keep_abundant() %>%
   
   gate(
     feature,
@@ -677,10 +710,8 @@ de_gate =
 ```
 
 ```{r, echo=FALSE}
-de_gate = 
+de_gate <- 
   de_all %>%
-  
-  keep_abundant() %>%
   
   gate(
     feature,
@@ -722,14 +753,13 @@ de_gate %>%
 ```
 
 
-For example DESeq2 produces a more conservative statistic for the transcript `FBgn0052939`.
+This enables us to see, for example, that DESeq2 produces a more conservative statistic for the transcript `FBgn0052939` .
 
 ```{r}
 de_gate %>%
   pivot_transcript %>%
   filter(feature == "FBgn0052939")%>%
   select(edgerQLT_logFC, deseq2_log2FoldChange)
-
 ```
 
 
@@ -747,14 +777,16 @@ library(purrr)
 ```
 
 ```{r}
-pasilla_de = 
+pasilla_de <- 
   rpharma2020tidytranscriptomics::pasilla %>% 
   
-  # Convert SE object to tibble
+  # Convert SummarizedExperiment object to tibble
   tidybulk %>%
   
-   # Scale abundance for plotting
+  # Filter counts
   identify_abundant(factor_of_interest=condition) %>%
+    
+  # Scale abundance   
   scale_abundance() %>%
   
   # Nest
@@ -799,7 +831,6 @@ pasilla_de %>%
   facet_wrap(~feature) +
   scale_y_log10() +
   custom_theme
-
 ```
 
 ### Perform analysis on subset and apply to full dataset
@@ -812,14 +843,16 @@ cell_type_tt = rpharma2020tidytranscriptomics::cell_type_df %>% tidybulk(sample,
 markers_df = 
   cell_type_tt %>%
   
-  # Scale abundance for plotting
+  # Filter counts
   identify_abundant(factor_of_interest=cell_type) %>%
+  
+  # Scale abundance
   scale_abundance() %>%
   
   # Nest
   nest(data = everything()) %>%
   
-  # investigate one cell type pair
+  # Investigate one cell type pair
   mutate(comparison_data = map(
     data,
     ~ .x %>%

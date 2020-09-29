@@ -36,10 +36,12 @@ Imports:
     edgeR,
     DESeq2,
     ggrepel,
-    plotly,
     airway,
+    org.Hs.eg.db,
+    org.Dm.eg.db,
     dittoSeq,
-    GGally
+    GGally,
+    plotly
 Suggests:
     knitr,
     rmarkdown,
