@@ -40,7 +40,7 @@ Imports:
     org.Hs.eg.db,
     org.Dm.eg.db,
     dittoSeq,
-    GGally
+    GGally,
     plotly
 Suggests:
     knitr,
