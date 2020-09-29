@@ -19,6 +19,7 @@ Suggested answers are below. You might have some different code e.g. to customis
 
 ```{r out.width = "70%", message=FALSE, warning=FALSE}
 # load libraries
+library(org.Dm.eg.db)
 
 # tidyverse core packages
 library(tibble)
@@ -39,8 +40,11 @@ library(purrr)
 data("pasilla", package = "rpharma2020tidytranscriptomics")
 
 # create tidybulk tibble
-counts_tt <- pasilla %>% 
-  tidybulk()
+data("pasilla", package = "rpharma2020tidytranscriptomics")
+counts_tt <-
+    pasilla %>%
+    tidybulk() %>%
+    mutate(symbol = mapIds(org.Dm.eg.db, keys=as.character(feature), keytype = "FLYBASE", column="SYMBOL", multiVals = "first"))
 
 # filter counts
 counts_filtered <- counts_tt %>% keep_abundant(factor_of_interest = condition)

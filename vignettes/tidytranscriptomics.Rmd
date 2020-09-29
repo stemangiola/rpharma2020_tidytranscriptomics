@@ -48,6 +48,13 @@ First, let’s load all the packages we will need to analyse the data. Note that
 ```{r message=FALSE, warning=FALSE}
 # load libraries
 
+# dataset
+library(airway)
+
+# annotation
+library(org.Hs.eg.db)
+library(org.Dm.eg.db)
+
 # tidyverse core packages
 library(tibble)
 library(dplyr)
@@ -61,14 +68,11 @@ library(tidyHeatmap)
 library(tidybulk)
 library(ggrepel)
 library(plotly)
-
-# dataset
-library(airway)
 ```
 
 Plot settings
 
-```{r, echo = FALSE}
+```{r}
 # Use colourblind-friendly colours
 friendly_cols <- dittoSeq::dittoColors()
 
@@ -130,10 +134,10 @@ counts_format <- counts_airway %>%
 
 ### Adding gene symbols
 
-We can get the gene symbols for these Ensembl gene ids with tidybulk's `ensembl_to_symbol`. This works for human and mouse.
+We can get the gene symbols for these Ensembl gene ids using the Bioconductor annotation package for human, `org.Hs.eg.db` and add them as a column using `mutate` again.
 
 ```{r}
-counts_tt <- ensembl_to_symbol(counts_format, feature)
+counts_tt <- counts_format %>% mutate(symbol = mapIds(org.Hs.eg.db, keys = as.character(feature), keytype = "ENSEMBL", column="SYMBOL", multiVals = "first"))
 counts_tt
 ```
 
@@ -148,7 +152,7 @@ counts_tt <-
 	airway %>%
 	tidybulk() %>%
 	mutate(sample=str_remove(sample, "SRR1039")) %>%
-	ensembl_to_symbol(feature)
+	mutate(symbol = AnnotationDbi::mapIds(org.Hs.eg.db::org.Hs.eg.db, keys = as.character(feature), keytype = "ENSEMBL", column="SYMBOL", multiVals = "first"))
 ```
 
 From this tidybulk tibble, we can perform differential expression analysis with the tidybulk package.
@@ -203,6 +207,7 @@ As tidybulk smoothly integrates with ggplot2 and other tidyverse packages it can
 # tidybulk
 airway %>%
 	tidybulk() %>%
+    keep_abundant(factor_of_interest=dex) %>%
 	scale_abundance() %>%
 	pivot_longer(cols = c("counts", "counts_scaled"), names_to = "source", values_to = "abundance") %>%
 	ggplot(aes(x=abundance + 1, color=sample)) +
@@ -408,7 +413,7 @@ We can count how many differentially expressed genes there are. We'll filter on 
 ```{r}
 counts_de %>%
   filter(FDR < 0.05) %>%
-  summarise(num_de = n_distinct(transcript))
+  summarise(num_de = n_distinct(feature))
 ```
 
 ### Extracting top differentially expressed genes
@@ -426,7 +431,7 @@ topgenes
 
 We can extract the symbols for these top genes to use in some of the plots we will make.
 ```{r}
-topgenes_symbols <- topgenes %>% pull(transcript)
+topgenes_symbols <- topgenes %>% pull(symbol)
 
 # take a look
 topgenes_symbols
@@ -456,10 +461,10 @@ counts_de %>%
 
   # Subset data
 	mutate(significant = FDR<0.05 & abs(logFC) >=2) %>%
-	mutate(transcript = ifelse(transcript %in% topgenes_symbols, as.character(transcript), "")) %>%
+	mutate(symbol = ifelse(symbol %in% topgenes_symbols, as.character(symbol), "")) %>%
 
   # Plot
-	ggplot(aes(x = logFC, y = PValue, label=transcript)) +
+	ggplot(aes(x = logFC, y = PValue, label=symbol)) +
 	geom_point(aes(color = significant, size = significant, alpha=significant)) +
 	geom_text_repel() +
 
@@ -481,13 +486,13 @@ strip_chart <-
 	counts_scaled %>%
 
 	# extract counts for top differentially expressed genes
-	filter(transcript %in% topgenes_symbols) %>%
+	filter(symbol %in% topgenes_symbols) %>%
 
 	# make stripchart
 	ggplot(aes(x = dex, y = counts_scaled + 1, fill = dex, label = sample)) +
 	geom_boxplot() +
 	geom_jitter() +
-	facet_wrap(~transcript) +
+	facet_wrap(~symbol) +
 	scale_y_log10()+
 	custom_theme
 
@@ -497,8 +502,8 @@ strip_chart
 ```{r}
 counts_scaled %>%
 
-	# extract counts for top differentially expressed genes
-	filter(transcript %in% topgenes_symbols) %>%
+  # extract counts for top differentially expressed genes
+  filter(symbol %in% topgenes_symbols) %>%
 
   # High level reshaping of the data. 
   # All three count columns are shaped as two columns: 
@@ -512,7 +517,7 @@ counts_scaled %>%
   # This allows the faceted plot
   ggplot(aes(x = Stage, y = count + 1, fill = dex)) +
 	geom_boxplot() +
-  facet_wrap(~transcript) +
+  facet_wrap(~symbol) +
   scale_y_log10() +
 	custom_theme
 
@@ -547,16 +552,18 @@ Load the data and create the tidybulk object with:
 ```{r}
 data("pasilla", package = "rpharma2020tidytranscriptomics")
 counts_tt <-
-  pasilla %>%
-  tidybulk()
+    pasilla %>%
+    tidybulk() %>%
+    mutate(symbol = mapIds(org.Dm.eg.db, keys=as.character(feature), keytype = "FLYBASE", column="SYMBOL", multiVals = "first"))
 ```
 
-Note that as this is fly data you can't use ensembl_to_symbol to get gene symbols, just work with the gene ids.
 
 Questions:  
 1. What is the Fraction of Variance for PC1 and PC2? What do PC1 and PC2 represent?  
 2. How many differentially expressed genes are there for treated vs untreated (false discovery rate < 0.05)? What is the top differentially expressed gene by p-value?
 3. What code can generate a heatmap of variable genes (starting from `count_scaled`)?  
+
+Extra
 4. What code can you use to visualise expression of the pasilla gene (gene id: FBgn0261552)  
 5. What code can generate an interactive volcano plot that has gene ids showing on hover?  
 6. What code can generate a heatmap of the top 100 differentially expressed genes?  

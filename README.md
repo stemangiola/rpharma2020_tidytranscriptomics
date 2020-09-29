@@ -84,6 +84,8 @@ The workshop format is a 2.5-3 hour session consisting of demos, exercises and Q
 * edgeR
 * DESeq2
 * airway
+* org.Hs.eg.db
+* org.Dm.eg.db
 * dittoSeq
 * ggrepel
 * GGally
