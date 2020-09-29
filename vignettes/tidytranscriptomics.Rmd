@@ -602,7 +602,7 @@ pasilla_de <-
   mutate(symbol = mapIds(org.Dm.eg.db,   keys=as.character(feature), keytype = "FLYBASE", column="SYMBOL", multiVals = "first")) %>%
   
   # Scale abundance
-  identify_abundant(factor_of_interest=condition) 
+  keep_abundant(factor_of_interest=condition) 
 ```
 
 This is an example for the default method for differential abundance testing. It uses the edgeR quasi-likelihood method.
@@ -660,7 +660,6 @@ We can visually compare the log fold change (logFC) of transcript abundance for 
 
 ```{r}
 de_all %>%
-  keep_abundant() %>%
   pivot_transcript() %>%
   select(edgerQLT_logFC, edgerLR_logFC, voom_logFC, deseq2_log2FoldChange, feature) %>%
   ggpairs(1:4)
@@ -670,7 +669,6 @@ Similarly, we can visually compare the significance for all methods. In this cas
 
 ```{r}
 de_all %>%
-  keep_abundant() %>%
   pivot_transcript() %>%
   select(edgerQLT_PValue, edgerLR_PValue, voom_P.Value, deseq2_pvalue, feature ) %>%
   ggpairs(1:4)
@@ -682,8 +680,6 @@ We can select some of the transcripts for further analysis using the [*tidygate*
 ```{r, eval=FALSE}
 de_gate <- 
   de_all %>%
-  
-  keep_abundant() %>%
   
   gate(
     feature,
@@ -697,8 +693,6 @@ de_gate <-
 ```{r, echo=FALSE}
 de_gate <- 
   de_all %>%
-  
-  keep_abundant() %>%
   
   gate(
     feature,
@@ -818,7 +812,6 @@ pasilla_de %>%
   facet_wrap(~feature) +
   scale_y_log10() +
   custom_theme
-
 ```
 
 ### Perform analysis on subset and apply to full dataset
