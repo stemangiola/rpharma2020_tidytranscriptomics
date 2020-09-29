@@ -469,10 +469,10 @@ counts_de %>%
 	geom_text_repel() +
 
 	# Custom scales
+    custom_theme +
 	scale_y_continuous(trans = "log10_reverse") +
 	scale_color_manual(values=c("black", "#e11f28")) +
-	scale_size_discrete(range = c(0, 2)) +
-	custom_theme
+	scale_size_discrete(range = c(0, 2))
 ```
 
 ### Stripcharts
@@ -570,7 +570,13 @@ Extra
 
 # Part 2 Bulk RNA-seq Extended
 
-`tidybulk` integrates several methods for differential transcript abundance testing.
+*tidybulk* integrates several popular methods for differential transcript abundance testing: edgeR, limma-voom and DESeq2. A common question is which method to choose. Mike Love, DESeq2 author has this advice in his [blog](https://mikelove.wordpress.com/2016/09/28/deseq2-or-edger).
+
+```{r, echo=FALSE, out.width = "350px"}
+knitr::include_graphics("../inst/vignettes/which_method.png")
+```
+
+tidybulk can help you decide which method (or methods) to use, as it provides an easy way to run multiple and see how they compare.
 
 ## Comparison of differential analysis methods
 
@@ -583,20 +589,23 @@ library(tidygate)
 library(GGally)
 ```
 
-We first pre-process the data, creating a tibble and identifying abundant genes.
+As before, we first pre-process the data, creating a tibble and identifying abundant genes.
 
 ```{r}
 pasilla_de <- 
   rpharma2020tidytranscriptomics::pasilla %>% 
   
-  # Convert SE object to tibble
+  # Convert SummarizedExperiment object to tibble
   tidybulk %>%
+    
+  # Add gene symbols
+  mutate(symbol = mapIds(org.Dm.eg.db,   keys=as.character(feature), keytype = "FLYBASE", column="SYMBOL", multiVals = "first")) %>%
   
-   # Scale abundance for plotting
+  # Scale abundance
   identify_abundant(factor_of_interest=condition) 
 ```
 
-This is an example for the default method for differential transcriptional testing. It uses the edgeR method.
+This is an example for the default method for differential abundance testing. It uses the edgeR quasi-likelihood method.
 
 ```{r}
 pasilla_de %>%
@@ -606,7 +615,9 @@ pasilla_de %>%
     ~ condition + type, 
     action="get"
   ) %>%
-  arrange(FDR)
+
+  # Sort by P value        
+  arrange(PValue)
 ```
 
 Now let's try to perform multiple methods on the same dataset.
@@ -651,7 +662,7 @@ We can visually compare the log fold change (logFC) of transcript abundance for 
 de_all %>%
   keep_abundant() %>%
   pivot_transcript() %>%
-  select(edgerQLT_logFC, edgerLR_logFC, voom_logFC, deseq2_log2FoldChange, feature ) %>%
+  select(edgerQLT_logFC, edgerLR_logFC, voom_logFC, deseq2_log2FoldChange, feature) %>%
   ggpairs(1:4)
 ```
 
@@ -666,10 +677,10 @@ de_all %>%
 
 ```
 
-We can select some of the transcripts for further analysis using the *tidygate* package.
+We can select some of the transcripts for further analysis using the [*tidygate*](https://github.com/stemangiola/tidygate) package.
 
 ```{r, eval=FALSE}
-de_gate = 
+de_gate <- 
   de_all %>%
   
   keep_abundant() %>%
@@ -684,7 +695,7 @@ de_gate =
 ```
 
 ```{r, echo=FALSE}
-de_gate = 
+de_gate <- 
   de_all %>%
   
   keep_abundant() %>%
@@ -729,14 +740,13 @@ de_gate %>%
 ```
 
 
-For example DESeq2 produces a more conservative statistic for the transcript `FBgn0052939`.
+This enables us to see, for example, that DESeq2 produces a more conservative statistic for the transcript `FBgn0052939` .
 
 ```{r}
 de_gate %>%
   pivot_transcript %>%
   filter(feature == "FBgn0052939")%>%
   select(edgerQLT_logFC, deseq2_log2FoldChange)
-
 ```
 
 
@@ -754,14 +764,16 @@ library(purrr)
 ```
 
 ```{r}
-pasilla_de = 
+pasilla_de <- 
   rpharma2020tidytranscriptomics::pasilla %>% 
   
-  # Convert SE object to tibble
+  # Convert SummarizedExperiment object to tibble
   tidybulk %>%
   
-   # Scale abundance for plotting
+  # Filter counts
   identify_abundant(factor_of_interest=condition) %>%
+    
+  # Scale abundance   
   scale_abundance() %>%
   
   # Nest
@@ -819,14 +831,16 @@ cell_type_tt = rpharma2020tidytranscriptomics::cell_type_df %>% tidybulk(sample,
 markers_df = 
   cell_type_tt %>%
   
-  # Scale abundance for plotting
+  # Filter counts
   identify_abundant(factor_of_interest=cell_type) %>%
+  
+  # Scale abundance
   scale_abundance() %>%
   
   # Nest
   nest(data = everything()) %>%
   
-  # investigate one cell type pair
+  # Investigate one cell type pair
   mutate(comparison_data = map(
     data,
     ~ .x %>%
