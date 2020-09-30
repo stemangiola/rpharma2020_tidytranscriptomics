@@ -1,4 +1,4 @@
-FROM bioconductor/bioconductor_docker:rpharma2020
+FROM bioconductor/bioconductor_docker:devel
 
 WORKDIR /home/rstudio
 
