@@ -1,0 +1,99 @@
+---
+title: "Background knowledge for the Tidy transcriptomic workshop"
+author:
+  - Maria Doyle, Peter MacCallum Cancer Centre^[maria.doyle@petermac.org]
+  - Stefano Mangiola, Walter and Eliza Hall Institute^[mangiola.s@wehi.edu.au]
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Background}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r, echo=FALSE, out.width = "100px"}
+knitr::include_graphics("../inst/vignettes/tidybulk_logo.png")
+```
+
+# Schedule
+
+- Part 1 Bulk RNA-seq Core
+- Part 2 Bulk RNA-seq Extended
+- Part 3 Single-cell RNA-seq
+
+The format is a few introductory slides, then demos, exercises plus Q&A
+
+# What is transcriptomics?
+
+“The transcriptome is the set of all RNA transcripts, including coding and non-coding, in an individual or a population of cells”
+
+_Wikipedia_
+
+```{r, echo=FALSE, out.width = "600px"}
+knitr::include_graphics("../inst/vignettes/transcriptomics.jpg")
+```
+
+# Why use transcriptomics?
+
+- Genome (DNA) pretty stable
+- Proteome (proteins) harder to measure
+- Transcriptome (RNA) can measure changes in expression of thousands of coding and non-coding transcripts
+
+```{r, echo=FALSE, out.width = "600px"}
+knitr::include_graphics("../inst/vignettes/ScreenShot1.png")
+```
+
+# Possible experimental design
+
+```{r, echo=FALSE, out.width = "600px"}
+knitr::include_graphics("../inst/vignettes/ScreenShot2.png")
+```
+
+# How does transcriptomics work?
+
+```{r, echo=FALSE, out.width = "600px"}
+knitr::include_graphics("../inst/vignettes/ScreenShot3.png")
+```
+
+# Bulk RNA sequencing analysis workflow
+
+```{r, echo=FALSE, out.width = "600px"}
+knitr::include_graphics("../inst/vignettes/RPharma2020pipeline-01.png")
+```
+
+# Differences between bulk and single-cell RNA sequencing
+
+```{r, echo=FALSE, out.width = "600px"}
+knitr::include_graphics("../inst/vignettes/bulk_vs_single.jpg")
+```
+
+_Shalek and Benson, 2017_
+
+# Single-cell RNA sequencing analysis workflow
+
+```{r, echo=FALSE, out.width = "600px"}
+knitr::include_graphics("../inst/vignettes/RPharma2020pipeline-02.png")
+```
+
+# Getting started 
+
+## 1) RStudio Cloud
+
+Easiest way to run this material. Only available during workshop.
+https://rstudio.cloud/spaces/92179/project/1673971
+
+## 2) Install on your computer
+
+See instructions here
+https://stemangiola.github.io/rpharma2020_tidytranscriptomics/index.html
+
+
+
+
+## References
