@@ -915,7 +915,7 @@ library(tidyseurat)
 ```
 
 
-## Create `tidyseurat`, the best of both worlds!
+## Create `tidyseurat`
 
 This is a seurat object but it is evaluated as tibble. So it is fully compatible both with Seurat and tidyverse APIs. 
 
