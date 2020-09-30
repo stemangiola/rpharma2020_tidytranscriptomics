@@ -49,6 +49,9 @@
 <li>
   <a href="articles/supplementary.html">Supplementary</a>
 </li>
+<li>
+  <a href="articles/solutions.html">Solutions</a>
+</li>
       </ul>
 <ul class="nav navbar-nav navbar-right">
 <li>
@@ -115,9 +118,15 @@
 <h3 class="hasAnchor">
 <a href="#via-github" class="anchor"></a>Via GitHub</h3>
 <p>Alternatively, you could install the workshop using the commands below in R <code>4.0</code>.</p>
-<pre><code><a href="https://remotes.r-lib.org/reference/install_github.html"># install.packages('remotes')
+<pre><code><a href="https://remotes.r-lib.org/reference/install_github.html"># Install same versions used in the workshop
+
+# install.packages('remotes')
 remotes::install_github("stemangiola/tidybulk@v1.1.8")
+remotes::install_github("stemangiola/tidygate@v0.2.8")
+remotes::install_github("stemangiola/tidyseurat@v0.1.8")
+remotes::install_github("stemangiola/tidyHeatmap@v1.1.5")
 remotes::install_github("stemangiola/rpharma2020_tidytranscriptomics", build_vignettes = TRUE)
+
 library(rpharma2020tidytranscriptomics)
 browseVignettes("rpharma2020tidytranscriptomics")</a></code></pre>
 <p>To run the code, you could then copy and paste the code from the workshop <a href="https://raw.githubusercontent.com/stemangiola/rpharma2020_tidytranscriptomics/master/vignettes/tidytranscriptomics.Rmd">R markdown file</a> into a new R Markdown file on your computer.</p>
@@ -166,6 +175,7 @@ browseVignettes("rpharma2020tidytranscriptomics")</a></code></pre>
 <div id="time-outline" class="section level3">
 <h3 class="hasAnchor">
 <a href="#time-outline" class="anchor"></a>Time outline</h3>
+<p>Rough guide</p>
 <table class="table">
 <thead><tr class="header">
 <th>Activity</th>
@@ -174,7 +184,7 @@ browseVignettes("rpharma2020tidytranscriptomics")</a></code></pre>
 <tbody>
 <tr class="odd">
 <td><strong>Part 1 Bulk RNA-seq Core</strong></td>
-<td>60m</td>
+<td>50m</td>
 </tr>
 <tr class="even">
 <td><em>Introduction to RNA-seq</em></td>
@@ -197,8 +207,8 @@ browseVignettes("rpharma2020tidytranscriptomics")</a></code></pre>
 <td></td>
 </tr>
 <tr class="odd">
-<td><em>Questions and exercises</em></td>
-<td></td>
+<td><em>Exercises and Q&amp;A</em></td>
+<td>10m</td>
 </tr>
 <tr class="even">
 <td><em>Break</em></td>
@@ -206,42 +216,38 @@ browseVignettes("rpharma2020tidytranscriptomics")</a></code></pre>
 </tr>
 <tr class="odd">
 <td><strong>Part 2 Bulk RNA-seq Extended</strong></td>
-<td>40m</td>
+<td>30m</td>
 </tr>
 <tr class="even">
 <td><em>Comparison of differential testing tools</em></td>
 <td></td>
 </tr>
 <tr class="odd">
-<td><em>Comparison of normalisation</em></td>
-<td></td>
-</tr>
-<tr class="even">
 <td><em>Example of nested analysis</em></td>
 <td></td>
 </tr>
-<tr class="odd">
-<td><em>Questions and exercises</em></td>
-<td></td>
-</tr>
 <tr class="even">
+<td><em>Exercises and Q&amp;A</em></td>
+<td>10m</td>
+</tr>
+<tr class="odd">
 <td><em>Break</em></td>
 <td>5m</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td><strong>Part 3 Single-cell RNA-seq</strong></td>
 <td>40m</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td><em>Brief introduction to single-cell RNA-seq</em></td>
 <td></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td><em>Brief introduction to tidyseurat</em></td>
 <td></td>
 </tr>
-<tr class="even">
-<td><em>Questions and exercises</em></td>
+<tr class="odd">
+<td><em>Q&amp;A</em></td>
 <td>30m</td>
 </tr>
 </tbody>
