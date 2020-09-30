@@ -37,11 +37,8 @@ knitr::include_graphics("../inst/vignettes/tidybulk_logo.png")
 ## Introduction
 Measuring gene expression on a genome-wide scale has become common practice over the last two decades or so, with microarrays predominantly used pre-2008. With the advent of next generation sequencing technology in 2008, an increasing number of scientists use this technology to measure and understand changes in gene expression in often complex systems. As sequencing costs have decreased, using RNA sequencing to simultaneously measure the expression of tens of thousands of genes for multiple samples has never been easier. The cost of these experiments has now moved from generating the data to storing and analysing it.
 
-There are many steps involved in analysing an RNA sequencing dataset. The main steps for a differential expression analysis are shown in the figure below. Sequenced reads are aligned to a reference genome, then the number of reads mapped to each gene can be counted. This results in a table of counts, which is what we perform statistical analyses on in R. While mapping and counting are important and necessary tasks, today we will be starting from the count data and showing how differential expression analysis can be performed in a friendly way using tidybulk.
+There are many steps involved in analysing an RNA sequencing dataset. Sequenced reads are aligned to a reference genome, then the number of reads mapped to each gene can be counted. This results in a table of counts, which is what we perform statistical analyses on in R. While mapping and counting are important and necessary tasks, today we will be starting from the count data and showing how differential expression analysis can be performed in a friendly way using tidybulk.
 
-```{r, echo=FALSE, out.width = "70%"}
-knitr::include_graphics("../inst/vignettes/RPharma2020pipeline-01.png")
-```
 
 First, let’s load all the packages we will need to analyse the data. Note that you should load the *tidybulk* library after the tidyverse core packages for best integration.
 
@@ -558,19 +555,21 @@ counts_tt <-
 
 
 Questions:  
-1. What is the Fraction of Variance for PC1 and PC2? What do PC1 and PC2 represent?  
-2. How many differentially expressed genes are there for treated vs untreated (false discovery rate < 0.05)? What is the top differentially expressed gene by p-value?
-3. What code can generate a heatmap of variable genes (starting from `count_scaled`)?  
+1.1 What is the Fraction of Variance for PC1?  
+1.2 How many differentially expressed genes are there for treated vs untreated (FDR < 0.05)? 
+1.3 What is the FBgn id of the 10th most differentially expressed gene (by smallest P value)?
+ 
 
 Extra
-4. What code can you use to visualise expression of the pasilla gene (gene id: FBgn0261552)  
-5. What code can generate an interactive volcano plot that has gene ids showing on hover?  
-6. What code can generate a heatmap of the top 100 differentially expressed genes?  
+1.4 What code can generate a heatmap of variable genes (starting from `count_scaled`)? 
+1.5 What code can you use to visualise expression of the pasilla gene (gene id: FBgn0261552)  
+1.6 What code can generate an interactive volcano plot that has gene ids showing on hover?  
+1.7 What code can generate a heatmap of the top 100 differentially expressed genes?  
 
 
 # Part 2 Bulk RNA-seq Extended
 
-*tidybulk* integrates several popular methods for differential transcript abundance testing: edgeR, limma-voom and DESeq2. A common question is which method to choose. Mike Love, DESeq2 author has this advice in his [blog](https://mikelove.wordpress.com/2016/09/28/deseq2-or-edger).
+*tidybulk* integrates several popular methods for differential transcript abundance testing: the edgeR quasi-likelihood [@chen2016reads] (tidybulk default method), edgeR likelihood ratio [@mccarthy2012differential], limma-voom [@law2014voom] and DESeq2 [@love2014moderated]. A common question researchers have is which method to choose. Mike Love, DESeq2 author has this advice in his [blog](https://mikelove.wordpress.com/2016/09/28/deseq2-or-edger).
 
 ```{r, echo=FALSE, out.width = "350px"}
 knitr::include_graphics("../inst/vignettes/which_method.png")
@@ -886,21 +885,30 @@ markers_df =
   unnest(data) 
 ```
 
-Now we can plot our markers including the background
+Now we can see the abundance of the markers in all our cell types.
 
 ```{r}
 markers_df %>%
     ggplot(aes(cell_type, count_scaled +1 )) + 
-    geom_boxplot() + 
+    geom_boxplot(outlier.shape = NA) +
+    geom_jitter(size=0.3) +
+    facet_wrap(~symbol, ncol=5) +
+    coord_flip() +
     scale_y_log10() + 
     custom_theme
 ```
 
 ## Key Points
 - `tidybulk` allows streamlined multi-method analyses
-- The function `pivot_longer` from `tidyr` is useful to operate serially across consistent portions of data for comparative purposes. For example, the statistics for several methods. 
 - `tidygate` allows the selection of arbitrary points in a two-dimensional plot, and add the gate information to the input tibble
 - Nesting allows for iteratively perform analyses on portions of the data set, without the creation of new variable, and in a totally functional way.
+
+## Exercises
+
+Questions:
+2.1 How can I compare the amount of differential abundant transcripts for the different methods?
+2.2 How can I trace the adjusted p-value rank for methods?
+
 
 # Part 3 Single-cell RNA-seq
 
