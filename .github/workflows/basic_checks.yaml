@@ -9,6 +9,14 @@ jobs:
       - name: Query dependencies and update old packages
         run: |
           install.packages('remotes')
+          
+          # We'll install the specific versions from the install instructions
+          BiocManager::install("stemangiola/tidybulk@v1.1.8", version="devel")
+          BiocManager::install("stemangiola/tidygate@v0.2.8", version="devel")
+          BiocManager::install("stemangiola/tidyseurat@v0.1.8", version="devel")
+          BiocManager::install("stemangiola/tidyHeatmap@v1.1.5", version="devel")
+          
+          # Then install the other dependencies in the usual way
           options(repos = c(CRAN = 'https://cran.r-project.org'))
           BiocManager::install(ask=FALSE)
           saveRDS(remotes::dev_package_deps(dependencies = TRUE), ".github/depends.Rds", version = 2)
@@ -19,8 +27,8 @@ jobs:
         uses: actions/cache@v1
         with:
           path: /usr/local/lib/R/site-library
-          key: ${{ runner.os }}-r-2-${{ hashFiles('.github/depends.Rds') }}
-          restore-keys: ${{ runner.os }}-r-2-
+          key: ${{ runner.os }}-r-3-${{ hashFiles('.github/depends.Rds') }}
+          restore-keys: ${{ runner.os }}-r-3-
           
       - name: Install dependencies
         run: |
