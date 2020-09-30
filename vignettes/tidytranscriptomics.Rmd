@@ -934,7 +934,7 @@ pbmc_small_tidy@assays
 ## Preprocess the dataset
 
 
-```{r preprocess}
+```{r preprocess, warning=FALSE}
 pbmc_small_pca <-
   pbmc_small_tidy %>%
   SCTransform(verbose = FALSE) %>%
@@ -1069,7 +1069,7 @@ pbmc_small_nested
 
 Now we can independently for the lymphoid and myeloid subsets (i) find variable features, (ii) reduce dimensions, and (iii) cluster using both tidyverse and SingleCellExperiment seamlessly.
 
-```{r}
+```{r, warning=FALSE}
 pbmc_small_nested_reanalysed <-
   pbmc_small_nested %>%
   mutate(data = map(

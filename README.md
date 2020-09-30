@@ -46,9 +46,15 @@ You should see the Rmarkdown file with all the workshop code which you can run.
 Alternatively, you could install the workshop using the commands below in R `4.0`.
 
 ```
+# Install same versions used in the workshop
+
 # install.packages('remotes')
 remotes::install_github("stemangiola/tidybulk@v1.1.8")
+remotes::install_github("stemangiola/tidygate@v0.2.8")
+remotes::install_github("stemangiola/tidyseurat@v0.1.8")
+remotes::install_github("stemangiola/tidyHeatmap@v1.1.5")
 remotes::install_github("stemangiola/rpharma2020_tidytranscriptomics", build_vignettes = TRUE)
+
 library(rpharma2020tidytranscriptomics)
 browseVignettes("rpharma2020tidytranscriptomics")
 ```
@@ -94,26 +100,27 @@ The workshop format is a 2.5-3 hour session consisting of demos, exercises and Q
 
 ### Time outline
 
+Rough guide
+
 | Activity                                            | Time |
 |-----------------------------------------------------|------|
-| **Part 1 Bulk RNA-seq Core**                        | 60m  |
+| **Part 1 Bulk RNA-seq Core**                        | 50m  |
 |  *Introduction to RNA-seq*                          |      |
 |  *Data preprocessing*                               |      |
 |  *Data dimensionality reduction and clustering*     |      |
 |  *Differential gene expression*                     |      |
 |  *Data visualisation*                               |      |
-|  *Questions and exercises*                          |      |
+|  *Exercises and Q&A*                                | 10m  |
 | _Break_                                             |  5m  |
-| **Part 2 Bulk RNA-seq Extended**                    | 40m  |
+| **Part 2 Bulk RNA-seq Extended**                    | 30m  |
 |  *Comparison of differential testing tools*         |      |
-|  *Comparison of normalisation*                      |      |
 |  *Example of nested analysis*                       |      |
-|  *Questions and exercises*                          |      |
+|  *Exercises and Q&A*                                | 10m  |
 | _Break_                                             |  5m  |
 | **Part 3 Single-cell RNA-seq**                      | 40m  |
 |  *Brief introduction to single-cell RNA-seq*        |      |
 |  *Brief introduction to tidyseurat*                 |      |
-|  *Questions and exercises*                          | 30m  |
+|  *Q&A*                                              | 30m  |
 
 
 ### Workshop goals and objectives
