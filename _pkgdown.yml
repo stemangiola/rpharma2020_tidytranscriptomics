@@ -13,10 +13,10 @@ navbar:
   title: ~
   type: default
   left:
+    - text: Background
+      href: articles/background.html
     - text: Workshop
       href: articles/tidytranscriptomics.html
-    - text: Supplementary 
-      href: articles/supplementary.html
     - text: Solutions 
       href: articles/solutions.html
 
