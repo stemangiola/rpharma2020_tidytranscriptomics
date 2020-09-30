@@ -572,7 +572,7 @@ Extra
 
 # Part 2 Bulk RNA-seq Extended
 
-*tidybulk* integrates several popular methods for differential transcript abundance testing: edgeR, limma-voom and DESeq2. A common question is which method to choose. Mike Love, DESeq2 author has this advice in his [blog](https://mikelove.wordpress.com/2016/09/28/deseq2-or-edger).
+*tidybulk* integrates several popular methods for differential transcript abundance testing: the edgeR quasi-likelihood [@chen2016reads] (tidybulk default method), edgeR likelihood ratio [@mccarthy2012differential], limma-voom [@law2014voom] and DESeq2 [@love2014moderated]. A common question researchers have is which method to choose. Mike Love, DESeq2 author has this advice in his [blog](https://mikelove.wordpress.com/2016/09/28/deseq2-or-edger).
 
 ```{r, echo=FALSE, out.width = "350px"}
 knitr::include_graphics("../inst/vignettes/which_method.png")
