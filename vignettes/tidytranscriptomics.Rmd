@@ -1091,7 +1091,7 @@ pbmc_small_nested_reanalysed
 
 ## Key Points
 - Some basic steps of a single-cell RNA sequencing analysis are dimensionality reduction, cluster identification and cell type classification
-- `tidyseurat` is a invisible layer that operates on `Seurat` object and allows to visualise and manipulate data as if it were a tidy data frame.
+- `tidyseurat` is an invisible layer that operates on a `Seurat` object and enables us to visualise and manipulate data as if it were a tidy data frame.
 - `tidyseurat` object are `Seurat object` so they can be used with any `Seurat` compatible method
 
 
