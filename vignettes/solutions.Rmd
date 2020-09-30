@@ -70,7 +70,6 @@ counts_scal_PCA <-
   reduce_dimensions(method="PCA")
 ```
 
-Answer: PC1: 47%, PC2: 25%
 
 What do PC1 and PC2 represent?
 
@@ -102,7 +101,6 @@ counts_de %>%
   summarise(num_de = n_distinct(feature))
 ```
 
-Answer: 1128
 
 What is the top DE gene by P value? 
 
@@ -115,7 +113,6 @@ topgenes <- counts_de %>%
 topgenes
 ```	
 
-Answer: FBgn0025111
 
 
 3. What code can generate a heatmap of variable genes (starting from count_scaled)?  
