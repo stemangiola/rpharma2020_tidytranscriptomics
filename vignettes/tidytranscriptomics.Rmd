@@ -835,7 +835,7 @@ pasilla_de %>%
 
 ### Perform analysis on subset and apply to full dataset
 
-Let's suppose we want to identify the markers that distinguish epithelial from endothelial cells, but we want to then visualising those genes across many cell types to understand the background transcription.
+Let's suppose we want to identify the markers that distinguish epithelial from endothelial cells, and we also want to then visualise the abundance of those transcripts across many cell types to understand their cell type specificity.
 
 ```{r}
 cell_type_tt = rpharma2020tidytranscriptomics::cell_type_df %>% tidybulk(sample, symbol, count)
