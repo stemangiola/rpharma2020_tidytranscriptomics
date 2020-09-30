@@ -888,12 +888,15 @@ markers_df =
   unnest(data) 
 ```
 
-Now we can plot our markers including the background
+Now we can see the abundance of the markers in all our cell types.
 
 ```{r}
 markers_df %>%
     ggplot(aes(cell_type, count_scaled +1 )) + 
-    geom_boxplot() + 
+    geom_boxplot(outlier.shape = NA) +
+    geom_jitter(size=0.3) +
+    facet_wrap(~symbol, ncol=5) +
+    coord_flip() +
     scale_y_log10() + 
     custom_theme
 ```
