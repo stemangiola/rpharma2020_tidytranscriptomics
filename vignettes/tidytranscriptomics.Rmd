@@ -835,7 +835,7 @@ pasilla_de %>%
 
 ### Perform analysis on subset and apply to full dataset
 
-Let's suppose we want to indentify the markers that distingush epithelial from endothelial cells, but we want to then visualising those genes across many cell types to understand the background transcription.
+Let's suppose we want to identify the markers that distinguish epithelial from endothelial cells, but we want to then visualising those genes across many cell types to understand the background transcription.
 
 ```{r}
 cell_type_tt = rpharma2020tidytranscriptomics::cell_type_df %>% tidybulk(sample, symbol, count)
@@ -896,6 +896,11 @@ markers_df %>%
     custom_theme
 ```
 
+## Key Points
+- `tidybulk` allows streamlined multi-method analyses
+- The function `pivot_longer` from `tidyr` is useful to operate serially across consistent portions of data for comparative purposes. For example, the statistics for several methods. 
+- `tidygate` allows the selection of arbitrary points in a two-dimensional plot, and add the gate information to the input tibble
+- Nesting allows for iteratively perform analyses on portions of the data set, without the creation of new variable, and in a totally functional way.
 
 # Part 3 Single-cell RNA-seq
 
@@ -1011,7 +1016,7 @@ knitr::include_graphics("../inst/vignettes/plotly.png")
 ```
 
 
-## Cell type prediction
+## Cell type classification
 
 We can infer cell type identities using *SingleR* [@aran2019reference] and manipulate the output using tidyverse.
 
@@ -1083,6 +1088,11 @@ pbmc_small_nested_reanalysed <-
 
 pbmc_small_nested_reanalysed
 ```
+
+## Key Points
+- Some basic steps of a single-cell RNA sequencing analysis are dimensionality reduction, cluster identification and cell type classification
+- `tidyseurat` is a invisible layer that operates on `Seurat` object and allows to visualise and manipulate data as if it were a tidy data frame.
+- `tidyseurat` object are `Seurat object` so they can be used with any `Seurat` compatible method
 
 
 # Contributing
