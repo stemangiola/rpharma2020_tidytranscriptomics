@@ -24,3 +24,10 @@
 #' @usage data(cell_type_df)
 "cell_type_df"
 
+#' BRCA
+#'
+#' Subset of the TCGA BRCA data set
+#'
+#' @format  A tidy data frame.
+#' @usage data(BRCA)
+"BRCA"
