@@ -31,11 +31,10 @@ library(purrr)
 data("pasilla", package = "rpharma2020tidytranscriptomics")
 
 # create tidybulk tibble
-data("pasilla", package = "rpharma2020tidytranscriptomics")
 counts_tt <-
     pasilla %>%
     tidybulk() %>%
-    mutate(symbol = AnnotationsDbi::mapIds(org.Dm.eg.db::org.Dm.eg.db, keys=as.character(feature), keytype = "FLYBASE", column="SYMBOL", multiVals = "first"))
+    mutate(symbol = AnnotationDbi::mapIds(org.Dm.eg.db::org.Dm.eg.db, keys=as.character(feature), keytype = "FLYBASE", column="SYMBOL", multiVals = "first"))
 
 # filter counts
 counts_filtered <- counts_tt %>% keep_abundant(factor_of_interest = condition)
