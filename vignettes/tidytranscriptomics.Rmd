@@ -45,13 +45,6 @@ First, let’s load all the packages we will need to analyse the data. Note that
 ```{r message=FALSE, warning=FALSE}
 # load libraries
 
-# dataset
-library(airway)
-
-# annotation
-library(org.Hs.eg.db)
-library(org.Dm.eg.db)
-
 # tidyverse core packages
 library(tibble)
 library(dplyr)
@@ -65,6 +58,9 @@ library(tidyHeatmap)
 library(tidybulk)
 library(ggrepel)
 library(plotly)
+
+# dataset
+library(airway)
 ```
 
 Plot settings. Set the colours and theme we will use for our plots.
@@ -134,7 +130,7 @@ counts_format <- counts_airway %>%
 We can get the gene symbols for these Ensembl gene ids using the Bioconductor annotation package for human, `org.Hs.eg.db` and add them as a column using `mutate` again.
 
 ```{r}
-counts_tt <- counts_format %>% mutate(symbol = mapIds(org.Hs.eg.db, keys = as.character(feature), keytype = "ENSEMBL", column="SYMBOL", multiVals = "first"))
+counts_tt <- counts_format %>% mutate(symbol = AnnotationDbi::mapIds(org.Hs.eg.db::org.Hs.eg.db, keys = as.character(feature), keytype = "ENSEMBL", column="SYMBOL", multiVals = "first"))
 counts_tt
 ```
 
@@ -550,7 +546,7 @@ data("pasilla", package = "rpharma2020tidytranscriptomics")
 counts_tt <-
     pasilla %>%
     tidybulk() %>%
-    mutate(symbol = mapIds(org.Dm.eg.db, keys=as.character(feature), keytype = "FLYBASE", column="SYMBOL", multiVals = "first"))
+    mutate(symbol = AnnotationDbi::mapIds(org.Dm.eg.db::org.Dm.eg.db, keys=as.character(feature), keytype = "FLYBASE", column="SYMBOL", multiVals = "first"))
 ```
 
 
@@ -598,7 +594,7 @@ pasilla_de <-
   tidybulk() %>%
     
   # Add gene symbols
-  mutate(symbol = mapIds(org.Dm.eg.db,   keys=as.character(feature), keytype = "FLYBASE", column="SYMBOL", multiVals = "first")) %>%
+  mutate(symbol = AnnotationDbi::mapIds(org.Dm.eg.db::org.Dm.eg.db, keys=as.character(feature), keytype = "FLYBASE", column="SYMBOL", multiVals = "first")) %>%
   
   # Filter counts
   keep_abundant(factor_of_interest=condition) 
