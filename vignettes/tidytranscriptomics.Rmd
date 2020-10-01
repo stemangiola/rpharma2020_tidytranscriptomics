@@ -594,13 +594,13 @@ As before, we first pre-process the data, creating a tibble and identifying abun
 pasilla_de <- 
   rpharma2020tidytranscriptomics::pasilla %>% 
   
-  # Convert SummarizedExperiment object to tibble
-  tidybulk %>%
+  # Convert input to tidybulk tibble
+  tidybulk() %>%
     
   # Add gene symbols
   mutate(symbol = mapIds(org.Dm.eg.db,   keys=as.character(feature), keytype = "FLYBASE", column="SYMBOL", multiVals = "first")) %>%
   
-  # Scale abundance
+  # Filter counts
   keep_abundant(factor_of_interest=condition) 
 ```
 
@@ -655,10 +655,8 @@ de_all <-
   ) 
 
 # take a look
-
 de_all
 ```
-
 
 
 ***
@@ -678,7 +676,7 @@ We can visually compare the log fold change (logFC) of transcript abundance for 
 
 ```{r}
 de_all %>%
-  pivot_transcript() %>%
+    pivot_transcript() %>%
   select(edgerQLT_logFC, edgerLR_logFC, voom_logFC, deseq2_log2FoldChange, feature) %>%
   ggpairs(1:4)
 ```
@@ -687,13 +685,14 @@ Similarly, we can visually compare the significance for all methods. In this cas
 
 ```{r}
 de_all %>%
-  pivot_transcript() %>%
+    pivot_transcript() %>%
   select(edgerQLT_PValue, edgerLR_PValue, voom_P.Value, deseq2_pvalue, feature ) %>%
   ggpairs(1:4)
-
 ```
 
 We can select some of the transcripts for further analysis using the [*tidygate*](https://github.com/stemangiola/tidygate) package.
+
+With tidygate, we can interactively draw gates to select points we want using `gate`. We specify which columns we want to plot in the scatterplot, and how many gates we want to draw. We can also specify the opacity if we want to make it easier to see overlapping points.
 
 ```{r, eval=FALSE}
 de_gate <- 
@@ -708,7 +707,23 @@ de_gate <-
   )
 ```
 
+We then click to draw gates around the points we want, for example as shown in the screenshot below.
+
 ```{r, echo=FALSE}
+knitr::include_graphics("../inst/vignettes/comparison_different_DE_methods_gates.png")
+```
+
+That will add a column called gate, specifying which gate the points (transcripts) are in.
+
+We can also specify pre-selected gates with `gate_list`. This can be useful, for example, for reproducibility, if we want to store and reuse the coordinates of gates we've drawn.
+
+```{r}
+# a list containing two pre-selected gates
+rpharma2020tidytranscriptomics::de_gate_gates
+```
+
+```{r}
+# using pre-selected gates
 de_gate <- 
   de_all %>%
   
@@ -721,14 +736,20 @@ de_gate <-
 de_gate
 ```
 
-```{r, echo=FALSE}
-knitr::include_graphics("../inst/vignettes/comparison_different_DE_methods_gates.png")
-```
-
-We can now select the transcripts from the two gates (i.e. oversignificant in DESeq2  and oversignificant in edgeR)
+We can check how many transcripts we've got in each gate.
 
 ```{r}
 de_gate %>% 
+    pivot_transcript() %>% 
+    count(gate)
+```
+
+We can now select the transcripts from our two gates i.e. more significant in edgeR (gate 1) and more significant in DESeq2 (gate 2).
+
+```{r}
+de_gate %>% 
+
+  # Generate scaled counts for plotting    
   scale_abundance() %>%
   
   # Filter only transcripts within the gates
@@ -740,8 +761,8 @@ de_gate %>%
     gate == 2 ~ "more in DESeq2",
     TRUE ~ gate
   )) %>%
-  
-  # Rearrange order
+    
+  # Order transcripts (e.g. by smallest edgeR P value)
   mutate(feature = fct_reorder(feature, edgerQLT_PValue, min)) %>%
   
   # Plot
@@ -751,12 +772,11 @@ de_gate %>%
   custom_theme
 ```
 
-
-This enables us to see, for example, that DESeq2 produces a more conservative statistic for the transcript `FBgn0052939` .
+This enables us to see, for example, that DESeq2 produces a more conservative logFC statistic for the transcript `FBgn0052939` .
 
 ```{r}
 de_gate %>%
-  pivot_transcript %>%
+  pivot_transcript() %>%
   filter(feature == "FBgn0052939")%>%
   select(edgerQLT_logFC, deseq2_log2FoldChange)
 ```
@@ -764,7 +784,7 @@ de_gate %>%
 
 ## Nested analyses
 
-`tidybulk` allows for data nesting, using the `tidyr` utility `nest`. This is an extremely powerful tool as allows functional programming on transcriptomic data.
+`tidybulk` allows for data nesting, using the `tidyr` utility `nest`. This is an extremely powerful tool as allows to easily perform analyses on subsets of the data.
 
 ### Perform same analysis on subsets
 
@@ -779,7 +799,7 @@ library(purrr)
 pasilla_de <- 
   rpharma2020tidytranscriptomics::pasilla %>% 
   
-  # Convert SummarizedExperiment object to tibble
+  # Convert input to tidybulk tibble
   tidybulk %>%
   
   # Filter counts
