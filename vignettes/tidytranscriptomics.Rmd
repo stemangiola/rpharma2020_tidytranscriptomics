@@ -944,7 +944,7 @@ pasilla_de %>%
 - `tidybulk` allows streamlined multi-method analyses
 - `tidygate` allows the selection of arbitrary points in a two-dimensional plot, and add the gate information to the input tibble
 - `tidybulk` allow easy deconvolution analyses 
-- hypothesis testing for tissue composition is analogous to the one for transcript abundance 
+- Hypothesis testing for tissue composition is analogous to the one for transcript abundance 
 - Nesting allows for iteratively perform analyses on portions of the data set, without the creation of new variable, and in a totally functional way.
 
 ## Exercises
