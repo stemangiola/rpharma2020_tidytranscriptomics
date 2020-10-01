@@ -764,6 +764,8 @@ de_gate %>%
 
 ## Study of cellularity
 
+If we are sequencing tissue samples, we may want to know what cell types are present, and if there are differences in expression between them. `tidybulk` has a `deconvolve_cellularity` function that can help us do this.
+
 For this example we will use a subset of the breast cancer TCGA dataset. 
 
 ```{r}
