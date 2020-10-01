@@ -45,6 +45,9 @@ First, let’s load all the packages we will need to analyse the data. Note that
 ```{r message=FALSE, warning=FALSE}
 # load libraries
 
+# dataset
+library(airway)
+
 # tidyverse core packages
 library(tibble)
 library(dplyr)
@@ -58,9 +61,6 @@ library(tidyHeatmap)
 library(tidybulk)
 library(ggrepel)
 library(plotly)
-
-# dataset
-library(airway)
 ```
 
 Plot settings. Set the colours and theme we will use for our plots.
