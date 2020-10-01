@@ -59,7 +59,6 @@ library(ggplot2)
 # tidyverse-friendly packages
 library(tidyHeatmap)
 library(tidybulk)
-library(ggrepel)
 ```
 
 Plot settings. Set the colours and theme we will use for our plots.
@@ -284,7 +283,7 @@ counts_scal_PCA %>%
 	pivot_sample() %>%
 	ggplot(aes(x=PC1, y=PC2, colour=dex, shape=cell)) +
 	geom_point() +
-	geom_text_repel(aes(label=sample), show.legend = FALSE) +
+	ggrepel::geom_text_repel(aes(label=sample), show.legend = FALSE) +
 	custom_theme
 ```
 
@@ -458,7 +457,7 @@ counts_de %>%
   # Plot
 	ggplot(aes(x = logFC, y = PValue, label=symbol)) +
 	geom_point(aes(color = significant, size = significant, alpha=significant)) +
-	geom_text_repel() +
+	ggrepel::geom_text_repel() +
 
 	# Custom scales
     custom_theme +
