@@ -41,7 +41,8 @@ Imports:
     org.Dm.eg.db,
     dittoSeq,
     GGally,
-    plotly
+    plotly,
+    survival
 Suggests:
     knitr,
     rmarkdown,

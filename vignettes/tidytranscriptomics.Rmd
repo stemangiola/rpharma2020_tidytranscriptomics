@@ -762,6 +762,126 @@ de_gate %>%
   select(edgerQLT_logFC, deseq2_log2FoldChange)
 ```
 
+## Study of cellularity
+
+For this example we will use a subset of the breast cancer TCGA dataset. 
+
+```{r}
+
+# BRCA =
+# 	readRDS("~/PhD/deconvolution/ARMET/dev/armet_BRCA_input.rds") %>% 
+# 	nanny::nest_subset(data = -patient)  %>% nest(data2 = -alive) %>% 
+# 	mutate(data2 = map(
+# 		data2, 
+# 		~ .x %>% 
+# 			dplyr::arrange(PFI.time.2) %>%
+# 			slice(c(1:5, (n()-5):n()) )
+# 	)) %>% 
+# 	unnest(data2) %>% 
+# 	unnest(data) %>% 
+# 	dplyr::select(patient, transcript, count, contains("PFI")) %>%
+# 	mutate_if(is.character, as.factor) %>%
+# 	mutate(PFI.2 = as.integer(PFI.2))
+
+BRCA_tidy = 
+	rpharma2020tidytranscriptomics::BRCA %>%
+	tidybulk(patient, transcript, count)
+
+BRCA_tidy
+```
+
+We can easily infer tissue cellularity across a range of methods (Cibersort, EPIC and ls_fit) with LM22 or custom signature
+
+```{r}
+BRCA_cell_type = 
+	BRCA_tidy %>%
+	deconvolve_cellularity(action="get")
+
+BRCA_cell_type
+```
+
+Cell type proportions are added to the tibble as new columns. The prefix makes it easy to reshape the data frame if needed, for visualisation or further analyses.
+
+```{r}
+BRCA_cell_type_long = 
+	BRCA_cell_type %>%
+	
+	# Reshape
+	pivot_longer(
+		contains("cibersort"), 
+		names_prefix = "cibersort: ", 
+		names_to = "cell_type",
+		values_to = "proportion"
+	) 
+
+BRCA_cell_type_long
+
+```
+
+Note: Variable creation is functional to education, however is not needed nor recommended in normal circumstances.
+
+```{r}
+BRCA_cell_type_long %>%
+	
+	# Plot
+  ggplot(aes(x=patient, y=proportion, fill=cell_type)) +
+  geom_bar(stat = "identity") +
+  custom_theme 
+
+```
+
+We can visualise the tissue composition similarity performing a dimensionality reduction on cell type and proportion (rather than on transcript and counts)
+
+```{r}
+
+BRCA_cell_type_long %>%
+	
+	# Add some noise to the proportion inference to avoid PCA error
+	# A better (but more complex) way would be to eliminate the zero variance cell types 
+	mutate(proportion = proportion + rnorm(n(), 0, 1e-10) %>% abs) %>%
+	
+	reduce_dimensions(
+		patient, 
+		cell_type, 
+		proportion, 
+		method="PCA", 
+		action="get"
+	) %>%
+	
+	ggplot(aes(PC1, PC2, label=patient)) +
+	geom_point(color="red") +
+	ggrepel::geom_text_repel(size=3) +
+	custom_theme
+
+```
+
+We can also perform differential tissue composition analyses, similarly to how we performed differential transcript abundance analyses. We can perform our analyses on censored (survival analyses) or known factor of interest.
+
+```{r}
+library(survival)
+
+BRCA_tidy_survival = 
+	BRCA_tidy %>%
+	test_differential_cellularity(Surv(PFI.time.2, PFI.2) ~ .	) %>%
+	arrange(p.value)
+
+BRCA_tidy_survival %>%
+	dplyr::select(.cell_type, p.value, everything())
+```
+
+We can visualise the cell type proportions for the most associated cell types
+
+```{r}
+BRCA_tidy_survival %>%
+	slice(1:2) %>%
+	unnest(cell_type_proportions) %>%
+	ggplot(aes(PFI.time.2, .proportion, color = factor(PFI.2))) +
+	geom_point() +
+	facet_wrap(~ .cell_type) +
+	scale_x_log10() +
+	scale_y_continuous(trans = "logit") +
+	custom_theme
+```
 
 ## Nested analyses
 
@@ -835,8 +955,10 @@ pasilla_de %>%
 
 
 ## Key Points
+
 - `tidybulk` allows streamlined multi-method analyses
 - `tidygate` allows the selection of arbitrary points in a two-dimensional plot, and add the gate information to the input tibble
+
 - Nesting allows for iteratively perform analyses on portions of the data set, without the creation of new variable, and in a totally functional way.
 
 ## Exercises
