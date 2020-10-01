@@ -32,7 +32,6 @@ library(purrr)
 data("pasilla", package = "rpharma2020tidytranscriptomics")
 
 # create tidybulk tibble
-data("pasilla", package = "rpharma2020tidytranscriptomics")
 counts_tt <-
     pasilla %>%
     tidybulk() %>%
