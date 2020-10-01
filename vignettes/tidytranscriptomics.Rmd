@@ -575,13 +575,6 @@ tidybulk can help you decide which method (or methods) to use, as it provides an
 
 We can perform differential analysis with several methods, and the results will be added to the original dataset. 
 
-```{r message=FALSE, warning=FALSE}
-# load additional libraries
-library(forcats)
-library(tidygate)
-library(GGally)
-```
-
 As before, we first pre-process the data, creating a tibble and identifying abundant genes.
 
 ```{r}
@@ -672,7 +665,7 @@ We can visually compare the log fold change (logFC) of transcript abundance for 
 de_all %>%
     pivot_transcript() %>%
   select(edgerQLT_logFC, edgerLR_logFC, voom_logFC, deseq2_log2FoldChange, feature) %>%
-  ggpairs(1:4)
+  GGally::ggpairs(1:4)
 ```
 
 Similarly, we can visually compare the significance for all methods. In this case the difference is larger.
@@ -681,12 +674,16 @@ Similarly, we can visually compare the significance for all methods. In this cas
 de_all %>%
     pivot_transcript() %>%
   select(edgerQLT_PValue, edgerLR_PValue, voom_P.Value, deseq2_pvalue, feature ) %>%
-  ggpairs(1:4)
+  GGally::ggpairs(1:4)
 ```
 
 We can select some of the transcripts for further analysis using the [*tidygate*](https://github.com/stemangiola/tidygate) package.
 
 With tidygate, we can interactively draw gates to select points we want using `gate`. We specify which columns we want to plot in the scatterplot, and how many gates we want to draw. We can also specify the opacity if we want to make it easier to see overlapping points.
+
+```{r message=FALSE, warning=FALSE}
+library(tidygate)
+```
 
 ```{r, eval=FALSE}
 de_gate <- 
@@ -757,7 +754,7 @@ de_gate %>%
   )) %>%
     
   # Order transcripts (e.g. by smallest edgeR P value)
-  mutate(feature = fct_reorder(feature, edgerQLT_PValue, min)) %>%
+  mutate(feature = forcats::fct_reorder(feature, edgerQLT_PValue, min)) %>%
   
   # Plot
   ggplot(aes(condition, counts_scaled, color=gate)) +
