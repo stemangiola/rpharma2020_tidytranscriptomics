@@ -80,10 +80,11 @@ custom_theme <-
         panel.grid.minor = element_line(size = 0.1),
         text = element_text(size = 12),
         legend.position = "bottom",
-        aspect.ratio = 1,
+        #aspect.ratio = 1,
         strip.background = element_blank(),
         axis.title.x = element_text(margin = margin(t = 10, r = 10, b = 10, l = 10)),
-        axis.title.y = element_text(margin = margin(t = 10, r = 10, b = 10, l = 10))
+        axis.title.y = element_text(margin = margin(t = 10, r = 10, b = 10, l = 10)),
+        axis.text.x = element_text(angle = 30, hjust = 1, vjust = 1)
       )
   )
 ```
@@ -772,6 +773,113 @@ de_gate %>%
   select(edgerQLT_logFC, deseq2_log2FoldChange)
 ```
 
+## Study of cellularity
+
+If we are sequencing tissue samples, we may want to know what cell types are present, and if there are differences in expression between them. `tidybulk` has a `deconvolve_cellularity` function that can help us do this.
+
+For this example we will use a subset of the breast cancer TCGA dataset. 
+
+```{r}
+
+BRCA_tidy = 
+	rpharma2020tidytranscriptomics::BRCA %>%
+	tidybulk(patient, transcript, count)
+
+BRCA_tidy
+```
+
+We can easily infer tissue cellularity across a range of methods (Cibersort, EPIC and ls_fit) with LM22 or custom signature
+
+```{r}
+BRCA_cell_type = 
+	BRCA_tidy %>%
+	deconvolve_cellularity(action="get")
+
+BRCA_cell_type
+```
+
+Cell type proportions are added to the tibble as new columns. The prefix makes it easy to reshape the data frame if needed, for visualisation or further analyses.
+
+```{r}
+BRCA_cell_type_long = 
+	BRCA_cell_type %>%
+	
+	# Reshape
+	pivot_longer(
+		contains("cibersort"), 
+		names_prefix = "cibersort: ", 
+		names_to = "cell_type",
+		values_to = "proportion"
+	) 
+
+BRCA_cell_type_long
+
+```
+
+Note: Variable creation is functional to education, however is not needed nor recommended in normal circumstances.
+
+```{r}
+BRCA_cell_type_long %>%
+	
+	# Plot
+  ggplot(aes(x=patient, y=proportion, fill=cell_type)) +
+  geom_bar(stat = "identity") +
+  custom_theme 
+
+```
+
+We can visualise the tissue composition similarity performing a dimensionality reduction on cell type and proportion (rather than on transcript and counts)
+
+```{r}
+
+BRCA_cell_type_long %>%
+	
+	# Add some noise to the proportion inference to avoid PCA error
+	# A better (but more complex) way would be to eliminate the zero variance cell types 
+	mutate(proportion = proportion + rnorm(n(), 0, 1e-10) %>% abs) %>%
+	
+	reduce_dimensions(
+		patient, 
+		cell_type, 
+		proportion, 
+		method="PCA", 
+		action="get"
+	) %>%
+	
+	ggplot(aes(PC1, PC2, label=patient)) +
+	geom_point(color="red") +
+	ggrepel::geom_text_repel(size=3) +
+	custom_theme
+
+```
+
+We can also perform differential tissue composition analyses, similarly to how we performed differential transcript abundance analyses. We can perform our analyses on censored (survival analyses) or known factor of interest.
+
+```{r}
+library(survival)
+
+BRCA_tidy_survival = 
+	BRCA_tidy %>%
+	test_differential_cellularity(Surv(PFI.time.2, PFI.2) ~ .	) %>%
+	arrange(p.value)
+
+BRCA_tidy_survival %>%
+	dplyr::select(.cell_type, p.value, everything())
+```
+
+We can visualise the cell type proportions for the most associated cell types
+
+```{r}
+BRCA_tidy_survival %>%
+	slice(1:2) %>%
+	unnest(cell_type_proportions) %>%
+	ggplot(aes(PFI.time.2, .proportion, color = factor(PFI.2))) +
+	geom_point() +
+	facet_wrap(~ .cell_type) +
+	scale_x_log10() +
+	scale_y_continuous(trans = "logit") +
+	custom_theme
+```
 
 ## Nested analyses
 
@@ -843,91 +951,12 @@ pasilla_de %>%
   custom_theme
 ```
 
-### Perform analysis on subset and apply to full dataset
-
-Let's suppose we want to identify the markers (genes) that distinguish epithelial from endothelial cells, and we also want to then visualise their abundance across many cell types to understand their cell type specificity.
-
-We'll use some example data that's in `cell_type_df`.
-
-```{r}
-# take a look
-rpharma2020tidytranscriptomics::cell_type_df
-```
-We can check how many distinct cell types we have.
-
-```{r}
-rpharma2020tidytranscriptomics::cell_type_df %>%
-    distinct(cell_type)
-```
-We will perform differential testing of epithelial versus endothelial cells, select some markers, and then visualise their abundance across all the cell types.
-
-```{r}
-# create tidybulk tibble
-cell_type_tt <- rpharma2020tidytranscriptomics::cell_type_df %>% tidybulk(sample, symbol, count)
-
-# identify some markers
-markers_df <- 
-  cell_type_tt %>%
-  
-  # Filter counts
-  identify_abundant(factor_of_interest=cell_type) %>%
-  
-  # Scale abundance
-  scale_abundance() %>%
-  
-  # Nest
-  nest(data = everything()) %>%
-  
-  # Investigate one cell type pair
-  mutate(comparison_data = map(
-    data,
-    ~ .x %>%
-      filter(cell_type %in% c("endothelial", "epithelial")) %>%
-      mutate(cell_type = as.character(cell_type) ) 
-  )) %>%
-  
-  # We test the two populations (endothelial vs epithelial) but we select data for all populations
-  mutate(markers = map(
-    comparison_data,
-    ~ .x %>%
-      
-      # Differential transcription
-      test_differential_abundance(
-        ~ 0 + cell_type, 
-        .contrasts = c("cell_typeendothelial - cell_typeepithelial"),
-        action="only", 
-        omit_contrast_in_colnames = TRUE
-      ) %>%
-      
-      # Select a few markers
-      filter(FDR<0.05 & abs(logFC)>=2) %>% 
-      dplyr::slice(1:4) %>% 
-      pull(symbol)
-    
-  )) %>%
-  
-  # Add marker info to original data
-  mutate(data = map2(data, markers, ~ .x %>% filter(symbol%in% .y))) %>%
-  select(data) %>%
-  unnest(data) 
-```
-
-Now we can see the abundance of the markers in all our cell types.
-
-```{r}
-markers_df %>%
-    ggplot(aes(cell_type, count_scaled +1 )) + 
-    geom_boxplot(outlier.shape = NA) +
-    geom_jitter(size=0.3) +
-    facet_wrap(~symbol, ncol=2) +
-    coord_flip() +
-    scale_y_log10() + 
-    custom_theme
-```
-
 ## Key Points
+
 - `tidybulk` allows streamlined multi-method analyses
 - `tidygate` allows the selection of arbitrary points in a two-dimensional plot, and add the gate information to the input tibble
+- `tidybulk` allow easy deconvolution analyses 
+- Hypothesis testing for tissue composition is analogous to the one for transcript abundance 
 - Nesting allows for iteratively perform analyses on portions of the data set, without the creation of new variable, and in a totally functional way.
 
 ## Exercises

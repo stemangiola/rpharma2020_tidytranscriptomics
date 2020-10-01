@@ -205,4 +205,69 @@ dotplot( enrH )
 emapplot(enrH)
 ```
 
+## Nested analyses 
 
+### Continuation of bulk nested analyses - see workshop
+
+Let's suppose we want to identify the markers that distinguish epithelial from endothelial cells, and we also want to then visualise the abundance of those transcripts across many cell types to understand their cell type specificity.
+
+```{r eval=FALSE}
+cell_type_tt = rpharma2020tidytranscriptomics::cell_type_df %>% tidybulk(sample, symbol, count)
+markers_df = 
+  cell_type_tt %>%
+  
+  # Filter counts
+  identify_abundant(factor_of_interest=cell_type) %>%
+  
+  # Scale abundance
+  scale_abundance() %>%
+  
+  # Nest
+  nest(data = everything()) %>%
+  
+  # Investigate one cell type pair
+  mutate(comparison_data = map(
+    data,
+    ~ .x %>%
+      filter(cell_type %in% c("endothelial", "epithelial")) %>%
+      mutate(cell_type = as.character(cell_type) ) 
+  )) %>%
+  
+  #test. We run on the two populations but we select data for all populations
+  mutate(markers = map(
+    comparison_data,
+    ~ .x %>%
+      
+      # Differential transcription
+      test_differential_abundance(
+        ~ 0 + cell_type, 
+        .contrasts = c("cell_typeendothelial - cell_typeepithelial"),
+        action="only", 
+        omit_contrast_in_colnames = TRUE
+      ) %>%
+      
+      # Select markers
+      filter(logFC > 2) %>% 
+      dplyr::slice(1:10) %>% 
+      pull(symbol)
+    
+  )) %>%
+  
+  # Add marker info to original data
+  mutate(data = map2(data, markers, ~ .x %>% filter(symbol%in% .y))) %>%
+  select(data) %>%
+  unnest(data) 
+```
+
+Now we can see the abundance of the markers in all our cell types.
+
+```{r eval=FALSE}
+markers_df %>%
+    ggplot(aes(cell_type, count_scaled +1 )) + 
+    geom_boxplot(outlier.shape = NA) +
+    geom_jitter(size=0.3) +
+    facet_wrap(~symbol, ncol=5) +
+    coord_flip() +
+    scale_y_log10() + 
+    custom_theme
+```

@@ -20,6 +20,7 @@ Depends:
 Imports:
     tidybulk,
     tidygate,
+    Seurat,
     tidyseurat,
     tidyHeatmap,
     stats,
@@ -39,9 +40,11 @@ Imports:
     airway,
     org.Hs.eg.db,
     org.Dm.eg.db,
+    AnnotationDbi,
     dittoSeq,
     GGally,
-    plotly
+    plotly,
+    survival
 Suggests:
     knitr,
     rmarkdown,
