@@ -153,10 +153,11 @@
         panel.grid.minor <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html">element_line</a></span><span class="op">(</span>size <span class="op">=</span> <span class="fl">0.1</span><span class="op">)</span>,
         text <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html">element_text</a></span><span class="op">(</span>size <span class="op">=</span> <span class="fl">12</span><span class="op">)</span>,
         legend.position <span class="op">=</span> <span class="st">"bottom"</span>,
-        aspect.ratio <span class="op">=</span> <span class="fl">1</span>,
+        <span class="co">#aspect.ratio = 1,</span>
         strip.background <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html">element_blank</a></span><span class="op">(</span><span class="op">)</span>,
         axis.title.x <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html">element_text</a></span><span class="op">(</span>margin <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html">margin</a></span><span class="op">(</span>t <span class="op">=</span> <span class="fl">10</span>, r <span class="op">=</span> <span class="fl">10</span>, b <span class="op">=</span> <span class="fl">10</span>, l <span class="op">=</span> <span class="fl">10</span><span class="op">)</span><span class="op">)</span>,
-        axis.title.y <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html">element_text</a></span><span class="op">(</span>margin <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html">margin</a></span><span class="op">(</span>t <span class="op">=</span> <span class="fl">10</span>, r <span class="op">=</span> <span class="fl">10</span>, b <span class="op">=</span> <span class="fl">10</span>, l <span class="op">=</span> <span class="fl">10</span><span class="op">)</span><span class="op">)</span>
+        axis.title.y <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html">element_text</a></span><span class="op">(</span>margin <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html">margin</a></span><span class="op">(</span>t <span class="op">=</span> <span class="fl">10</span>, r <span class="op">=</span> <span class="fl">10</span>, b <span class="op">=</span> <span class="fl">10</span>, l <span class="op">=</span> <span class="fl">10</span><span class="op">)</span><span class="op">)</span>,
+        axis.text.x <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html">element_text</a></span><span class="op">(</span>angle <span class="op">=</span> <span class="fl">30</span>, hjust <span class="op">=</span> <span class="fl">1</span>, vjust <span class="op">=</span> <span class="fl">1</span><span class="op">)</span>
       <span class="op">)</span>
   <span class="op">)</span></pre></div>
 <div id="airway-rna-sequencing-dataset" class="section level3">
@@ -603,7 +604,7 @@
 <div class="sourceCode" id="cb27"><pre class="downlit">
 <span class="co"># volcano plot, minimal</span>
 <span class="va">counts_de</span> <span class="op">%&gt;%</span>
-    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x<span class="op">=</span><span class="va">logFC</span>, y<span class="op">=</span><span class="va">PValue</span>, colour<span class="op">=</span><span class="va">FDR</span><span class="op">&lt;</span><span class="fl">0.05</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
+    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x<span class="op">=</span><span class="va">logFC</span>, y<span class="op">=</span><span class="va">PValue</span>, colour<span class="op">=</span><span class="va">FDR</span> <span class="op">&lt;</span> <span class="fl">0.05</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
     <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html">geom_point</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span>
     <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html">scale_y_continuous</a></span><span class="op">(</span>trans <span class="op">=</span> <span class="st">"log10_reverse"</span><span class="op">)</span> <span class="op">+</span>
     <span class="va">custom_theme</span></pre></div>
@@ -614,7 +615,7 @@
     <span class="fu"><a href="https://rdrr.io/pkg/tidybulk/man/pivot_transcript-methods.html">pivot_transcript</a></span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span>
 
   <span class="co"># Subset data</span>
-    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span>significant <span class="op">=</span> <span class="va">FDR</span><span class="op">&lt;</span><span class="fl">0.05</span> <span class="op">&amp;</span> <span class="fu"><a href="https://rdrr.io/r/base/MathFun.html">abs</a></span><span class="op">(</span><span class="va">logFC</span><span class="op">)</span><span class="op">&gt;=</span><span class="fl">2</span><span class="op">)</span> <span class="op">%&gt;%</span>
+    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span>significant <span class="op">=</span> <span class="va">FDR</span><span class="op">&lt;</span><span class="fl">0.05</span> <span class="op">&amp;</span> <span class="fu"><a href="https://rdrr.io/r/base/MathFun.html">abs</a></span><span class="op">(</span><span class="va">logFC</span><span class="op">)</span> <span class="op">&gt;=</span><span class="fl">2</span><span class="op">)</span> <span class="op">%&gt;%</span>
     <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span>symbol <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/ifelse.html">ifelse</a></span><span class="op">(</span><span class="va">symbol</span> <span class="op">%in%</span> <span class="va">topgenes_symbols</span>, <span class="fu"><a href="https://rdrr.io/r/base/character.html">as.character</a></span><span class="op">(</span><span class="va">symbol</span><span class="op">)</span>, <span class="st">""</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span>
 
   <span class="co"># Plot</span>
@@ -683,8 +684,8 @@
 <p>We can also specify which parameters from the <code>aes</code> we want to show up when we hover over the plot with <code>tooltip</code>.</p>
 <div class="sourceCode" id="cb31"><pre class="downlit">
 <span class="va">strip_chart</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://rdrr.io/pkg/plotly/man/ggplotly.html">ggplotly</a></span><span class="op">(</span>tooltip <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"label"</span>, <span class="st">"y"</span><span class="op">)</span><span class="op">)</span></pre></div>
-<div id="htmlwidget-d23db9894fd0c54be0c9" style="width:70%;height:432.632880098888px;" class="plotly html-widget"></div>
-<script type="application/json" data-for="htmlwidget-d23db9894fd0c54be0c9">{"x":{"data":[{"x":[1,1,1,1],"y":[2.69128969599625,3.07349503218585,2.89433133924867,3.00332359018516],"hoverinfo":"y","type":"box","fillcolor":"rgba(230,159,0,1)","marker":{"opacity":null,"outliercolor":"rgba(0,0,0,1)","line":{"width":1.88976377952756,"color":"rgba(0,0,0,1)"},"size":5.66929133858268},"line":{"color":"rgba(51,51,51,1)","width":1.88976377952756},"name":"(trt,1)","legendgroup":"(trt,1)","showlegend":true,"xaxis":"x","yaxis":"y","frame":null},{"x":[1,1,1,1],"y":[3.73064415538561,3.81600288632387,3.63773959490878,3.84413376382407],"hoverinfo":"y","type":"box","fillcolor":"rgba(230,159,0,1)","marker":{"opacity":null,"outliercolor":"rgba(0,0,0,1)","line":{"width":1.88976377952756,"color":"rgba(0,0,0,1)"},"size":5.66929133858268},"line":{"color":"rgba(51,51,51,1)","width":1.88976377952756},"name":"(trt,2)","legendgroup":"(trt,2)","showlegend":true,"xaxis":"x2","yaxis":"y","frame":null},{"x":[1,1,1,1],"y":[3.20827199577471,3.48606374326543,2.82530745673601,3.12027108528531],"hoverinfo":"y","type":"box","fillcolor":"rgba(230,159,0,1)","marker":{"opacity":null,"outliercolor":"rgba(0,0,0,1)","line":{"width":1.88976377952756,"color":"rgba(0,0,0,1)"},"size":5.66929133858268},"line":{"color":"rgba(51,51,51,1)","width":1.88976377952756},"name":"(trt,3)","legendgroup":"(trt,3)","showlegend":true,"xaxis":"x3","yaxis":"y","frame":null},{"x":[1,1,1,1],"y":[1.65242137242843,2.11154731277845,1.93112316960655,1.79419901680174],"hoverinfo":"y","type":"box","fillcolor":"rgba(230,159,0,1)","marker":{"opacity":null,"outliercolor":"rgba(0,0,0,1)","line":{"width":1.88976377952756,"color":"rgba(0,0,0,1)"},"size":5.66929133858268},"line":{"color":"rgba(51,51,51,1)","width":1.88976377952756},"name":"(trt,4)","legendgroup":"(trt,4)","showlegend":true,"xaxis":"x","yaxis":"y2","frame":null},{"x":[1,1,1,1],"y":[3.33968854733852,3.227969656062,3.12063282561804,3.33922209086478],"hoverinfo":"y","type":"box","fillcolor":"rgba(230,159,0,1)","marker":{"opacity":null,"outliercolor":"rgba(0,0,0,1)","line":{"width":1.88976377952756,"color":"rgba(0,0,0,1)"},"size":5.66929133858268},"line":{"color":"rgba(51,51,51,1)","width":1.88976377952756},"name":"(trt,5)","legendgroup":"(trt,5)","showlegend":true,"xaxis":"x2","yaxis":"y2","frame":null},{"x":[1,1,1,1],"y":[2.89905240413481,2.79194409457512,2.60136364157697,3.05589265897356],"hoverinfo":"y","type":"box","fillcolor":"rgba(230,159,0,1)","marker":{"opacity":null,"outliercolor":"rgba(0,0,0,1)","line":{"width":1.88976377952756,"color":"rgba(0,0,0,1)"},"size":5.66929133858268},"line":{"color":"rgba(51,51,51,1)","width":1.88976377952756},"name":"(trt,6)","legendgroup":"(trt,6)","showlegend":true,"xaxis":"x3","yaxis":"y2","frame":null},{"x":[2,2,2,2],"y":[1.88450930407812,2.08667246288489,1.75347199448472,2.00731696964479],"hoverinfo":"y","type":"box","fillcolor":"rgba(86,180,233,1)","marker":{"opacity":null,"outliercolor":"rgba(0,0,0,1)","line":{"width":1.88976377952756,"color":"rgba(0,0,0,1)"},"size":5.66929133858268},"line":{"color":"rgba(51,51,51,1)","width":1.88976377952756},"name":"(untrt,1)","legendgroup":"(untrt,1)","showlegend":true,"xaxis":"x","yaxis":"y","frame":null},{"x":[2,2,2,2],"y":[2.79922778113043,3.00007848466273,2.8633343353318,2.82557281829644],"hoverinfo":"y","type":"box","fillcolor":"rgba(86,180,233,1)","marker":{"opacity":null,"outliercolor":"rgba(0,0,0,1)","line":{"width":1.88976377952756,"color":"rgba(0,0,0,1)"},"size":5.66929133858268},"line":{"color":"rgba(51,51,51,1)","width":1.88976377952756},"name":"(untrt,2)","legendgroup":"(untrt,2)","showlegend":true,"xaxis":"x2","yaxis":"y","frame":null},{"x":[2,2,2,2],"y":[2.92610890566171,2.62268358131662,2.25013531982859,2.57579220801279],"hoverinfo":"y","type":"box","fillcolor":"rgba(86,180,233,1)","marker":{"opacity":null,"outliercolor":"rgba(0,0,0,1)","line":{"width":1.88976377952756,"color":"rgba(0,0,0,1)"},"size":5.66929133858268},"line":{"color":"rgba(51,51,51,1)","width":1.88976377952756},"name":"(untrt,3)","legendgroup":"(untrt,3)","showlegend":true,"xaxis":"x3","yaxis":"y","frame":null},{"x":[2,2,2,2],"y":[2.49561949505115,2.87397144019785,2.77130167407313,2.6641608293693],"hoverinfo":"y","type":"box","fillcolor":"rgba(86,180,233,1)","marker":{"opacity":null,"outliercolor":"rgba(0,0,0,1)","line":{"width":1.88976377952756,"color":"rgba(0,0,0,1)"},"size":5.66929133858268},"line":{"color":"rgba(51,51,51,1)","width":1.88976377952756},"name":"(untrt,4)","legendgroup":"(untrt,4)","showlegend":true,"xaxis":"x","yaxis":"y2","frame":null},{"x":[2,2,2,2],"y":[1.77545286096872,1.91671162426974,1.91850446396388,1.9235908013111],"hoverinfo":"y","type":"box","fillcolor":"rgba(86,180,233,1)","marker":{"opacity":null,"outliercolor":"rgba(0,0,0,1)","line":{"width":1.88976377952756,"color":"rgba(0,0,0,1)"},"size":5.66929133858268},"line":{"color":"rgba(51,51,51,1)","width":1.88976377952756},"name":"(untrt,5)","legendgroup":"(untrt,5)","showlegend":true,"xaxis":"x2","yaxis":"y2","frame":null},{"x":[2,2,2,2],"y":[0.679652690730562,1.13313583033034,0.259809882187156,0.709154121013273],"hoverinfo":"y","type":"box","fillcolor":"rgba(86,180,233,1)","marker":{"opacity":null,"outliercolor":"rgba(0,0,0,1)","line":{"width":1.88976377952756,"color":"rgba(0,0,0,1)"},"size":5.66929133858268},"line":{"color":"rgba(51,51,51,1)","width":1.88976377952756},"name":"(untrt,6)","legendgroup":"(untrt,6)","showlegend":true,"xaxis":"x3","yaxis":"y2","frame":null},{"x":[1.07568719051778,0.664004793204367,1.12947592586279,1.32235507275909],"y":[2.89439399342273,3.07348144759386,2.6912642283885,3.00342300415959],"text":["counts_scaled + 1:  784.027578<br />sample: 509","counts_scaled + 1: 1184.390819<br />sample: 513","counts_scaled + 1:  491.235445<br />sample: 517","counts_scaled + 1: 1007.682207<br />sample: 521"],"type":"scatter","mode":"markers","marker":{"autocolorscale":false,"color":"rgba(230,159,0,1)","opacity":1,"size":5.66929133858268,"symbol":"circle","line":{"width":1.88976377952756,"color":"rgba(0,0,0,1)"}},"hoveron":"points","name":"(trt,1)","legendgroup":"(trt,1)","showlegend":false,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":[0.639159067906439,0.851994798891246,0.755091081932187,1.13263438269496],"y":[3.73065959611591,3.81609469501138,3.63784071383711,3.84421577999915],"text":["counts_scaled + 1: 5378.289251<br />sample: 509","counts_scaled + 1: 6546.405248<br />sample: 513","counts_scaled + 1: 4342.497678<br />sample: 517","counts_scaled + 1: 6984.474946<br />sample: 521"],"type":"scatter","mode":"markers","marker":{"autocolorscale":false,"color":"rgba(230,159,0,1)","opacity":1,"size":5.66929133858268,"symbol":"circle","line":{"width":1.88976377952756,"color":"rgba(0,0,0,1)"}},"hoveron":"points","name":"(trt,2)","legendgroup":"(trt,2)","showlegend":false,"xaxis":"x2","yaxis":"y","hoverinfo":"text","frame":null},{"x":[0.611788012646139,0.973207657039165,0.630478276312351,0.964062744192779],"y":[3.48607347657669,3.20828320846389,2.82527230167515,3.12023275684539],"text":["counts_scaled + 1: 3062.412884<br />sample: 509","counts_scaled + 1: 1615.369936<br />sample: 513","counts_scaled + 1:  668.817236<br />sample: 517","counts_scaled + 1: 1319.079847<br />sample: 521"],"type":"scatter","mode":"markers","marker":{"autocolorscale":false,"color":"rgba(230,159,0,1)","opacity":1,"size":5.66929133858268,"symbol":"circle","line":{"width":1.88976377952756,"color":"rgba(0,0,0,1)"}},"hoveron":"points","name":"(trt,3)","legendgroup":"(trt,3)","showlegend":false,"xaxis":"x3","yaxis":"y","hoverinfo":"text","frame":null},{"x":[0.926480319350958,0.937800389900804,0.6570208074525,1.06827069614083],"y":[1.65234857798049,2.11157450468486,1.93115879532194,1.79418486758273],"text":["counts_scaled + 1:   44.918099<br />sample: 509","counts_scaled + 1:  129.284754<br />sample: 513","counts_scaled + 1:   85.334209<br />sample: 517","counts_scaled + 1:   62.258552<br />sample: 521"],"type":"scatter","mode":"markers","marker":{"autocolorscale":false,"color":"rgba(230,159,0,1)","opacity":1,"size":5.66929133858268,"symbol":"circle","line":{"width":1.88976377952756,"color":"rgba(0,0,0,1)"}},"hoveron":"points","name":"(trt,4)","legendgroup":"(trt,4)","showlegend":false,"xaxis":"x","yaxis":"y2","hoverinfo":"text","frame":null},{"x":[1.08154566753656,1.06657845694572,0.860473284870386,0.811133616045117],"y":[3.33969792844475,3.22788150061409,3.12073100221619,3.33925761850002],"text":["counts_scaled + 1: 2186.193241<br />sample: 509","counts_scaled + 1: 1690.322826<br />sample: 513","counts_scaled + 1: 1320.179017<br />sample: 517","counts_scaled + 1: 2183.846409<br />sample: 521"],"type":"scatter","mode":"markers","marker":{"autocolorscale":false,"color":"rgba(230,159,0,1)","opacity":1,"size":5.66929133858268,"symbol":"circle","line":{"width":1.88976377952756,"color":"rgba(0,0,0,1)"}},"hoveron":"points","name":"(trt,5)","legendgroup":"(trt,5)","showlegend":false,"xaxis":"x2","yaxis":"y2","hoverinfo":"text","frame":null},{"x":[0.975494614988565,1.1159862216562,1.25004673935473,0.91865918058902],"y":[2.89911582065317,2.79198211466743,2.60146851314354,3.05597564046861],"text":["counts_scaled + 1:  792.596963<br />sample: 509","counts_scaled + 1:  619.361341<br />sample: 513","counts_scaled + 1:  399.359152<br />sample: 517","counts_scaled + 1: 1137.346143<br />sample: 521"],"type":"scatter","mode":"markers","marker":{"autocolorscale":false,"color":"rgba(230,159,0,1)","opacity":1,"size":5.66929133858268,"symbol":"circle","line":{"width":1.88976377952756,"color":"rgba(0,0,0,1)"}},"hoveron":"points","name":"(trt,6)","legendgroup":"(trt,6)","showlegend":false,"xaxis":"x3","yaxis":"y2","hoverinfo":"text","frame":null},{"x":[2.16959377061576,2.37190767470747,2.29163351505995,1.88086168374866],"y":[1.88440365586027,2.08660371279269,1.75350527648648,2.00721264339869],"text":["counts_scaled + 1:   76.649496<br />sample: 508","counts_scaled + 1:  122.087855<br />sample: 512","counts_scaled + 1:   56.685502<br />sample: 516","counts_scaled + 1:  101.699067<br />sample: 520"],"type":"scatter","mode":"markers","marker":{"autocolorscale":false,"color":"rgba(86,180,233,1)","opacity":1,"size":5.66929133858268,"symbol":"circle","line":{"width":1.88976377952756,"color":"rgba(0,0,0,1)"}},"hoveron":"points","name":"(untrt,1)","legendgroup":"(untrt,1)","showlegend":false,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":[1.70209929570556,1.91406915504485,1.87587554864585,1.69440829548985],"y":[2.79912415385035,3.00007090895463,2.8256290108471,2.86325977046578],"text":["counts_scaled + 1:  629.836436<br />sample: 508","counts_scaled + 1: 1000.180734<br />sample: 512","counts_scaled + 1:  669.226020<br />sample: 516","counts_scaled + 1:  730.019289<br />sample: 520"],"type":"scatter","mode":"markers","marker":{"autocolorscale":false,"color":"rgba(86,180,233,1)","opacity":1,"size":5.66929133858268,"symbol":"circle","line":{"width":1.88976377952756,"color":"rgba(0,0,0,1)"}},"hoveron":"points","name":"(untrt,2)","legendgroup":"(untrt,2)","showlegend":false,"xaxis":"x2","yaxis":"y","hoverinfo":"text","frame":null},{"x":[1.74894004017115,2.37193419765681,2.07504641674459,2.13570250887424],"y":[2.92612047195393,2.62263582643547,2.25011971055466,2.57584207180147],"text":["counts_scaled + 1:  843.546263<br />sample: 508","counts_scaled + 1:  419.453267<br />sample: 512","counts_scaled + 1:  177.883358<br />sample: 516","counts_scaled + 1:  376.523605<br />sample: 520"],"type":"scatter","mode":"markers","marker":{"autocolorscale":false,"color":"rgba(86,180,233,1)","opacity":1,"size":5.66929133858268,"symbol":"circle","line":{"width":1.88976377952756,"color":"rgba(0,0,0,1)"}},"hoveron":"points","name":"(untrt,3)","legendgroup":"(untrt,3)","showlegend":false,"xaxis":"x3","yaxis":"y","hoverinfo":"text","frame":null},{"x":[2.15872713178396,2.37249662149698,2.04575927704573,1.79129946287721],"y":[2.49569939218657,2.87391417520257,2.77137919002263,2.66411217904676],"text":["counts_scaled + 1:  313.054171<br />sample: 508","counts_scaled + 1:  748.120301<br />sample: 512","counts_scaled + 1:  590.611194<br />sample: 516","counts_scaled + 1:  461.488443<br />sample: 520"],"type":"scatter","mode":"markers","marker":{"autocolorscale":false,"color":"rgba(86,180,233,1)","opacity":1,"size":5.66929133858268,"symbol":"circle","line":{"width":1.88976377952756,"color":"rgba(0,0,0,1)"}},"hoveron":"points","name":"(untrt,4)","legendgroup":"(untrt,4)","showlegend":false,"xaxis":"x","yaxis":"y2","hoverinfo":"text","frame":null},{"x":[1.74812671355903,1.7460226027295,1.67715411838144,1.78915820997208],"y":[1.77554611442008,1.91671146663836,1.9184536867531,1.92366476493498],"text":["counts_scaled + 1:   59.628359<br />sample: 508","counts_scaled + 1:   82.548963<br />sample: 512","counts_scaled + 1:   82.890444<br />sample: 516","counts_scaled + 1:   83.866941<br />sample: 520"],"type":"scatter","mode":"markers","marker":{"autocolorscale":false,"color":"rgba(86,180,233,1)","opacity":1,"size":5.66929133858268,"symbol":"circle","line":{"width":1.88976377952756,"color":"rgba(0,0,0,1)"}},"hoveron":"points","name":"(untrt,5)","legendgroup":"(untrt,5)","showlegend":false,"xaxis":"x2","yaxis":"y2","hoverinfo":"text","frame":null},{"x":[2.29045273661613,2.30432495903224,1.8607361998409,1.79963647071272],"y":[0.679656927408577,0.709089769244422,0.259841275464719,1.13318585858375],"text":["counts_scaled + 1:    4.782475<br />sample: 508","counts_scaled + 1:    5.118635<br />sample: 512","counts_scaled + 1:    1.818904<br />sample: 516","counts_scaled + 1:   13.587383<br />sample: 520"],"type":"scatter","mode":"markers","marker":{"autocolorscale":false,"color":"rgba(86,180,233,1)","opacity":1,"size":5.66929133858268,"symbol":"circle","line":{"width":1.88976377952756,"color":"rgba(0,0,0,1)"}},"hoveron":"points","name":"(untrt,6)","legendgroup":"(untrt,6)","showlegend":false,"xaxis":"x3","yaxis":"y2","hoverinfo":"text","frame":null}],"layout":{"margin":{"t":40.5768157463462,"r":7.30593607305936,"b":44.1700079422781,"l":58.7795765877958},"plot_bgcolor":"rgba(255,255,255,1)","paper_bgcolor":"rgba(255,255,255,1)","font":{"color":"rgba(0,0,0,1)","family":"","size":15.9402241594022},"xaxis":{"domain":[0,0.32941943900848],"automargin":true,"type":"linear","autorange":false,"range":[0.4,2.6],"tickmode":"array","ticktext":["trt","untrt"],"tickvals":[1,2],"categoryorder":"array","categoryarray":["trt","untrt"],"nticks":null,"ticks":"outside","tickcolor":"rgba(51,51,51,1)","ticklen":3.65296803652968,"tickwidth":0.66417600664176,"showticklabels":true,"tickfont":{"color":"rgba(77,77,77,1)","family":"","size":12.7521793275218},"tickangle":-0,"showline":true,"linecolor":"rgba(0,0,0,1)","linewidth":0.66417600664176,"showgrid":true,"gridcolor":"rgba(235,235,235,1)","gridwidth":0.265670402656704,"zeroline":false,"anchor":"y2","title":"","hoverformat":".2f"},"annotations":[{"text":"dex","x":0.5,"y":-0.0211346180148144,"showarrow":false,"ax":0,"ay":0,"font":{"color":"rgba(0,0,0,1)","family":"","size":15.9402241594022},"xref":"paper","yref":"paper","textangle":-0,"xanchor":"center","yanchor":"top","annotationType":"axis"},{"text":"counts_scaled + 1","x":-0.0233054616616261,"y":0.5,"showarrow":false,"ax":0,"ay":0,"font":{"color":"rgba(0,0,0,1)","family":"","size":15.9402241594022},"xref":"paper","yref":"paper","textangle":-90,"xanchor":"right","yanchor":"center","annotationType":"axis"},{"text":"CACNB2","x":0.16470971950424,"y":1,"showarrow":false,"ax":0,"ay":0,"font":{"color":"rgba(26,26,26,1)","family":"","size":12.7521793275218},"xref":"paper","yref":"paper","textangle":-0,"xanchor":"center","yanchor":"bottom"},{"text":"DUSP1","x":0.5,"y":1,"showarrow":false,"ax":0,"ay":0,"font":{"color":"rgba(26,26,26,1)","family":"","size":12.7521793275218},"xref":"paper","yref":"paper","textangle":-0,"xanchor":"center","yanchor":"bottom"},{"text":"PDPN","x":0.83529028049576,"y":1,"showarrow":false,"ax":0,"ay":0,"font":{"color":"rgba(26,26,26,1)","family":"","size":12.7521793275218},"xref":"paper","yref":"paper","textangle":-0,"xanchor":"center","yanchor":"bottom"},{"text":"PRSS35","x":0.16470971950424,"y":0.482608570461924,"showarrow":false,"ax":0,"ay":0,"font":{"color":"rgba(26,26,26,1)","family":"","size":12.7521793275218},"xref":"paper","yref":"paper","textangle":-0,"xanchor":"center","yanchor":"bottom"},{"text":"SPARCL1","x":0.5,"y":0.482608570461924,"showarrow":false,"ax":0,"ay":0,"font":{"color":"rgba(26,26,26,1)","family":"","size":12.7521793275218},"xref":"paper","yref":"paper","textangle":-0,"xanchor":"center","yanchor":"bottom"},{"text":"ZBTB16","x":0.83529028049576,"y":0.482608570461924,"showarrow":false,"ax":0,"ay":0,"font":{"color":"rgba(26,26,26,1)","family":"","size":12.7521793275218},"xref":"paper","yref":"paper","textangle":-0,"xanchor":"center","yanchor":"bottom"},{"text":"dex","x":1.02,"y":1,"showarrow":false,"ax":0,"ay":0,"font":{"color":"rgba(0,0,0,1)","family":"","size":15.9402241594022},"xref":"paper","yref":"paper","textangle":-0,"xanchor":"left","yanchor":"bottom","legendTitle":true}],"yaxis":{"domain":[0.517391429538076,1],"automargin":true,"type":"linear","autorange":false,"range":[0.0805895872965569,4.02343607488975],"tickmode":"array","ticktext":["10","100","1000","10000"],"tickvals":[1,2,3,4],"categoryorder":"array","categoryarray":["10","100","1000","10000"],"nticks":null,"ticks":"outside","tickcolor":"rgba(51,51,51,1)","ticklen":3.65296803652968,"tickwidth":0.66417600664176,"showticklabels":true,"tickfont":{"color":"rgba(77,77,77,1)","family":"","size":12.7521793275218},"tickangle":-0,"showline":true,"linecolor":"rgba(0,0,0,1)","linewidth":0.66417600664176,"showgrid":true,"gridcolor":"rgba(235,235,235,1)","gridwidth":0.265670402656704,"zeroline":false,"anchor":"x","title":"","hoverformat":".2f"},"shapes":[{"type":"rect","fillcolor":null,"line":{"color":null,"width":0,"linetype":[]},"yref":"paper","xref":"paper","x0":0,"x1":0.32941943900848,"y0":0.517391429538076,"y1":1},{"type":"rect","fillcolor":null,"line":{"color":null,"width":0,"linetype":[]},"yref":"paper","xref":"paper","x0":0,"x1":0.32941943900848,"y0":0,"y1":24.4416770444168,"yanchor":1,"ysizemode":"pixel"},{"type":"rect","fillcolor":null,"line":{"color":null,"width":0,"linetype":[]},"yref":"paper","xref":"paper","x0":0.337247227658187,"x1":0.662752772341813,"y0":0.517391429538076,"y1":1},{"type":"rect","fillcolor":null,"line":{"color":null,"width":0,"linetype":[]},"yref":"paper","xref":"paper","x0":0.337247227658187,"x1":0.662752772341813,"y0":0,"y1":24.4416770444168,"yanchor":1,"ysizemode":"pixel"},{"type":"rect","fillcolor":null,"line":{"color":null,"width":0,"linetype":[]},"yref":"paper","xref":"paper","x0":0.67058056099152,"x1":1,"y0":0.517391429538076,"y1":1},{"type":"rect","fillcolor":null,"line":{"color":null,"width":0,"linetype":[]},"yref":"paper","xref":"paper","x0":0.67058056099152,"x1":1,"y0":0,"y1":24.4416770444168,"yanchor":1,"ysizemode":"pixel"},{"type":"rect","fillcolor":null,"line":{"color":null,"width":0,"linetype":[]},"yref":"paper","xref":"paper","x0":0,"x1":0.32941943900848,"y0":0,"y1":0.482608570461924},{"type":"rect","fillcolor":null,"line":{"color":null,"width":0,"linetype":[]},"yref":"paper","xref":"paper","x0":0,"x1":0.32941943900848,"y0":0,"y1":24.4416770444168,"yanchor":0.482608570461924,"ysizemode":"pixel"},{"type":"rect","fillcolor":null,"line":{"color":null,"width":0,"linetype":[]},"yref":"paper","xref":"paper","x0":0.337247227658187,"x1":0.662752772341813,"y0":0,"y1":0.482608570461924},{"type":"rect","fillcolor":null,"line":{"color":null,"width":0,"linetype":[]},"yref":"paper","xref":"paper","x0":0.337247227658187,"x1":0.662752772341813,"y0":0,"y1":24.4416770444168,"yanchor":0.482608570461924,"ysizemode":"pixel"},{"type":"rect","fillcolor":null,"line":{"color":null,"width":0,"linetype":[]},"yref":"paper","xref":"paper","x0":0.67058056099152,"x1":1,"y0":0,"y1":0.482608570461924},{"type":"rect","fillcolor":null,"line":{"color":null,"width":0,"linetype":[]},"yref":"paper","xref":"paper","x0":0.67058056099152,"x1":1,"y0":0,"y1":24.4416770444168,"yanchor":0.482608570461924,"ysizemode":"pixel"}],"xaxis2":{"type":"linear","autorange":false,"range":[0.4,2.6],"tickmode":"array","ticktext":["trt","untrt"],"tickvals":[1,2],"categoryorder":"array","categoryarray":["trt","untrt"],"nticks":null,"ticks":"outside","tickcolor":"rgba(51,51,51,1)","ticklen":3.65296803652968,"tickwidth":0.66417600664176,"showticklabels":true,"tickfont":{"color":"rgba(77,77,77,1)","family":"","size":12.7521793275218},"tickangle":-0,"showline":true,"linecolor":"rgba(0,0,0,1)","linewidth":0.66417600664176,"showgrid":true,"domain":[0.337247227658187,0.662752772341813],"gridcolor":"rgba(235,235,235,1)","gridwidth":0.265670402656704,"zeroline":false,"anchor":"y2","title":"","hoverformat":".2f"},"xaxis3":{"type":"linear","autorange":false,"range":[0.4,2.6],"tickmode":"array","ticktext":["trt","untrt"],"tickvals":[1,2],"categoryorder":"array","categoryarray":["trt","untrt"],"nticks":null,"ticks":"outside","tickcolor":"rgba(51,51,51,1)","ticklen":3.65296803652968,"tickwidth":0.66417600664176,"showticklabels":true,"tickfont":{"color":"rgba(77,77,77,1)","family":"","size":12.7521793275218},"tickangle":-0,"showline":true,"linecolor":"rgba(0,0,0,1)","linewidth":0.66417600664176,"showgrid":true,"domain":[0.67058056099152,1],"gridcolor":"rgba(235,235,235,1)","gridwidth":0.265670402656704,"zeroline":false,"anchor":"y2","title":"","hoverformat":".2f"},"yaxis2":{"type":"linear","autorange":false,"range":[0.0805895872965569,4.02343607488975],"tickmode":"array","ticktext":["10","100","1000","10000"],"tickvals":[1,2,3,4],"categoryorder":"array","categoryarray":["10","100","1000","10000"],"nticks":null,"ticks":"outside","tickcolor":"rgba(51,51,51,1)","ticklen":3.65296803652968,"tickwidth":0.66417600664176,"showticklabels":true,"tickfont":{"color":"rgba(77,77,77,1)","family":"","size":12.7521793275218},"tickangle":-0,"showline":true,"linecolor":"rgba(0,0,0,1)","linewidth":0.66417600664176,"showgrid":true,"domain":[0,0.482608570461924],"gridcolor":"rgba(235,235,235,1)","gridwidth":0.265670402656704,"zeroline":false,"anchor":"x","title":"","hoverformat":".2f"},"showlegend":true,"legend":{"bgcolor":"rgba(255,255,255,1)","bordercolor":"transparent","borderwidth":1.88976377952756,"font":{"color":"rgba(0,0,0,1)","family":"","size":12.7521793275218},"y":0.960675435801739},"hovermode":"closest","barmode":"relative"},"config":{"doubleClick":"reset","showSendToCloud":false},"source":"A","attrs":{"19a15c828e1e":{"x":{},"y":{},"fill":{},"label":{},"type":"box"},"19a1552430c":{"x":{},"y":{},"fill":{},"label":{}}},"cur_data":"19a15c828e1e","visdat":{"19a15c828e1e":["function (y) ","x"],"19a1552430c":["function (y) ","x"]},"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.2,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-cd04c80d3e4cebe92e61" style="width:70%;height:432.632880098888px;" class="plotly html-widget"></div>
+<script type="application/json" data-for="htmlwidget-cd04c80d3e4cebe92e61">{"x":{"data":[{"x":[1,1,1,1],"y":[2.69128969599625,3.07349503218585,2.89433133924867,3.00332359018516],"hoverinfo":"y","type":"box","fillcolor":"rgba(230,159,0,1)","marker":{"opacity":null,"outliercolor":"rgba(0,0,0,1)","line":{"width":1.88976377952756,"color":"rgba(0,0,0,1)"},"size":5.66929133858268},"line":{"color":"rgba(51,51,51,1)","width":1.88976377952756},"name":"(trt,1)","legendgroup":"(trt,1)","showlegend":true,"xaxis":"x","yaxis":"y","frame":null},{"x":[1,1,1,1],"y":[3.73064415538561,3.81600288632387,3.63773959490878,3.84413376382407],"hoverinfo":"y","type":"box","fillcolor":"rgba(230,159,0,1)","marker":{"opacity":null,"outliercolor":"rgba(0,0,0,1)","line":{"width":1.88976377952756,"color":"rgba(0,0,0,1)"},"size":5.66929133858268},"line":{"color":"rgba(51,51,51,1)","width":1.88976377952756},"name":"(trt,2)","legendgroup":"(trt,2)","showlegend":true,"xaxis":"x2","yaxis":"y","frame":null},{"x":[1,1,1,1],"y":[3.20827199577471,3.48606374326543,2.82530745673601,3.12027108528531],"hoverinfo":"y","type":"box","fillcolor":"rgba(230,159,0,1)","marker":{"opacity":null,"outliercolor":"rgba(0,0,0,1)","line":{"width":1.88976377952756,"color":"rgba(0,0,0,1)"},"size":5.66929133858268},"line":{"color":"rgba(51,51,51,1)","width":1.88976377952756},"name":"(trt,3)","legendgroup":"(trt,3)","showlegend":true,"xaxis":"x3","yaxis":"y","frame":null},{"x":[1,1,1,1],"y":[1.65242137242843,2.11154731277845,1.93112316960655,1.79419901680174],"hoverinfo":"y","type":"box","fillcolor":"rgba(230,159,0,1)","marker":{"opacity":null,"outliercolor":"rgba(0,0,0,1)","line":{"width":1.88976377952756,"color":"rgba(0,0,0,1)"},"size":5.66929133858268},"line":{"color":"rgba(51,51,51,1)","width":1.88976377952756},"name":"(trt,4)","legendgroup":"(trt,4)","showlegend":true,"xaxis":"x","yaxis":"y2","frame":null},{"x":[1,1,1,1],"y":[3.33968854733852,3.227969656062,3.12063282561804,3.33922209086478],"hoverinfo":"y","type":"box","fillcolor":"rgba(230,159,0,1)","marker":{"opacity":null,"outliercolor":"rgba(0,0,0,1)","line":{"width":1.88976377952756,"color":"rgba(0,0,0,1)"},"size":5.66929133858268},"line":{"color":"rgba(51,51,51,1)","width":1.88976377952756},"name":"(trt,5)","legendgroup":"(trt,5)","showlegend":true,"xaxis":"x2","yaxis":"y2","frame":null},{"x":[1,1,1,1],"y":[2.89905240413481,2.79194409457512,2.60136364157697,3.05589265897356],"hoverinfo":"y","type":"box","fillcolor":"rgba(230,159,0,1)","marker":{"opacity":null,"outliercolor":"rgba(0,0,0,1)","line":{"width":1.88976377952756,"color":"rgba(0,0,0,1)"},"size":5.66929133858268},"line":{"color":"rgba(51,51,51,1)","width":1.88976377952756},"name":"(trt,6)","legendgroup":"(trt,6)","showlegend":true,"xaxis":"x3","yaxis":"y2","frame":null},{"x":[2,2,2,2],"y":[1.88450930407812,2.08667246288489,1.75347199448472,2.00731696964479],"hoverinfo":"y","type":"box","fillcolor":"rgba(86,180,233,1)","marker":{"opacity":null,"outliercolor":"rgba(0,0,0,1)","line":{"width":1.88976377952756,"color":"rgba(0,0,0,1)"},"size":5.66929133858268},"line":{"color":"rgba(51,51,51,1)","width":1.88976377952756},"name":"(untrt,1)","legendgroup":"(untrt,1)","showlegend":true,"xaxis":"x","yaxis":"y","frame":null},{"x":[2,2,2,2],"y":[2.79922778113043,3.00007848466273,2.8633343353318,2.82557281829644],"hoverinfo":"y","type":"box","fillcolor":"rgba(86,180,233,1)","marker":{"opacity":null,"outliercolor":"rgba(0,0,0,1)","line":{"width":1.88976377952756,"color":"rgba(0,0,0,1)"},"size":5.66929133858268},"line":{"color":"rgba(51,51,51,1)","width":1.88976377952756},"name":"(untrt,2)","legendgroup":"(untrt,2)","showlegend":true,"xaxis":"x2","yaxis":"y","frame":null},{"x":[2,2,2,2],"y":[2.92610890566171,2.62268358131662,2.25013531982859,2.57579220801279],"hoverinfo":"y","type":"box","fillcolor":"rgba(86,180,233,1)","marker":{"opacity":null,"outliercolor":"rgba(0,0,0,1)","line":{"width":1.88976377952756,"color":"rgba(0,0,0,1)"},"size":5.66929133858268},"line":{"color":"rgba(51,51,51,1)","width":1.88976377952756},"name":"(untrt,3)","legendgroup":"(untrt,3)","showlegend":true,"xaxis":"x3","yaxis":"y","frame":null},{"x":[2,2,2,2],"y":[2.49561949505115,2.87397144019785,2.77130167407313,2.6641608293693],"hoverinfo":"y","type":"box","fillcolor":"rgba(86,180,233,1)","marker":{"opacity":null,"outliercolor":"rgba(0,0,0,1)","line":{"width":1.88976377952756,"color":"rgba(0,0,0,1)"},"size":5.66929133858268},"line":{"color":"rgba(51,51,51,1)","width":1.88976377952756},"name":"(untrt,4)","legendgroup":"(untrt,4)","showlegend":true,"xaxis":"x","yaxis":"y2","frame":null},{"x":[2,2,2,2],"y":[1.77545286096872,1.91671162426974,1.91850446396388,1.9235908013111],"hoverinfo":"y","type":"box","fillcolor":"rgba(86,180,233,1)","marker":{"opacity":null,"outliercolor":"rgba(0,0,0,1)","line":{"width":1.88976377952756,"color":"rgba(0,0,0,1)"},"size":5.66929133858268},"line":{"color":"rgba(51,51,51,1)","width":1.88976377952756},"name":"(untrt,5)","legendgroup":"(untrt,5)","showlegend":true,"xaxis":"x2","yaxis":"y2","frame":null},{"x":[2,2,2,2],"y":[0.679652690730562,1.13313583033034,0.259809882187156,0.709154121013273],"hoverinfo":"y","type":"box","fillcolor":"rgba(86,180,233,1)","marker":{"opacity":null,"outliercolor":"rgba(0,0,0,1)","line":{"width":1.88976377952756,"color":"rgba(0,0,0,1)"},"size":5.66929133858268},"line":{"color":"rgba(51,51,51,1)","width":1.88976377952756},"name":"(untrt,6)","legendgroup":"(untrt,6)","showlegend":true,"xaxis":"x3","yaxis":"y2","frame":null},{"x":[0.896409725025296,1.18051608819515,0.901508065499365,0.702589266560972],"y":[2.89427497827321,3.07354878282226,2.6912203978586,3.00336449812348],"text":["counts_scaled + 1:  784.027578<br />sample: 509","counts_scaled + 1: 1184.390819<br />sample: 513","counts_scaled + 1:  491.235445<br />sample: 517","counts_scaled + 1: 1007.682207<br />sample: 521"],"type":"scatter","mode":"markers","marker":{"autocolorscale":false,"color":"rgba(230,159,0,1)","opacity":1,"size":5.66929133858268,"symbol":"circle","line":{"width":1.88976377952756,"color":"rgba(0,0,0,1)"}},"hoveron":"points","name":"(trt,1)","legendgroup":"(trt,1)","showlegend":false,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":[0.808482477813959,0.78995149563998,0.605510131642222,1.18204907029867],"y":[3.73070655486509,3.81607158738587,3.63766925685061,3.8441011720193],"text":["counts_scaled + 1: 5378.289251<br />sample: 509","counts_scaled + 1: 6546.405248<br />sample: 513","counts_scaled + 1: 4342.497678<br />sample: 517","counts_scaled + 1: 6984.474946<br />sample: 521"],"type":"scatter","mode":"markers","marker":{"autocolorscale":false,"color":"rgba(230,159,0,1)","opacity":1,"size":5.66929133858268,"symbol":"circle","line":{"width":1.88976377952756,"color":"rgba(0,0,0,1)"}},"hoveron":"points","name":"(trt,2)","legendgroup":"(trt,2)","showlegend":false,"xaxis":"x2","yaxis":"y","hoverinfo":"text","frame":null},{"x":[1.33037226200104,1.33437401652336,0.975728755071759,1.08881170302629],"y":[3.48606185681525,3.20834186308443,2.82528410815869,3.12021288822306],"text":["counts_scaled + 1: 3062.412884<br />sample: 509","counts_scaled + 1: 1615.369936<br />sample: 513","counts_scaled + 1:  668.817236<br />sample: 517","counts_scaled + 1: 1319.079847<br />sample: 521"],"type":"scatter","mode":"markers","marker":{"autocolorscale":false,"color":"rgba(230,159,0,1)","opacity":1,"size":5.66929133858268,"symbol":"circle","line":{"width":1.88976377952756,"color":"rgba(0,0,0,1)"}},"hoveron":"points","name":"(trt,3)","legendgroup":"(trt,3)","showlegend":false,"xaxis":"x3","yaxis":"y","hoverinfo":"text","frame":null},{"x":[0.995647760666907,0.96163248680532,0.681509651988745,0.881171672977507],"y":[1.65234789749001,2.11150779139702,1.93103464007297,1.79410969560869],"text":["counts_scaled + 1:   44.918099<br />sample: 509","counts_scaled + 1:  129.284754<br />sample: 513","counts_scaled + 1:   85.334209<br />sample: 517","counts_scaled + 1:   62.258552<br />sample: 521"],"type":"scatter","mode":"markers","marker":{"autocolorscale":false,"color":"rgba(230,159,0,1)","opacity":1,"size":5.66929133858268,"symbol":"circle","line":{"width":1.88976377952756,"color":"rgba(0,0,0,1)"}},"hoveron":"points","name":"(trt,4)","legendgroup":"(trt,4)","showlegend":false,"xaxis":"x","yaxis":"y2","hoverinfo":"text","frame":null},{"x":[1.36692028753459,1.02447656653821,1.1593237709254,0.901891537383199],"y":[3.33966394183118,3.22804370982543,3.12067573248922,3.33931862273607],"text":["counts_scaled + 1: 2186.193241<br />sample: 509","counts_scaled + 1: 1690.322826<br />sample: 513","counts_scaled + 1: 1320.179017<br />sample: 517","counts_scaled + 1: 2183.846409<br />sample: 521"],"type":"scatter","mode":"markers","marker":{"autocolorscale":false,"color":"rgba(230,159,0,1)","opacity":1,"size":5.66929133858268,"symbol":"circle","line":{"width":1.88976377952756,"color":"rgba(0,0,0,1)"}},"hoveron":"points","name":"(trt,5)","legendgroup":"(trt,5)","showlegend":false,"xaxis":"x2","yaxis":"y2","hoverinfo":"text","frame":null},{"x":[1.31177026256919,0.951229945383966,0.692443760298193,1.27445653993636],"y":[2.89905612475632,2.79197486227149,2.60139366625032,3.05586729862183],"text":["counts_scaled + 1:  792.596963<br />sample: 509","counts_scaled + 1:  619.361341<br />sample: 513","counts_scaled + 1:  399.359152<br />sample: 517","counts_scaled + 1: 1137.346143<br />sample: 521"],"type":"scatter","mode":"markers","marker":{"autocolorscale":false,"color":"rgba(230,159,0,1)","opacity":1,"size":5.66929133858268,"symbol":"circle","line":{"width":1.88976377952756,"color":"rgba(0,0,0,1)"}},"hoveron":"points","name":"(trt,6)","legendgroup":"(trt,6)","showlegend":false,"xaxis":"x3","yaxis":"y2","hoverinfo":"text","frame":null},{"x":[1.77771427575499,2.09346094690263,1.99374766163528,2.39428410772234],"y":[1.88453313138647,2.08661339018539,1.75351225586489,2.00737883720512],"text":["counts_scaled + 1:   76.649496<br />sample: 508","counts_scaled + 1:  122.087855<br />sample: 512","counts_scaled + 1:   56.685502<br />sample: 516","counts_scaled + 1:  101.699067<br />sample: 520"],"type":"scatter","mode":"markers","marker":{"autocolorscale":false,"color":"rgba(86,180,233,1)","opacity":1,"size":5.66929133858268,"symbol":"circle","line":{"width":1.88976377952756,"color":"rgba(0,0,0,1)"}},"hoveron":"points","name":"(untrt,1)","legendgroup":"(untrt,1)","showlegend":false,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":[1.74988151229918,1.90406893994659,2.32026427555829,2.1548537440598],"y":[2.79912191867102,3.00005208964996,2.82556707197612,2.86342742438368],"text":["counts_scaled + 1:  629.836436<br />sample: 508","counts_scaled + 1: 1000.180734<br />sample: 512","counts_scaled + 1:  669.226020<br />sample: 516","counts_scaled + 1:  730.019289<br />sample: 520"],"type":"scatter","mode":"markers","marker":{"autocolorscale":false,"color":"rgba(86,180,233,1)","opacity":1,"size":5.66929133858268,"symbol":"circle","line":{"width":1.88976377952756,"color":"rgba(0,0,0,1)"}},"hoveron":"points","name":"(untrt,2)","legendgroup":"(untrt,2)","showlegend":false,"xaxis":"x2","yaxis":"y","hoverinfo":"text","frame":null},{"x":[1.94962781555951,2.30095469262451,2.26448012441397,1.68548149522394],"y":[2.926114007127,2.62277820014887,2.25013499756937,2.57570872340534],"text":["counts_scaled + 1:  843.546263<br />sample: 508","counts_scaled + 1:  419.453267<br />sample: 512","counts_scaled + 1:  177.883358<br />sample: 516","counts_scaled + 1:  376.523605<br />sample: 520"],"type":"scatter","mode":"markers","marker":{"autocolorscale":false,"color":"rgba(86,180,233,1)","opacity":1,"size":5.66929133858268,"symbol":"circle","line":{"width":1.88976377952756,"color":"rgba(0,0,0,1)"}},"hoveron":"points","name":"(untrt,3)","legendgroup":"(untrt,3)","showlegend":false,"xaxis":"x3","yaxis":"y","hoverinfo":"text","frame":null},{"x":[1.90074439458549,1.68499338626862,2.35502298772335,1.95383698269725],"y":[2.49561711885454,2.8740706005963,2.77121448468443,2.66423290732459],"text":["counts_scaled + 1:  313.054171<br />sample: 508","counts_scaled + 1:  748.120301<br />sample: 512","counts_scaled + 1:  590.611194<br />sample: 516","counts_scaled + 1:  461.488443<br />sample: 520"],"type":"scatter","mode":"markers","marker":{"autocolorscale":false,"color":"rgba(86,180,233,1)","opacity":1,"size":5.66929133858268,"symbol":"circle","line":{"width":1.88976377952756,"color":"rgba(0,0,0,1)"}},"hoveron":"points","name":"(untrt,4)","legendgroup":"(untrt,4)","showlegend":false,"xaxis":"x","yaxis":"y2","hoverinfo":"text","frame":null},{"x":[2.38476461600512,2.22487306576222,1.81990090608597,2.07454267945141],"y":[1.77538380554137,1.91672966072068,1.91858407815947,1.92363752878893],"text":["counts_scaled + 1:   59.628359<br />sample: 508","counts_scaled + 1:   82.548963<br />sample: 512","counts_scaled + 1:   82.890444<br />sample: 516","counts_scaled + 1:   83.866941<br />sample: 520"],"type":"scatter","mode":"markers","marker":{"autocolorscale":false,"color":"rgba(86,180,233,1)","opacity":1,"size":5.66929133858268,"symbol":"circle","line":{"width":1.88976377952756,"color":"rgba(0,0,0,1)"}},"hoveron":"points","name":"(untrt,5)","legendgroup":"(untrt,5)","showlegend":false,"xaxis":"x2","yaxis":"y2","hoverinfo":"text","frame":null},{"x":[2.29003200083971,2.01361056342721,1.69523102156818,1.94385096281767],"y":[0.679683112650736,0.709056756652179,0.259733966417838,1.13319216631944],"text":["counts_scaled + 1:    4.782475<br />sample: 508","counts_scaled + 1:    5.118635<br />sample: 512","counts_scaled + 1:    1.818904<br />sample: 516","counts_scaled + 1:   13.587383<br />sample: 520"],"type":"scatter","mode":"markers","marker":{"autocolorscale":false,"color":"rgba(86,180,233,1)","opacity":1,"size":5.66929133858268,"symbol":"circle","line":{"width":1.88976377952756,"color":"rgba(0,0,0,1)"}},"hoveron":"points","name":"(untrt,6)","legendgroup":"(untrt,6)","showlegend":false,"xaxis":"x3","yaxis":"y2","hoverinfo":"text","frame":null}],"layout":{"margin":{"t":40.5768157463462,"r":7.30593607305936,"b":44.1700079422781,"l":58.7795765877958},"plot_bgcolor":"rgba(255,255,255,1)","paper_bgcolor":"rgba(255,255,255,1)","font":{"color":"rgba(0,0,0,1)","family":"","size":15.9402241594022},"xaxis":{"domain":[0,0.32941943900848],"automargin":true,"type":"linear","autorange":false,"range":[0.4,2.6],"tickmode":"array","ticktext":["trt","untrt"],"tickvals":[1,2],"categoryorder":"array","categoryarray":["trt","untrt"],"nticks":null,"ticks":"outside","tickcolor":"rgba(51,51,51,1)","ticklen":3.65296803652968,"tickwidth":0.66417600664176,"showticklabels":true,"tickfont":{"color":"rgba(77,77,77,1)","family":"","size":12.7521793275218},"tickangle":-30,"showline":true,"linecolor":"rgba(0,0,0,1)","linewidth":0.66417600664176,"showgrid":true,"gridcolor":"rgba(235,235,235,1)","gridwidth":0.265670402656704,"zeroline":false,"anchor":"y2","title":"","hoverformat":".2f"},"annotations":[{"text":"dex","x":0.5,"y":-0.0211346180148144,"showarrow":false,"ax":0,"ay":0,"font":{"color":"rgba(0,0,0,1)","family":"","size":15.9402241594022},"xref":"paper","yref":"paper","textangle":-0,"xanchor":"center","yanchor":"top","annotationType":"axis"},{"text":"counts_scaled + 1","x":-0.0233054616616261,"y":0.5,"showarrow":false,"ax":0,"ay":0,"font":{"color":"rgba(0,0,0,1)","family":"","size":15.9402241594022},"xref":"paper","yref":"paper","textangle":-90,"xanchor":"right","yanchor":"center","annotationType":"axis"},{"text":"CACNB2","x":0.16470971950424,"y":1,"showarrow":false,"ax":0,"ay":0,"font":{"color":"rgba(26,26,26,1)","family":"","size":12.7521793275218},"xref":"paper","yref":"paper","textangle":-0,"xanchor":"center","yanchor":"bottom"},{"text":"DUSP1","x":0.5,"y":1,"showarrow":false,"ax":0,"ay":0,"font":{"color":"rgba(26,26,26,1)","family":"","size":12.7521793275218},"xref":"paper","yref":"paper","textangle":-0,"xanchor":"center","yanchor":"bottom"},{"text":"PDPN","x":0.83529028049576,"y":1,"showarrow":false,"ax":0,"ay":0,"font":{"color":"rgba(26,26,26,1)","family":"","size":12.7521793275218},"xref":"paper","yref":"paper","textangle":-0,"xanchor":"center","yanchor":"bottom"},{"text":"PRSS35","x":0.16470971950424,"y":0.482608570461924,"showarrow":false,"ax":0,"ay":0,"font":{"color":"rgba(26,26,26,1)","family":"","size":12.7521793275218},"xref":"paper","yref":"paper","textangle":-0,"xanchor":"center","yanchor":"bottom"},{"text":"SPARCL1","x":0.5,"y":0.482608570461924,"showarrow":false,"ax":0,"ay":0,"font":{"color":"rgba(26,26,26,1)","family":"","size":12.7521793275218},"xref":"paper","yref":"paper","textangle":-0,"xanchor":"center","yanchor":"bottom"},{"text":"ZBTB16","x":0.83529028049576,"y":0.482608570461924,"showarrow":false,"ax":0,"ay":0,"font":{"color":"rgba(26,26,26,1)","family":"","size":12.7521793275218},"xref":"paper","yref":"paper","textangle":-0,"xanchor":"center","yanchor":"bottom"},{"text":"dex","x":1.02,"y":1,"showarrow":false,"ax":0,"ay":0,"font":{"color":"rgba(0,0,0,1)","family":"","size":15.9402241594022},"xref":"paper","yref":"paper","textangle":-0,"xanchor":"left","yanchor":"bottom","legendTitle":true}],"yaxis":{"domain":[0.517391429538076,1],"automargin":true,"type":"linear","autorange":false,"range":[0.0805139765475266,4.02335375369438],"tickmode":"array","ticktext":["10","100","1000","10000"],"tickvals":[1,2,3,4],"categoryorder":"array","categoryarray":["10","100","1000","10000"],"nticks":null,"ticks":"outside","tickcolor":"rgba(51,51,51,1)","ticklen":3.65296803652968,"tickwidth":0.66417600664176,"showticklabels":true,"tickfont":{"color":"rgba(77,77,77,1)","family":"","size":12.7521793275218},"tickangle":-0,"showline":true,"linecolor":"rgba(0,0,0,1)","linewidth":0.66417600664176,"showgrid":true,"gridcolor":"rgba(235,235,235,1)","gridwidth":0.265670402656704,"zeroline":false,"anchor":"x","title":"","hoverformat":".2f"},"shapes":[{"type":"rect","fillcolor":null,"line":{"color":null,"width":0,"linetype":[]},"yref":"paper","xref":"paper","x0":0,"x1":0.32941943900848,"y0":0.517391429538076,"y1":1},{"type":"rect","fillcolor":null,"line":{"color":null,"width":0,"linetype":[]},"yref":"paper","xref":"paper","x0":0,"x1":0.32941943900848,"y0":0,"y1":24.4416770444168,"yanchor":1,"ysizemode":"pixel"},{"type":"rect","fillcolor":null,"line":{"color":null,"width":0,"linetype":[]},"yref":"paper","xref":"paper","x0":0.337247227658187,"x1":0.662752772341813,"y0":0.517391429538076,"y1":1},{"type":"rect","fillcolor":null,"line":{"color":null,"width":0,"linetype":[]},"yref":"paper","xref":"paper","x0":0.337247227658187,"x1":0.662752772341813,"y0":0,"y1":24.4416770444168,"yanchor":1,"ysizemode":"pixel"},{"type":"rect","fillcolor":null,"line":{"color":null,"width":0,"linetype":[]},"yref":"paper","xref":"paper","x0":0.67058056099152,"x1":1,"y0":0.517391429538076,"y1":1},{"type":"rect","fillcolor":null,"line":{"color":null,"width":0,"linetype":[]},"yref":"paper","xref":"paper","x0":0.67058056099152,"x1":1,"y0":0,"y1":24.4416770444168,"yanchor":1,"ysizemode":"pixel"},{"type":"rect","fillcolor":null,"line":{"color":null,"width":0,"linetype":[]},"yref":"paper","xref":"paper","x0":0,"x1":0.32941943900848,"y0":0,"y1":0.482608570461924},{"type":"rect","fillcolor":null,"line":{"color":null,"width":0,"linetype":[]},"yref":"paper","xref":"paper","x0":0,"x1":0.32941943900848,"y0":0,"y1":24.4416770444168,"yanchor":0.482608570461924,"ysizemode":"pixel"},{"type":"rect","fillcolor":null,"line":{"color":null,"width":0,"linetype":[]},"yref":"paper","xref":"paper","x0":0.337247227658187,"x1":0.662752772341813,"y0":0,"y1":0.482608570461924},{"type":"rect","fillcolor":null,"line":{"color":null,"width":0,"linetype":[]},"yref":"paper","xref":"paper","x0":0.337247227658187,"x1":0.662752772341813,"y0":0,"y1":24.4416770444168,"yanchor":0.482608570461924,"ysizemode":"pixel"},{"type":"rect","fillcolor":null,"line":{"color":null,"width":0,"linetype":[]},"yref":"paper","xref":"paper","x0":0.67058056099152,"x1":1,"y0":0,"y1":0.482608570461924},{"type":"rect","fillcolor":null,"line":{"color":null,"width":0,"linetype":[]},"yref":"paper","xref":"paper","x0":0.67058056099152,"x1":1,"y0":0,"y1":24.4416770444168,"yanchor":0.482608570461924,"ysizemode":"pixel"}],"xaxis2":{"type":"linear","autorange":false,"range":[0.4,2.6],"tickmode":"array","ticktext":["trt","untrt"],"tickvals":[1,2],"categoryorder":"array","categoryarray":["trt","untrt"],"nticks":null,"ticks":"outside","tickcolor":"rgba(51,51,51,1)","ticklen":3.65296803652968,"tickwidth":0.66417600664176,"showticklabels":true,"tickfont":{"color":"rgba(77,77,77,1)","family":"","size":12.7521793275218},"tickangle":-30,"showline":true,"linecolor":"rgba(0,0,0,1)","linewidth":0.66417600664176,"showgrid":true,"domain":[0.337247227658187,0.662752772341813],"gridcolor":"rgba(235,235,235,1)","gridwidth":0.265670402656704,"zeroline":false,"anchor":"y2","title":"","hoverformat":".2f"},"xaxis3":{"type":"linear","autorange":false,"range":[0.4,2.6],"tickmode":"array","ticktext":["trt","untrt"],"tickvals":[1,2],"categoryorder":"array","categoryarray":["trt","untrt"],"nticks":null,"ticks":"outside","tickcolor":"rgba(51,51,51,1)","ticklen":3.65296803652968,"tickwidth":0.66417600664176,"showticklabels":true,"tickfont":{"color":"rgba(77,77,77,1)","family":"","size":12.7521793275218},"tickangle":-30,"showline":true,"linecolor":"rgba(0,0,0,1)","linewidth":0.66417600664176,"showgrid":true,"domain":[0.67058056099152,1],"gridcolor":"rgba(235,235,235,1)","gridwidth":0.265670402656704,"zeroline":false,"anchor":"y2","title":"","hoverformat":".2f"},"yaxis2":{"type":"linear","autorange":false,"range":[0.0805139765475266,4.02335375369438],"tickmode":"array","ticktext":["10","100","1000","10000"],"tickvals":[1,2,3,4],"categoryorder":"array","categoryarray":["10","100","1000","10000"],"nticks":null,"ticks":"outside","tickcolor":"rgba(51,51,51,1)","ticklen":3.65296803652968,"tickwidth":0.66417600664176,"showticklabels":true,"tickfont":{"color":"rgba(77,77,77,1)","family":"","size":12.7521793275218},"tickangle":-0,"showline":true,"linecolor":"rgba(0,0,0,1)","linewidth":0.66417600664176,"showgrid":true,"domain":[0,0.482608570461924],"gridcolor":"rgba(235,235,235,1)","gridwidth":0.265670402656704,"zeroline":false,"anchor":"x","title":"","hoverformat":".2f"},"showlegend":true,"legend":{"bgcolor":"rgba(255,255,255,1)","bordercolor":"transparent","borderwidth":1.88976377952756,"font":{"color":"rgba(0,0,0,1)","family":"","size":12.7521793275218},"y":0.960675435801739},"hovermode":"closest","barmode":"relative"},"config":{"doubleClick":"reset","showSendToCloud":false},"source":"A","attrs":{"1f70681c775b":{"x":{},"y":{},"fill":{},"label":{},"type":"box"},"1f70283443":{"x":{},"y":{},"fill":{},"label":{}}},"cur_data":"1f70681c775b","visdat":{"1f70681c775b":["function (y) ","x"],"1f70283443":["function (y) ","x"]},"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.2,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
 </div>
 <div id="key-points" class="section level2">
 <h2 class="hasAnchor">
@@ -955,6 +956,185 @@
 <span class="co">#&gt; 1           2.37                  1.65</span></pre></div>
 </div>
 </div>
+<div id="study-of-cellularity" class="section level2">
+<h2 class="hasAnchor">
+<a href="#study-of-cellularity" class="anchor"></a>Study of cellularity</h2>
+<p>For this example we will use a subset of the breast cancer TCGA dataset.</p>
+<div class="sourceCode" id="cb44"><pre class="downlit">
+
+<span class="va">BRCA_tidy</span> <span class="op">=</span> 
+    <span class="fu">rpharma2020tidytranscriptomics</span><span class="fu">::</span><span class="va"><a href="../reference/BRCA.html">BRCA</a></span> <span class="op">%&gt;%</span>
+    <span class="fu"><a href="https://rdrr.io/pkg/tidybulk/man/tidybulk-methods.html">tidybulk</a></span><span class="op">(</span><span class="va">patient</span>, <span class="va">transcript</span>, <span class="va">count</span><span class="op">)</span>
+
+<span class="va">BRCA_tidy</span>
+<span class="co">#&gt; # A tibble: 198,374 x 5</span>
+<span class="co">#&gt;    patient      transcript count PFI.time.2 PFI.2</span>
+<span class="co">#&gt;    &lt;fct&gt;        &lt;fct&gt;      &lt;int&gt;      &lt;dbl&gt; &lt;int&gt;</span>
+<span class="co">#&gt;  1 TCGA-C8-A275 C1orf112    1571          1     0</span>
+<span class="co">#&gt;  2 TCGA-C8-A275 FGR         1873          1     0</span>
+<span class="co">#&gt;  3 TCGA-C8-A275 FUCA2       3770          1     0</span>
+<span class="co">#&gt;  4 TCGA-C8-A275 GCLC        2738          1     0</span>
+<span class="co">#&gt;  5 TCGA-C8-A275 LAS1L       3175          1     0</span>
+<span class="co">#&gt;  6 TCGA-C8-A275 ENPP4       1340          1     0</span>
+<span class="co">#&gt;  7 TCGA-C8-A275 SEMA3F      5479          1     0</span>
+<span class="co">#&gt;  8 TCGA-C8-A275 RAD52        472          1     0</span>
+<span class="co">#&gt;  9 TCGA-C8-A275 BAD         1761          1     0</span>
+<span class="co">#&gt; 10 TCGA-C8-A275 CD99       14697          1     0</span>
+<span class="co">#&gt; # … with 198,364 more rows</span></pre></div>
+<p>We can easily infer tissue cellularity across a range of methods (Cibersort, EPIC and ls_fit) with LM22 or custom signature</p>
+<div class="sourceCode" id="cb45"><pre class="downlit">
+<span class="va">BRCA_cell_type</span> <span class="op">=</span> 
+    <span class="va">BRCA_tidy</span> <span class="op">%&gt;%</span>
+    <span class="fu"><a href="https://rdrr.io/pkg/tidybulk/man/deconvolve_cellularity-methods.html">deconvolve_cellularity</a></span><span class="op">(</span>action<span class="op">=</span><span class="st">"get"</span><span class="op">)</span>
+<span class="co">#&gt; Installing e1071 needed for Cibersort</span>
+<span class="co">#&gt; Installing package into '/tmp/RtmpNjbEJn/temp_libpath1e13b44c84'</span>
+<span class="co">#&gt; (as 'lib' is unspecified)</span>
+
+<span class="va">BRCA_cell_type</span>
+<span class="co">#&gt; # A tibble: 22 x 25</span>
+<span class="co">#&gt;    patient PFI.time.2 PFI.2 `cibersort: B c… `cibersort: B c… `cibersort: Pla…</span>
+<span class="co">#&gt;    &lt;chr&gt;        &lt;dbl&gt; &lt;int&gt;            &lt;dbl&gt;            &lt;dbl&gt;            &lt;dbl&gt;</span>
+<span class="co">#&gt;  1 TCGA-C…          1     0          0.0325            0               0.0127 </span>
+<span class="co">#&gt;  2 TCGA-A…          1     0          0.0170            0               0      </span>
+<span class="co">#&gt;  3 TCGA-A…          5     0          0.00127           0               0      </span>
+<span class="co">#&gt;  4 TCGA-C…          5     0          0.0372            0               0.0228 </span>
+<span class="co">#&gt;  5 TCGA-P…          5     0          0.00453           0               0.0260 </span>
+<span class="co">#&gt;  6 TCGA-B…       6292     0          0.144             0               0      </span>
+<span class="co">#&gt;  7 TCGA-B…       7106     0          0.0632            0               0.0162 </span>
+<span class="co">#&gt;  8 TCGA-B…       7777     0          0                 0.0142          0.00315</span>
+<span class="co">#&gt;  9 TCGA-B…       8008     0          0.203             0               0.0228 </span>
+<span class="co">#&gt; 10 TCGA-B…       8391     0          0.147             0               0      </span>
+<span class="co">#&gt; # … with 12 more rows, and 19 more variables: `cibersort: T cells CD8` &lt;dbl&gt;,</span>
+<span class="co">#&gt; #   `cibersort: T cells CD4 naive` &lt;dbl&gt;, `cibersort: T cells CD4 memory</span>
+<span class="co">#&gt; #   resting` &lt;dbl&gt;, `cibersort: T cells CD4 memory activated` &lt;dbl&gt;,</span>
+<span class="co">#&gt; #   `cibersort: T cells follicular helper` &lt;dbl&gt;, `cibersort: T cells</span>
+<span class="co">#&gt; #   regulatory (Tregs)` &lt;dbl&gt;, `cibersort: T cells gamma delta` &lt;dbl&gt;,</span>
+<span class="co">#&gt; #   `cibersort: NK cells resting` &lt;dbl&gt;, `cibersort: NK cells activated` &lt;dbl&gt;,</span>
+<span class="co">#&gt; #   `cibersort: Monocytes` &lt;dbl&gt;, `cibersort: Macrophages M0` &lt;dbl&gt;,</span>
+<span class="co">#&gt; #   `cibersort: Macrophages M1` &lt;dbl&gt;, `cibersort: Macrophages M2` &lt;dbl&gt;,</span>
+<span class="co">#&gt; #   `cibersort: Dendritic cells resting` &lt;dbl&gt;, `cibersort: Dendritic cells</span>
+<span class="co">#&gt; #   activated` &lt;dbl&gt;, `cibersort: Mast cells resting` &lt;dbl&gt;, `cibersort: Mast</span>
+<span class="co">#&gt; #   cells activated` &lt;dbl&gt;, `cibersort: Eosinophils` &lt;dbl&gt;, `cibersort:</span>
+<span class="co">#&gt; #   Neutrophils` &lt;dbl&gt;</span></pre></div>
+<p>Cell type proportions are added to the tibble as new columns. The prefix makes it easy to reshape the data frame if needed, for visualisation or further analyses.</p>
+<div class="sourceCode" id="cb46"><pre class="downlit">
+<span class="va">BRCA_cell_type_long</span> <span class="op">=</span> 
+    <span class="va">BRCA_cell_type</span> <span class="op">%&gt;%</span>
+    
+    <span class="co"># Reshape</span>
+    <span class="fu"><a href="https://tidyr.tidyverse.org/reference/pivot_longer.html">pivot_longer</a></span><span class="op">(</span>
+        <span class="fu"><a href="https://tidyselect.r-lib.org/reference/starts_with.html">contains</a></span><span class="op">(</span><span class="st">"cibersort"</span><span class="op">)</span>, 
+        names_prefix <span class="op">=</span> <span class="st">"cibersort: "</span>, 
+        names_to <span class="op">=</span> <span class="st">"cell_type"</span>,
+        values_to <span class="op">=</span> <span class="st">"proportion"</span>
+    <span class="op">)</span> 
+
+<span class="va">BRCA_cell_type_long</span>
+<span class="co">#&gt; # A tibble: 484 x 5</span>
+<span class="co">#&gt;    patient      PFI.time.2 PFI.2 cell_type                    proportion</span>
+<span class="co">#&gt;    &lt;chr&gt;             &lt;dbl&gt; &lt;int&gt; &lt;chr&gt;                             &lt;dbl&gt;</span>
+<span class="co">#&gt;  1 TCGA-C8-A275          1     0 B cells naive                    0.0325</span>
+<span class="co">#&gt;  2 TCGA-C8-A275          1     0 B cells memory                   0     </span>
+<span class="co">#&gt;  3 TCGA-C8-A275          1     0 Plasma cells                     0.0127</span>
+<span class="co">#&gt;  4 TCGA-C8-A275          1     0 T cells CD8                      0     </span>
+<span class="co">#&gt;  5 TCGA-C8-A275          1     0 T cells CD4 naive                0.0507</span>
+<span class="co">#&gt;  6 TCGA-C8-A275          1     0 T cells CD4 memory resting       0.0299</span>
+<span class="co">#&gt;  7 TCGA-C8-A275          1     0 T cells CD4 memory activated     0.0332</span>
+<span class="co">#&gt;  8 TCGA-C8-A275          1     0 T cells follicular helper        0     </span>
+<span class="co">#&gt;  9 TCGA-C8-A275          1     0 T cells regulatory (Tregs)       0.0326</span>
+<span class="co">#&gt; 10 TCGA-C8-A275          1     0 T cells gamma delta              0.0247</span>
+<span class="co">#&gt; # … with 474 more rows</span></pre></div>
+<p>Note: Variable creation is functional to education, however is not needed nor recommended in normal circumstances.</p>
+<div class="sourceCode" id="cb47"><pre class="downlit">
+<span class="va">BRCA_cell_type_long</span> <span class="op">%&gt;%</span>
+    
+    <span class="co"># Plot</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x<span class="op">=</span><span class="va">patient</span>, y<span class="op">=</span><span class="va">proportion</span>, fill<span class="op">=</span><span class="va">cell_type</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_bar.html">geom_bar</a></span><span class="op">(</span>stat <span class="op">=</span> <span class="st">"identity"</span><span class="op">)</span> <span class="op">+</span>
+  <span class="va">custom_theme</span> </pre></div>
+<p><img src="tidytranscriptomics_files/figure-html/unnamed-chunk-51-1.png" width="700"></p>
+<p>We can visualise the tissue composition similarity performing a dimensionality reduction on cell type and proportion (rather than on transcript and counts)</p>
+<div class="sourceCode" id="cb48"><pre class="downlit">
+
+<span class="va">BRCA_cell_type_long</span> <span class="op">%&gt;%</span>
+    
+    <span class="co"># Add some noise to the proportion inference to avoid PCA error</span>
+    <span class="co"># A better (but more complex) way would be to eliminate the zero variance cell types </span>
+    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span>proportion <span class="op">=</span> <span class="va">proportion</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html">rnorm</a></span><span class="op">(</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/context.html">n</a></span><span class="op">(</span><span class="op">)</span>, <span class="fl">0</span>, <span class="fl">1e-10</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="va">abs</span><span class="op">)</span> <span class="op">%&gt;%</span>
+    
+    <span class="fu"><a href="https://rdrr.io/pkg/tidybulk/man/reduce_dimensions-methods.html">reduce_dimensions</a></span><span class="op">(</span>
+        <span class="va">patient</span>, 
+        <span class="va">cell_type</span>, 
+        <span class="va">proportion</span>, 
+        method<span class="op">=</span><span class="st">"PCA"</span>, 
+        action<span class="op">=</span><span class="st">"get"</span>
+    <span class="op">)</span> <span class="op">%&gt;%</span>
+    
+    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span><span class="va">PC1</span>, <span class="va">PC2</span>, label<span class="op">=</span><span class="va">patient</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
+    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html">geom_point</a></span><span class="op">(</span>color<span class="op">=</span><span class="st">"red"</span><span class="op">)</span> <span class="op">+</span>
+    <span class="fu">ggrepel</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/ggrepel/man/geom_text_repel.html">geom_text_repel</a></span><span class="op">(</span>size<span class="op">=</span><span class="fl">3</span><span class="op">)</span> <span class="op">+</span>
+    <span class="va">custom_theme</span>
+<span class="co">#&gt; Warning in eval(dots[[i]][[action]], env, env): tidybulk says: highly abundant</span>
+<span class="co">#&gt; transcripts were not identified (i.e. identify_abundant()) or filtered (i.e.,</span>
+<span class="co">#&gt; keep_abundant), therefore this operation will be performed on unfiltered</span>
+<span class="co">#&gt; data. In rare occasions this could be wanted. In standard whole-transcriptome</span>
+<span class="co">#&gt; workflows is generally unwanted.</span>
+<span class="co">#&gt; Getting the 22 most variable genes</span>
+<span class="co">#&gt; Warning in as_mapper(.f2)(.x): </span>
+<span class="co">#&gt;                      tidybulk says: In PCA correlation there is &lt; 100 genes that have non NA values is all samples.</span>
+<span class="co">#&gt; The correlation calculation would not be reliable,</span>
+<span class="co">#&gt; we suggest to partition the dataset for sample clusters.</span>
+<span class="co">#&gt;                      </span>
+<span class="co">#&gt; Fraction of variance explained by the selected principal components</span>
+<span class="co">#&gt; # A tibble: 2 x 2</span>
+<span class="co">#&gt;   `Fraction of variance`    PC</span>
+<span class="co">#&gt;                    &lt;dbl&gt; &lt;int&gt;</span>
+<span class="co">#&gt; 1                  0.186     1</span>
+<span class="co">#&gt; 2                  0.149     2</span>
+<span class="co">#&gt; tidybulk says: to access the raw results do `attr(..., "internals")$PCA`</span></pre></div>
+<p><img src="tidytranscriptomics_files/figure-html/unnamed-chunk-52-1.png" width="700"></p>
+<p>We can also perform differential tissue composition analyses, similarly to how we performed differential transcript abundance analyses. We can perform our analyses on censored (survival analyses) or known factor of interest.</p>
+<div class="sourceCode" id="cb49"><pre class="downlit">
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/therneau/survival">survival</a></span><span class="op">)</span>
+
+<span class="va">BRCA_tidy_survival</span> <span class="op">=</span> 
+    <span class="va">BRCA_tidy</span> <span class="op">%&gt;%</span>
+    <span class="fu"><a href="https://rdrr.io/pkg/tidybulk/man/test_differential_cellularity-methods.html">test_differential_cellularity</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/survival/man/Surv.html">Surv</a></span><span class="op">(</span><span class="va">PFI.time.2</span>, <span class="va">PFI.2</span><span class="op">)</span> <span class="op">~</span> <span class="va">.</span>   <span class="op">)</span> <span class="op">%&gt;%</span>
+    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/arrange.html">arrange</a></span><span class="op">(</span><span class="va">p.value</span><span class="op">)</span>
+<span class="co">#&gt; Installing broom needed for analyses</span>
+<span class="co">#&gt; Installing package into '/tmp/RtmpNjbEJn/temp_libpath1e13b44c84'</span>
+<span class="co">#&gt; (as 'lib' is unspecified)</span>
+
+<span class="va">BRCA_tidy_survival</span> <span class="op">%&gt;%</span>
+    <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="va">.cell_type</span>, <span class="va">p.value</span>, <span class="fu"><a href="https://tidyselect.r-lib.org/reference/everything.html">everything</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span>
+<span class="co">#&gt; # A tibble: 22 x 6</span>
+<span class="co">#&gt;    .cell_type            p.value cell_type_proport… estimate std.error statistic</span>
+<span class="co">#&gt;    &lt;chr&gt;                   &lt;dbl&gt; &lt;list&gt;                &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;</span>
+<span class="co">#&gt;  1 NK cells resting       0.0863 &lt;tibble [22 × 6]&gt;     0.330     0.192     1.72 </span>
+<span class="co">#&gt;  2 T cells CD4 memory a…  0.0884 &lt;tibble [22 × 6]&gt;     0.313     0.184     1.70 </span>
+<span class="co">#&gt;  3 Mast cells resting     0.150  &lt;tibble [22 × 6]&gt;    -0.379     0.264    -1.44 </span>
+<span class="co">#&gt;  4 T cells CD4 memory r…  0.161  &lt;tibble [22 × 6]&gt;    -0.865     0.617    -1.40 </span>
+<span class="co">#&gt;  5 Macrophages M2         0.164  &lt;tibble [22 × 6]&gt;     0.365     0.262     1.39 </span>
+<span class="co">#&gt;  6 T cells gamma delta    0.291  &lt;tibble [22 × 6]&gt;    -0.534     0.506    -1.06 </span>
+<span class="co">#&gt;  7 T cells regulatory (…  0.330  &lt;tibble [22 × 6]&gt;    -0.496     0.509    -0.975</span>
+<span class="co">#&gt;  8 T cells follicular h…  0.372  &lt;tibble [22 × 6]&gt;    -0.205     0.229    -0.893</span>
+<span class="co">#&gt;  9 Macrophages M0         0.520  &lt;tibble [22 × 6]&gt;    -0.248     0.385    -0.643</span>
+<span class="co">#&gt; 10 T cells CD4 naive      0.579  &lt;tibble [22 × 6]&gt;     0.113     0.204     0.555</span>
+<span class="co">#&gt; # … with 12 more rows</span></pre></div>
+<p>We can visualise the cell type proportions for the most associated cell types</p>
+<div class="sourceCode" id="cb50"><pre class="downlit">
+<span class="va">BRCA_tidy_survival</span> <span class="op">%&gt;%</span>
+    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/slice.html">slice</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">2</span><span class="op">)</span> <span class="op">%&gt;%</span>
+    <span class="fu"><a href="https://tidyr.tidyverse.org/reference/nest.html">unnest</a></span><span class="op">(</span><span class="va">cell_type_proportions</span><span class="op">)</span> <span class="op">%&gt;%</span>
+    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span><span class="va">PFI.time.2</span>, <span class="va">.proportion</span>, color <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html">factor</a></span><span class="op">(</span><span class="va">PFI.2</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
+    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html">geom_point</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span>
+    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/facet_wrap.html">facet_wrap</a></span><span class="op">(</span><span class="op">~</span> <span class="va">.cell_type</span><span class="op">)</span> <span class="op">+</span>
+    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html">scale_x_log10</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span>
+    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html">scale_y_continuous</a></span><span class="op">(</span>trans <span class="op">=</span> <span class="st">"logit"</span><span class="op">)</span> <span class="op">+</span>
+    <span class="va">custom_theme</span>
+<span class="co">#&gt; Warning: Transformation introduced infinite values in continuous y-axis</span></pre></div>
+<p><img src="tidytranscriptomics_files/figure-html/unnamed-chunk-54-1.png" width="700"></p>
+</div>
 <div id="nested-analyses" class="section level2">
 <h2 class="hasAnchor">
 <a href="#nested-analyses" class="anchor"></a>Nested analyses</h2>
@@ -963,10 +1143,10 @@
 <h3 class="hasAnchor">
 <a href="#perform-same-analysis-on-subsets" class="anchor"></a>Perform same analysis on subsets</h3>
 <p>Let’s suppose we want to perform differential transcript abundance analysis independently for two different data subsets to compare results after the test</p>
-<div class="sourceCode" id="cb44"><pre class="downlit">
+<div class="sourceCode" id="cb51"><pre class="downlit">
 <span class="co"># load additional libraries</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="http://purrr.tidyverse.org">purrr</a></span><span class="op">)</span></pre></div>
-<div class="sourceCode" id="cb45"><pre class="downlit">
+<div class="sourceCode" id="cb52"><pre class="downlit">
 <span class="va">pasilla_de</span> <span class="op">&lt;-</span> 
   <span class="fu">rpharma2020tidytranscriptomics</span><span class="fu">::</span><span class="va"><a href="../reference/pasilla.html">pasilla</a></span> <span class="op">%&gt;%</span> 
   
@@ -1000,7 +1180,7 @@
 <span class="co">#&gt; tidybulk says: The design column names are "(Intercept), conditionuntreated"</span>
 <span class="co">#&gt; tidybulk says: to access the raw results (fitted GLM) do `attr(..., "internals")$edgeR`</span></pre></div>
 <p>Now we can for example compare the number of differentially transcribed genes and their co-expression</p>
-<div class="sourceCode" id="cb46"><pre class="downlit">
+<div class="sourceCode" id="cb53"><pre class="downlit">
 <span class="va">pasilla_de</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="https://tidyr.tidyverse.org/reference/nest.html">nest</a></span><span class="op">(</span>data <span class="op">=</span> <span class="op">-</span><span class="va">type</span><span class="op">)</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span>
@@ -1013,7 +1193,7 @@
 <span class="co">#&gt; 1 single_end &lt;tibble [43,797 × 13]&gt;                     40</span>
 <span class="co">#&gt; 2 paired_end &lt;tibble [58,396 × 13]&gt;                   1270</span></pre></div>
 <p>We can easily see which genes overlap, and plot them</p>
-<div class="sourceCode" id="cb47"><pre class="downlit">
+<div class="sourceCode" id="cb54"><pre class="downlit">
 <span class="va">pasilla_de</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">FDR</span> <span class="op">&lt;</span> <span class="fl">0.05</span><span class="op">)</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="https://tidyr.tidyverse.org/reference/nest.html">nest</a></span><span class="op">(</span>data <span class="op">=</span> <span class="op">-</span><span class="va">feature</span><span class="op">)</span> <span class="op">%&gt;%</span>
@@ -1030,107 +1210,7 @@
   <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/facet_wrap.html">facet_wrap</a></span><span class="op">(</span><span class="op">~</span><span class="va">feature</span><span class="op">)</span> <span class="op">+</span>
   <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html">scale_y_log10</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span>
   <span class="va">custom_theme</span></pre></div>
-<p><img src="tidytranscriptomics_files/figure-html/unnamed-chunk-51-1.png" width="700"></p>
-</div>
-<div id="perform-analysis-on-subset-and-apply-to-full-dataset" class="section level3">
-<h3 class="hasAnchor">
-<a href="#perform-analysis-on-subset-and-apply-to-full-dataset" class="anchor"></a>Perform analysis on subset and apply to full dataset</h3>
-<p>Let’s suppose we want to identify the markers (genes) that distinguish epithelial from endothelial cells, and we also want to then visualise their abundance across many cell types to understand their cell type specificity.</p>
-<p>We’ll use some example data that’s in <code>cell_type_df</code>.</p>
-<div class="sourceCode" id="cb48"><pre class="downlit">
-<span class="co"># take a look</span>
-<span class="fu">rpharma2020tidytranscriptomics</span><span class="fu">::</span><span class="va"><a href="../reference/cell_type_df.html">cell_type_df</a></span>
-<span class="co">#&gt; # A tibble: 775,125 x 4</span>
-<span class="co">#&gt;    sample      cell_type   symbol   count</span>
-<span class="co">#&gt;    &lt;fct&gt;       &lt;fct&gt;       &lt;fct&gt;    &lt;dbl&gt;</span>
-<span class="co">#&gt;  1 ENCFF581OOH endothelial A1BG        46</span>
-<span class="co">#&gt;  2 ENCFF581OOH endothelial A1BG-AS1   425</span>
-<span class="co">#&gt;  3 ENCFF581OOH endothelial A1CF         0</span>
-<span class="co">#&gt;  4 ENCFF581OOH endothelial A2M        105</span>
-<span class="co">#&gt;  5 ENCFF581OOH endothelial A2ML1        3</span>
-<span class="co">#&gt;  6 ENCFF581OOH endothelial A2MP1        0</span>
-<span class="co">#&gt;  7 ENCFF581OOH endothelial A4GALT    1710</span>
-<span class="co">#&gt;  8 ENCFF581OOH endothelial A4GNT        0</span>
-<span class="co">#&gt;  9 ENCFF581OOH endothelial AAAS      2896</span>
-<span class="co">#&gt; 10 ENCFF581OOH endothelial AACS      4678</span>
-<span class="co">#&gt; # … with 775,115 more rows</span></pre></div>
-<p>We can check how many distinct cell types we have.</p>
-<div class="sourceCode" id="cb49"><pre class="downlit">
-<span class="fu">rpharma2020tidytranscriptomics</span><span class="fu">::</span><span class="va"><a href="../reference/cell_type_df.html">cell_type_df</a></span> <span class="op">%&gt;%</span>
-    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/distinct.html">distinct</a></span><span class="op">(</span><span class="va">cell_type</span><span class="op">)</span>
-<span class="co">#&gt; # A tibble: 4 x 1</span>
-<span class="co">#&gt;   cell_type  </span>
-<span class="co">#&gt;   &lt;fct&gt;      </span>
-<span class="co">#&gt; 1 endothelial</span>
-<span class="co">#&gt; 2 epithelial </span>
-<span class="co">#&gt; 3 fibroblast </span>
-<span class="co">#&gt; 4 immune_cell</span></pre></div>
-<p>We will perform differential testing of epithelial versus endothelial cells, select some markers, and then visualise their abundance across all the cell types.</p>
-<div class="sourceCode" id="cb50"><pre class="downlit">
-<span class="co"># create tidybulk tibble</span>
-<span class="va">cell_type_tt</span> <span class="op">&lt;-</span> <span class="fu">rpharma2020tidytranscriptomics</span><span class="fu">::</span><span class="va"><a href="../reference/cell_type_df.html">cell_type_df</a></span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://rdrr.io/pkg/tidybulk/man/tidybulk-methods.html">tidybulk</a></span><span class="op">(</span><span class="va">sample</span>, <span class="va">symbol</span>, <span class="va">count</span><span class="op">)</span>
-
-<span class="co"># identify some markers</span>
-<span class="va">markers_df</span> <span class="op">&lt;-</span> 
-  <span class="va">cell_type_tt</span> <span class="op">%&gt;%</span>
-  
-  <span class="co"># Filter counts</span>
-  <span class="fu"><a href="https://rdrr.io/pkg/tidybulk/man/identify_abundant-methods.html">identify_abundant</a></span><span class="op">(</span>factor_of_interest<span class="op">=</span><span class="va">cell_type</span><span class="op">)</span> <span class="op">%&gt;%</span>
-  
-  <span class="co"># Scale abundance</span>
-  <span class="fu"><a href="https://rdrr.io/pkg/tidybulk/man/scale_abundance-methods.html">scale_abundance</a></span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span>
-  
-  <span class="co"># Nest</span>
-  <span class="fu"><a href="https://tidyr.tidyverse.org/reference/nest.html">nest</a></span><span class="op">(</span>data <span class="op">=</span> <span class="fu"><a href="https://tidyselect.r-lib.org/reference/everything.html">everything</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span>
-  
-  <span class="co"># Investigate one cell type pair</span>
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span>comparison_data <span class="op">=</span> <span class="fu"><a href="https://purrr.tidyverse.org/reference/map.html">map</a></span><span class="op">(</span>
-    <span class="va">data</span>,
-    <span class="op">~</span> <span class="va">.x</span> <span class="op">%&gt;%</span>
-      <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">cell_type</span> <span class="op">%in%</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"endothelial"</span>, <span class="st">"epithelial"</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span>
-      <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span>cell_type <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html">as.character</a></span><span class="op">(</span><span class="va">cell_type</span><span class="op">)</span> <span class="op">)</span> 
-  <span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span>
-  
-  <span class="co"># We test the two populations (endothelial vs epithelial) but we select data for all populations</span>
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span>markers <span class="op">=</span> <span class="fu"><a href="https://purrr.tidyverse.org/reference/map.html">map</a></span><span class="op">(</span>
-    <span class="va">comparison_data</span>,
-    <span class="op">~</span> <span class="va">.x</span> <span class="op">%&gt;%</span>
-      
-      <span class="co"># Differential transcription</span>
-      <span class="fu"><a href="https://rdrr.io/pkg/tidybulk/man/test_differential_abundance-methods.html">test_differential_abundance</a></span><span class="op">(</span>
-        <span class="op">~</span> <span class="fl">0</span> <span class="op">+</span> <span class="va">cell_type</span>, 
-        .contrasts <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"cell_typeendothelial - cell_typeepithelial"</span><span class="op">)</span>,
-        action<span class="op">=</span><span class="st">"only"</span>, 
-        omit_contrast_in_colnames <span class="op">=</span> <span class="cn">TRUE</span>
-      <span class="op">)</span> <span class="op">%&gt;%</span>
-      
-      <span class="co"># Select a few markers</span>
-      <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">FDR</span><span class="op">&lt;</span><span class="fl">0.05</span> <span class="op">&amp;</span> <span class="fu"><a href="https://rdrr.io/r/base/MathFun.html">abs</a></span><span class="op">(</span><span class="va">logFC</span><span class="op">)</span><span class="op">&gt;=</span><span class="fl">2</span><span class="op">)</span> <span class="op">%&gt;%</span> 
-      <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/slice.html">slice</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">4</span><span class="op">)</span> <span class="op">%&gt;%</span> 
-      <span class="fu"><a href="https://dplyr.tidyverse.org/reference/pull.html">pull</a></span><span class="op">(</span><span class="va">symbol</span><span class="op">)</span>
-    
-  <span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span>
-  
-  <span class="co"># Add marker info to original data</span>
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span>data <span class="op">=</span> <span class="fu"><a href="https://purrr.tidyverse.org/reference/map2.html">map2</a></span><span class="op">(</span><span class="va">data</span>, <span class="va">markers</span>, <span class="op">~</span> <span class="va">.x</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">symbol</span><span class="op">%in%</span> <span class="va">.y</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span>
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="va">data</span><span class="op">)</span> <span class="op">%&gt;%</span>
-  <span class="fu"><a href="https://tidyr.tidyverse.org/reference/nest.html">unnest</a></span><span class="op">(</span><span class="va">data</span><span class="op">)</span> 
-<span class="co">#&gt; tidybulk says: All methods use raw counts, </span>
-<span class="co">#&gt; irrespective of if scale_abundance or adjust_abundance have been calculated, </span>
-<span class="co">#&gt; therefore it is essential to add covariates such as batch effects (if applicable) in the formula.</span>
-<span class="co">#&gt; tidybulk says: The design column names are "cell_typeendothelial, cell_typeepithelial"</span>
-<span class="co">#&gt; tidybulk says: to access the raw results (fitted GLM) do `attr(..., "internals")$edgeR`</span></pre></div>
-<p>Now we can see the abundance of the markers in all our cell types.</p>
-<div class="sourceCode" id="cb51"><pre class="downlit">
-<span class="va">markers_df</span> <span class="op">%&gt;%</span>
-    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span><span class="va">cell_type</span>, <span class="va">count_scaled</span> <span class="op">+</span><span class="fl">1</span> <span class="op">)</span><span class="op">)</span> <span class="op">+</span> 
-    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_boxplot.html">geom_boxplot</a></span><span class="op">(</span>outlier.shape <span class="op">=</span> <span class="cn">NA</span><span class="op">)</span> <span class="op">+</span>
-    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_jitter.html">geom_jitter</a></span><span class="op">(</span>size<span class="op">=</span><span class="fl">0.3</span><span class="op">)</span> <span class="op">+</span>
-    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/facet_wrap.html">facet_wrap</a></span><span class="op">(</span><span class="op">~</span><span class="va">symbol</span>, ncol<span class="op">=</span><span class="fl">2</span><span class="op">)</span> <span class="op">+</span>
-    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/coord_flip.html">coord_flip</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span>
-    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html">scale_y_log10</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> 
-    <span class="va">custom_theme</span></pre></div>
-<p><img src="tidytranscriptomics_files/figure-html/unnamed-chunk-55-1.png" width="700"></p>
+<p><img src="tidytranscriptomics_files/figure-html/unnamed-chunk-58-1.png" width="700"></p>
 </div>
 </div>
 <div id="key-points-1" class="section level2">
@@ -1141,6 +1221,9 @@
 <code>tidybulk</code> allows streamlined multi-method analyses</li>
 <li>
 <code>tidygate</code> allows the selection of arbitrary points in a two-dimensional plot, and add the gate information to the input tibble</li>
+<li>
+<code>tidybulk</code> allow easy deconvolution analyses</li>
+<li>Hypothesis testing for tissue composition is analogous to the one for transcript abundance</li>
 <li>Nesting allows for iteratively perform analyses on portions of the data set, without the creation of new variable, and in a totally functional way.</li>
 </ul>
 </div>
@@ -1154,7 +1237,7 @@
 <h1 class="hasAnchor">
 <a href="#part-3-single-cell-rna-seq" class="anchor"></a>Part 3 Single-cell RNA-seq</h1>
 <p>tidyseurat provides a bridge between the Seurat single-cell package <span class="citation">(Butler et al. 2018; Stuart et al. 2019)</span> and the tidyverse <span class="citation">(Wickham et al. 2019)</span>. It creates an invisible layer that enables viewing the Seurat object as a tidyverse tibble, and provides Seurat-compatible <em>dplyr</em>, <em>tidyr</em>, <em>ggplot</em> and <em>plotly</em> functions.</p>
-<div class="sourceCode" id="cb52"><pre class="downlit">
+<div class="sourceCode" id="cb55"><pre class="downlit">
 <span class="co"># load additional libraries</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://satijalab.org/seurat">Seurat</a></span><span class="op">)</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">tidyseurat</span><span class="op">)</span></pre></div>
@@ -1163,10 +1246,10 @@
 <a href="#create-tidyseurat" class="anchor"></a>Create <code>tidyseurat</code>
 </h2>
 <p>This is a seurat object but it is evaluated as tibble. So it is fully compatible both with Seurat and tidyverse APIs.</p>
-<div class="sourceCode" id="cb53"><pre class="downlit">
+<div class="sourceCode" id="cb56"><pre class="downlit">
 <span class="va">pbmc_small_tidy</span> <span class="op">&lt;-</span> <span class="fu">tidyseurat</span><span class="fu">::</span><span class="va"><a href="https://rdrr.io/pkg/tidyseurat/man/pbmc_small.html">pbmc_small</a></span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://rdrr.io/pkg/tidyseurat/man/tidy.html">tidy</a></span><span class="op">(</span><span class="op">)</span></pre></div>
 <p><strong>It looks like a tibble</strong></p>
-<div class="sourceCode" id="cb54"><pre class="downlit">
+<div class="sourceCode" id="cb57"><pre class="downlit">
 <span class="va">pbmc_small_tidy</span>
 <span class="co">#&gt; # A tibble: 80 x 16</span>
 <span class="co">#&gt;    cell  orig.ident nCount_RNA nFeature_RNA RNA_snn_res.0.8 letter.idents groups</span>
@@ -1185,7 +1268,7 @@
 <span class="co">#&gt; #   PC_1 &lt;dbl&gt;, PC_2 &lt;dbl&gt;, PC_3 &lt;dbl&gt;, PC_4 &lt;dbl&gt;, PC_5 &lt;dbl&gt;, tSNE_1 &lt;dbl&gt;,</span>
 <span class="co">#&gt; #   tSNE_2 &lt;dbl&gt;</span></pre></div>
 <p><strong>But it is a Seurat object after all</strong></p>
-<div class="sourceCode" id="cb55"><pre class="downlit">
+<div class="sourceCode" id="cb58"><pre class="downlit">
 <span class="va">pbmc_small_tidy</span><span class="op">@</span><span class="va">assays</span>
 <span class="co">#&gt; $RNA</span>
 <span class="co">#&gt; Assay data with 230 features for 80 cells</span>
@@ -1195,7 +1278,7 @@
 <div id="preprocess-the-dataset" class="section level2">
 <h2 class="hasAnchor">
 <a href="#preprocess-the-dataset" class="anchor"></a>Preprocess the dataset</h2>
-<div class="sourceCode" id="cb56"><pre class="downlit">
+<div class="sourceCode" id="cb59"><pre class="downlit">
 <span class="va">pbmc_small_pca</span> <span class="op">&lt;-</span>
   <span class="va">pbmc_small_tidy</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="https://rdrr.io/pkg/Seurat/man/SCTransform.html">SCTransform</a></span><span class="op">(</span>verbose <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> <span class="op">%&gt;%</span>
@@ -1224,7 +1307,7 @@
 <h2 class="hasAnchor">
 <a href="#identify-clusters" class="anchor"></a>Identify clusters</h2>
 <p>We proceed with cluster identification with Seurat.</p>
-<div class="sourceCode" id="cb57"><pre class="downlit">
+<div class="sourceCode" id="cb60"><pre class="downlit">
 <span class="va">pbmc_small_cluster</span> <span class="op">&lt;-</span>
   <span class="va">pbmc_small_pca</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="https://rdrr.io/pkg/Seurat/man/FindNeighbors.html">FindNeighbors</a></span><span class="op">(</span>verbose <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> <span class="op">%&gt;%</span>
@@ -1249,7 +1332,7 @@
 <span class="co">#&gt; #   seurat_clusters &lt;fct&gt;, PC_1 &lt;dbl&gt;, PC_2 &lt;dbl&gt;, PC_3 &lt;dbl&gt;, PC_4 &lt;dbl&gt;,</span>
 <span class="co">#&gt; #   PC_5 &lt;dbl&gt;, tSNE_1 &lt;dbl&gt;, tSNE_2 &lt;dbl&gt;</span></pre></div>
 <p>Now we can interrogate the object as if it was a regular tibble data frame.</p>
-<div class="sourceCode" id="cb58"><pre class="downlit">
+<div class="sourceCode" id="cb61"><pre class="downlit">
 <span class="va">pbmc_small_cluster</span> <span class="op">%&gt;%</span>
   <span class="fu">tidyseurat</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/tidyseurat/man/count.html">count</a></span><span class="op">(</span><span class="va">groups</span>, <span class="va">seurat_clusters</span><span class="op">)</span>
 <span class="co">#&gt; tidyseurat says: A data frame is returned for independent data analysis.</span>
@@ -1265,7 +1348,7 @@
 <span class="co">#&gt; 7 g2     2                   6</span>
 <span class="co">#&gt; 8 g2     3                   5</span></pre></div>
 <p>We can identify cluster markers using Seurat.</p>
-<div class="sourceCode" id="cb59"><pre class="downlit">
+<div class="sourceCode" id="cb62"><pre class="downlit">
 <span class="co"># Identify top 10 markers per cluster</span>
 <span class="va">markers</span> <span class="op">&lt;-</span>
   <span class="va">pbmc_small_cluster</span> <span class="op">%&gt;%</span>
@@ -1283,35 +1366,35 @@
     features <span class="op">=</span> <span class="va">markers</span><span class="op">$</span><span class="va">gene</span>,
     group.colors <span class="op">=</span> <span class="va">friendly_cols</span>
   <span class="op">)</span></pre></div>
-<p><img src="tidytranscriptomics_files/figure-html/unnamed-chunk-60-1.png" width="700"></p>
+<p><img src="tidytranscriptomics_files/figure-html/unnamed-chunk-63-1.png" width="700"></p>
 </div>
 <div id="reduce-dimensions" class="section level2">
 <h2 class="hasAnchor">
 <a href="#reduce-dimensions" class="anchor"></a>Reduce dimensions</h2>
 <p>We can calculate the first 3 UMAP dimensions using the Seurat framework.</p>
-<div class="sourceCode" id="cb60"><pre class="downlit">
+<div class="sourceCode" id="cb63"><pre class="downlit">
 <span class="va">pbmc_small_UMAP</span> <span class="op">&lt;-</span>
   <span class="va">pbmc_small_cluster</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="https://rdrr.io/pkg/Seurat/man/RunUMAP.html">RunUMAP</a></span><span class="op">(</span>reduction <span class="op">=</span> <span class="st">"pca"</span>, dims <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">15</span>, n.components <span class="op">=</span> <span class="fl">3L</span>, <span class="op">)</span>
 <span class="co">#&gt; Warning: The default method for RunUMAP has changed from calling Python UMAP via reticulate to the R-native UWOT using the cosine metric</span>
 <span class="co">#&gt; To use Python UMAP via reticulate, set umap.method to 'umap-learn' and metric to 'correlation'</span>
 <span class="co">#&gt; This message will be shown once per session</span>
-<span class="co">#&gt; 01:51:25 UMAP embedding parameters a = 0.9922 b = 1.112</span>
-<span class="co">#&gt; 01:51:25 Read 80 rows and found 15 numeric columns</span>
-<span class="co">#&gt; 01:51:25 Using Annoy for neighbor search, n_neighbors = 30</span>
-<span class="co">#&gt; 01:51:25 Building Annoy index with metric = cosine, n_trees = 50</span>
+<span class="co">#&gt; 07:16:22 UMAP embedding parameters a = 0.9922 b = 1.112</span>
+<span class="co">#&gt; 07:16:22 Read 80 rows and found 15 numeric columns</span>
+<span class="co">#&gt; 07:16:22 Using Annoy for neighbor search, n_neighbors = 30</span>
+<span class="co">#&gt; 07:16:22 Building Annoy index with metric = cosine, n_trees = 50</span>
 <span class="co">#&gt; 0%   10   20   30   40   50   60   70   80   90   100%</span>
 <span class="co">#&gt; [----|----|----|----|----|----|----|----|----|----|</span>
 <span class="co">#&gt; **************************************************|</span>
-<span class="co">#&gt; 01:51:25 Writing NN index file to temp file /tmp/RtmpXA2khh/file19a1ee1a4fe</span>
-<span class="co">#&gt; 01:51:25 Searching Annoy index using 1 thread, search_k = 3000</span>
-<span class="co">#&gt; 01:51:25 Annoy recall = 100%</span>
-<span class="co">#&gt; 01:51:25 Commencing smooth kNN distance calibration using 1 thread</span>
-<span class="co">#&gt; 01:51:27 Initializing from normalized Laplacian + noise</span>
-<span class="co">#&gt; 01:51:27 Commencing optimization for 500 epochs, with 2040 positive edges</span>
-<span class="co">#&gt; 01:51:28 Optimization finished</span></pre></div>
+<span class="co">#&gt; 07:16:22 Writing NN index file to temp file /tmp/Rtmp1Eu2AI/file1f706b5c52eb</span>
+<span class="co">#&gt; 07:16:22 Searching Annoy index using 1 thread, search_k = 3000</span>
+<span class="co">#&gt; 07:16:22 Annoy recall = 100%</span>
+<span class="co">#&gt; 07:16:23 Commencing smooth kNN distance calibration using 1 thread</span>
+<span class="co">#&gt; 07:16:25 Initializing from normalized Laplacian + noise</span>
+<span class="co">#&gt; 07:16:25 Commencing optimization for 500 epochs, with 2040 positive edges</span>
+<span class="co">#&gt; 07:16:26 Optimization finished</span></pre></div>
 <p>And we can plot them using 3D plot using plotly.</p>
-<div class="sourceCode" id="cb61"><pre class="downlit">
+<div class="sourceCode" id="cb64"><pre class="downlit">
 <span class="va">pbmc_small_UMAP</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="https://rdrr.io/pkg/tidyseurat/man/plot_ly.html">plot_ly</a></span><span class="op">(</span>
     x <span class="op">=</span> <span class="op">~</span><span class="va">`UMAP_1`</span>,
@@ -1326,7 +1409,7 @@
 <h2 class="hasAnchor">
 <a href="#cell-type-classification" class="anchor"></a>Cell type classification</h2>
 <p>We can infer cell type identities using <em>SingleR</em> <span class="citation">(Aran et al. 2019)</span> and manipulate the output using tidyverse.</p>
-<div class="sourceCode" id="cb62"><pre class="downlit">
+<div class="sourceCode" id="cb65"><pre class="downlit">
 <span class="co"># Get cell type reference data</span>
 <span class="va">blueprint</span> <span class="op">&lt;-</span> <span class="fu">celldex</span><span class="fu">::</span><span class="fu">BlueprintEncodeData</span><span class="op">(</span><span class="op">)</span>
 
@@ -1343,7 +1426,7 @@
   <span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html">as.data.frame</a></span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="https://rdrr.io/pkg/tidyseurat/man/as_tibble.html">as_tibble</a></span><span class="op">(</span>rownames <span class="op">=</span> <span class="st">"cell"</span><span class="op">)</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="https://rdrr.io/pkg/tidyseurat/man/select.html">select</a></span><span class="op">(</span><span class="va">cell</span>, <span class="va">first.labels</span><span class="op">)</span></pre></div>
-<div class="sourceCode" id="cb63"><pre class="downlit">
+<div class="sourceCode" id="cb66"><pre class="downlit">
 <span class="co"># Join UMAP and cell type info</span>
 <span class="va">pbmc_small_cell_type</span> <span class="op">&lt;-</span>
   <span class="va">pbmc_small_UMAP</span> <span class="op">%&gt;%</span>
@@ -1371,7 +1454,7 @@
 <span class="co">#&gt; #   PC_1 &lt;dbl&gt;, PC_2 &lt;dbl&gt;, PC_3 &lt;dbl&gt;, PC_4 &lt;dbl&gt;, PC_5 &lt;dbl&gt;, tSNE_1 &lt;dbl&gt;,</span>
 <span class="co">#&gt; #   tSNE_2 &lt;dbl&gt;, UMAP_1 &lt;dbl&gt;, UMAP_2 &lt;dbl&gt;, UMAP_3 &lt;dbl&gt;</span></pre></div>
 <p>We can easily summarise the results. For example, we can see how cell type classification overlaps with cluster classification.</p>
-<div class="sourceCode" id="cb64"><pre class="downlit">
+<div class="sourceCode" id="cb67"><pre class="downlit">
 <span class="va">pbmc_small_cell_type</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="https://rdrr.io/pkg/tidyseurat/man/count.html">count</a></span><span class="op">(</span><span class="va">seurat_clusters</span>, <span class="va">first.labels</span><span class="op">)</span>
 <span class="co">#&gt; tidyseurat says: A data frame is returned for independent data analysis.</span>
@@ -1392,7 +1475,7 @@
 <h2 class="hasAnchor">
 <a href="#nested-analyses-1" class="anchor"></a>Nested analyses</h2>
 <p>A powerful tool we can use with tidyseurat is <code>nest</code>. We can easily perform independent analyses on subsets of the dataset. First we classify cell types in lymphoid and myeloid; then, nest based on the new classification</p>
-<div class="sourceCode" id="cb65"><pre class="downlit">
+<div class="sourceCode" id="cb68"><pre class="downlit">
 <span class="va">pbmc_small_nested</span> <span class="op">&lt;-</span>
   <span class="va">pbmc_small_cell_type</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="https://rdrr.io/pkg/tidyseurat/man/filter.html">filter</a></span><span class="op">(</span><span class="va">first.labels</span> <span class="op">!=</span> <span class="st">"Erythrocytes"</span><span class="op">)</span> <span class="op">%&gt;%</span>
@@ -1406,7 +1489,7 @@
 <span class="co">#&gt; 1 lymphoid   &lt;tidysert&gt;</span>
 <span class="co">#&gt; 2 myeloid    &lt;tidysert&gt;</span></pre></div>
 <p>Now we can independently for the lymphoid and myeloid subsets (i) find variable features, (ii) reduce dimensions, and (iii) cluster using both tidyverse and SingleCellExperiment seamlessly.</p>
-<div class="sourceCode" id="cb66"><pre class="downlit">
+<div class="sourceCode" id="cb69"><pre class="downlit">
 <span class="va">pbmc_small_nested_reanalysed</span> <span class="op">&lt;-</span>
   <span class="va">pbmc_small_nested</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="https://rdrr.io/pkg/tidyseurat/man/mutate.html">mutate</a></span><span class="op">(</span>data <span class="op">=</span> <span class="fu"><a href="https://purrr.tidyverse.org/reference/map.html">map</a></span><span class="op">(</span>
@@ -1446,7 +1529,7 @@
 <h1 class="hasAnchor">
 <a href="#reproducibility" class="anchor"></a>Reproducibility</h1>
 <p>Record package and version information with <code>sessionInfo</code></p>
-<div class="sourceCode" id="cb67"><pre class="downlit">
+<div class="sourceCode" id="cb70"><pre class="downlit">
 <span class="fu"><a href="https://rdrr.io/r/utils/sessionInfo.html">sessionInfo</a></span><span class="op">(</span><span class="op">)</span>
 <span class="co">#&gt; R version 4.0.2 Patched (2020-09-24 r79253)</span>
 <span class="co">#&gt; Platform: x86_64-pc-linux-gnu (64-bit)</span>
@@ -1469,20 +1552,21 @@
 <span class="co">#&gt; </span>
 <span class="co">#&gt; other attached packages:</span>
 <span class="co">#&gt;  [1] tidyseurat_0.1.8            Seurat_3.2.2               </span>
-<span class="co">#&gt;  [3] purrr_0.3.4                 GGally_2.0.0               </span>
-<span class="co">#&gt;  [5] tidygate_0.2.8              forcats_0.5.0              </span>
-<span class="co">#&gt;  [7] plotly_4.9.2.1              ggrepel_0.8.2              </span>
-<span class="co">#&gt;  [9] tidybulk_1.1.8              tidyHeatmap_1.1.5          </span>
-<span class="co">#&gt; [11] ggplot2_3.3.2               stringr_1.4.0              </span>
-<span class="co">#&gt; [13] readr_1.3.1                 tidyr_1.1.2                </span>
-<span class="co">#&gt; [15] dplyr_1.0.2                 tibble_3.0.3               </span>
-<span class="co">#&gt; [17] org.Dm.eg.db_3.11.4         org.Hs.eg.db_3.11.4        </span>
-<span class="co">#&gt; [19] AnnotationDbi_1.51.3        airway_1.9.0               </span>
-<span class="co">#&gt; [21] SummarizedExperiment_1.19.7 DelayedArray_0.15.11       </span>
-<span class="co">#&gt; [23] matrixStats_0.57.0          Matrix_1.2-18              </span>
-<span class="co">#&gt; [25] Biobase_2.49.1              GenomicRanges_1.41.6       </span>
-<span class="co">#&gt; [27] GenomeInfoDb_1.25.11        IRanges_2.23.10            </span>
-<span class="co">#&gt; [29] S4Vectors_0.27.13           BiocGenerics_0.35.4        </span>
+<span class="co">#&gt;  [3] purrr_0.3.4                 survival_3.2-7             </span>
+<span class="co">#&gt;  [5] GGally_2.0.0                tidygate_0.2.8             </span>
+<span class="co">#&gt;  [7] forcats_0.5.0               plotly_4.9.2.1             </span>
+<span class="co">#&gt;  [9] ggrepel_0.8.2               tidybulk_1.1.8             </span>
+<span class="co">#&gt; [11] tidyHeatmap_1.1.5           ggplot2_3.3.2              </span>
+<span class="co">#&gt; [13] stringr_1.4.0               readr_1.3.1                </span>
+<span class="co">#&gt; [15] tidyr_1.1.2                 dplyr_1.0.2                </span>
+<span class="co">#&gt; [17] tibble_3.0.3                org.Dm.eg.db_3.11.4        </span>
+<span class="co">#&gt; [19] org.Hs.eg.db_3.11.4         AnnotationDbi_1.51.3       </span>
+<span class="co">#&gt; [21] airway_1.9.0                SummarizedExperiment_1.19.7</span>
+<span class="co">#&gt; [23] DelayedArray_0.15.11        matrixStats_0.57.0         </span>
+<span class="co">#&gt; [25] Matrix_1.2-18               Biobase_2.49.1             </span>
+<span class="co">#&gt; [27] GenomicRanges_1.41.6        GenomeInfoDb_1.25.11       </span>
+<span class="co">#&gt; [29] IRanges_2.23.10             S4Vectors_0.27.13          </span>
+<span class="co">#&gt; [31] BiocGenerics_0.35.4        </span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; loaded via a namespace (and not attached):</span>
 <span class="co">#&gt;   [1] utf8_1.1.4                           reticulate_1.16                     </span>
@@ -1511,50 +1595,51 @@
 <span class="co">#&gt;  [47] goftest_1.2-2                        rlang_0.4.7                         </span>
 <span class="co">#&gt;  [49] genefilter_1.71.0                    systemfonts_0.3.2                   </span>
 <span class="co">#&gt;  [51] GlobalOptions_0.1.2                  splines_4.0.2                       </span>
-<span class="co">#&gt;  [53] lazyeval_0.2.2                       yaml_2.2.1                          </span>
-<span class="co">#&gt;  [55] reshape2_1.4.4                       abind_1.4-5                         </span>
-<span class="co">#&gt;  [57] crosstalk_1.1.0.1                    backports_1.1.10                    </span>
-<span class="co">#&gt;  [59] httpuv_1.5.4                         tools_4.0.2                         </span>
-<span class="co">#&gt;  [61] ellipsis_0.3.1                       RColorBrewer_1.1-2                  </span>
-<span class="co">#&gt;  [63] ggridges_0.5.2                       Rcpp_1.0.5                          </span>
-<span class="co">#&gt;  [65] plyr_1.8.6                           zlibbioc_1.35.0                     </span>
-<span class="co">#&gt;  [67] RCurl_1.98-1.2                       rpart_4.1-15                        </span>
-<span class="co">#&gt;  [69] deldir_0.1-29                        pbapply_1.4-3                       </span>
-<span class="co">#&gt;  [71] GetoptLong_1.0.2                     viridis_0.5.1                       </span>
-<span class="co">#&gt;  [73] cowplot_1.1.0                        zoo_1.8-8                           </span>
-<span class="co">#&gt;  [75] cluster_2.1.0                        fs_1.5.0                            </span>
-<span class="co">#&gt;  [77] magrittr_1.5                         RSpectra_0.16-0                     </span>
-<span class="co">#&gt;  [79] data.table_1.13.0                    circlize_0.4.10                     </span>
-<span class="co">#&gt;  [81] lmtest_0.9-38                        RANN_2.6.1                          </span>
-<span class="co">#&gt;  [83] fitdistrplus_1.1-1                   hms_0.5.3                           </span>
-<span class="co">#&gt;  [85] patchwork_1.0.1                      mime_0.9                            </span>
-<span class="co">#&gt;  [87] evaluate_0.14                        xtable_1.8-4                        </span>
-<span class="co">#&gt;  [89] XML_3.99-0.5                         gridExtra_2.3                       </span>
-<span class="co">#&gt;  [91] shape_1.4.5                          compiler_4.0.2                      </span>
-<span class="co">#&gt;  [93] KernSmooth_2.23-17                   crayon_1.3.4                        </span>
-<span class="co">#&gt;  [95] htmltools_0.5.0                      mgcv_1.8-33                         </span>
-<span class="co">#&gt;  [97] later_1.1.0.1                        geneplotter_1.67.0                  </span>
-<span class="co">#&gt;  [99] DBI_1.1.0                            ComplexHeatmap_2.5.5                </span>
-<span class="co">#&gt; [101] MASS_7.3-53                          rappdirs_0.3.1                      </span>
-<span class="co">#&gt; [103] cli_2.0.2                            igraph_1.2.5                        </span>
-<span class="co">#&gt; [105] pkgconfig_2.0.3                      pkgdown_1.6.1                       </span>
-<span class="co">#&gt; [107] annotate_1.67.1                      XVector_0.29.3                      </span>
-<span class="co">#&gt; [109] digest_0.6.25                        sctransform_0.3                     </span>
-<span class="co">#&gt; [111] RcppAnnoy_0.0.16                     spatstat.data_1.4-3                 </span>
-<span class="co">#&gt; [113] rmarkdown_2.4                        leiden_0.3.3                        </span>
-<span class="co">#&gt; [115] uwot_0.1.8                           edgeR_3.31.4                        </span>
-<span class="co">#&gt; [117] shiny_1.5.0                          rjson_0.2.20                        </span>
-<span class="co">#&gt; [119] lifecycle_0.2.0                      nlme_3.1-149                        </span>
-<span class="co">#&gt; [121] jsonlite_1.7.1                       desc_1.2.0                          </span>
-<span class="co">#&gt; [123] viridisLite_0.3.0                    limma_3.45.14                       </span>
-<span class="co">#&gt; [125] fansi_0.4.1                          pillar_1.4.6                        </span>
-<span class="co">#&gt; [127] lattice_0.20-41                      fastmap_1.0.1                       </span>
-<span class="co">#&gt; [129] httr_1.4.2                           survival_3.2-7                      </span>
-<span class="co">#&gt; [131] glue_1.4.2                           spatstat_1.64-1                     </span>
-<span class="co">#&gt; [133] png_0.1-7                            bit_4.0.4                           </span>
-<span class="co">#&gt; [135] stringi_1.5.3                        blob_1.2.1                          </span>
-<span class="co">#&gt; [137] DESeq2_1.29.14                       memoise_1.1.0                       </span>
-<span class="co">#&gt; [139] irlba_2.3.3                          future.apply_1.6.0</span></pre></div>
+<span class="co">#&gt;  [53] lazyeval_0.2.2                       broom_0.7.0                         </span>
+<span class="co">#&gt;  [55] yaml_2.2.1                           reshape2_1.4.4                      </span>
+<span class="co">#&gt;  [57] abind_1.4-5                          crosstalk_1.1.0.1                   </span>
+<span class="co">#&gt;  [59] backports_1.1.10                     httpuv_1.5.4                        </span>
+<span class="co">#&gt;  [61] tools_4.0.2                          ellipsis_0.3.1                      </span>
+<span class="co">#&gt;  [63] RColorBrewer_1.1-2                   ggridges_0.5.2                      </span>
+<span class="co">#&gt;  [65] Rcpp_1.0.5                           plyr_1.8.6                          </span>
+<span class="co">#&gt;  [67] zlibbioc_1.35.0                      RCurl_1.98-1.2                      </span>
+<span class="co">#&gt;  [69] rpart_4.1-15                         deldir_0.1-29                       </span>
+<span class="co">#&gt;  [71] pbapply_1.4-3                        GetoptLong_1.0.2                    </span>
+<span class="co">#&gt;  [73] viridis_0.5.1                        cowplot_1.1.0                       </span>
+<span class="co">#&gt;  [75] zoo_1.8-8                            cluster_2.1.0                       </span>
+<span class="co">#&gt;  [77] fs_1.5.0                             magrittr_1.5                        </span>
+<span class="co">#&gt;  [79] RSpectra_0.16-0                      data.table_1.13.0                   </span>
+<span class="co">#&gt;  [81] circlize_0.4.10                      lmtest_0.9-38                       </span>
+<span class="co">#&gt;  [83] RANN_2.6.1                           fitdistrplus_1.1-1                  </span>
+<span class="co">#&gt;  [85] hms_0.5.3                            patchwork_1.0.1                     </span>
+<span class="co">#&gt;  [87] mime_0.9                             evaluate_0.14                       </span>
+<span class="co">#&gt;  [89] xtable_1.8-4                         XML_3.99-0.5                        </span>
+<span class="co">#&gt;  [91] gridExtra_2.3                        shape_1.4.5                         </span>
+<span class="co">#&gt;  [93] compiler_4.0.2                       KernSmooth_2.23-17                  </span>
+<span class="co">#&gt;  [95] crayon_1.3.4                         htmltools_0.5.0                     </span>
+<span class="co">#&gt;  [97] mgcv_1.8-33                          later_1.1.0.1                       </span>
+<span class="co">#&gt;  [99] geneplotter_1.67.0                   DBI_1.1.0                           </span>
+<span class="co">#&gt; [101] ComplexHeatmap_2.5.5                 MASS_7.3-53                         </span>
+<span class="co">#&gt; [103] rappdirs_0.3.1                       boot_1.3-25                         </span>
+<span class="co">#&gt; [105] cli_2.0.2                            igraph_1.2.5                        </span>
+<span class="co">#&gt; [107] pkgconfig_2.0.3                      pkgdown_1.6.1                       </span>
+<span class="co">#&gt; [109] annotate_1.67.1                      XVector_0.29.3                      </span>
+<span class="co">#&gt; [111] digest_0.6.25                        sctransform_0.3                     </span>
+<span class="co">#&gt; [113] RcppAnnoy_0.0.16                     spatstat.data_1.4-3                 </span>
+<span class="co">#&gt; [115] rmarkdown_2.4                        leiden_0.3.3                        </span>
+<span class="co">#&gt; [117] uwot_0.1.8                           edgeR_3.31.4                        </span>
+<span class="co">#&gt; [119] shiny_1.5.0                          rjson_0.2.20                        </span>
+<span class="co">#&gt; [121] lifecycle_0.2.0                      nlme_3.1-149                        </span>
+<span class="co">#&gt; [123] jsonlite_1.7.1                       desc_1.2.0                          </span>
+<span class="co">#&gt; [125] viridisLite_0.3.0                    limma_3.45.14                       </span>
+<span class="co">#&gt; [127] fansi_0.4.1                          pillar_1.4.6                        </span>
+<span class="co">#&gt; [129] lattice_0.20-41                      fastmap_1.0.1                       </span>
+<span class="co">#&gt; [131] httr_1.4.2                           glue_1.4.2                          </span>
+<span class="co">#&gt; [133] spatstat_1.64-1                      png_0.1-7                           </span>
+<span class="co">#&gt; [135] bit_4.0.4                            stringi_1.5.3                       </span>
+<span class="co">#&gt; [137] blob_1.2.1                           DESeq2_1.29.14                      </span>
+<span class="co">#&gt; [139] memoise_1.1.0                        irlba_2.3.3                         </span>
+<span class="co">#&gt; [141] future.apply_1.6.0</span></pre></div>
 </div>
 <div id="references" class="section level1 unnumbered">
 <h1 class="hasAnchor">
