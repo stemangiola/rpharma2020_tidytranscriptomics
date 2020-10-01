@@ -834,11 +834,27 @@ pasilla_de %>%
 
 ### Perform analysis on subset and apply to full dataset
 
-Let's suppose we want to identify the markers that distinguish epithelial from endothelial cells, and we also want to then visualise the abundance of those transcripts across many cell types to understand their cell type specificity.
+Let's suppose we want to identify the markers (genes) that distinguish epithelial from endothelial cells, and we also want to then visualise their abundance across many cell types to understand their cell type specificity.
+
+We'll use some example data that's in `cell_type_df`.
 
 ```{r}
+# take a look
+rpharma2020tidytranscriptomics::cell_type_df
+```
+We can check how many distinct cell types we have.
+
+```{r}
+rpharma2020tidytranscriptomics::cell_type_df %>%
+    distinct(cell_type)
+```
+We will perform differential testing of epithelial versus endothelial cells, select some markers, and then visualise their abundance across all the cell types.
+
+```{r}
+# create tidybulk tibble
 cell_type_tt <- rpharma2020tidytranscriptomics::cell_type_df %>% tidybulk(sample, symbol, count)
 
+# identify some markers
 markers_df <- 
   cell_type_tt %>%
   
@@ -859,7 +875,7 @@ markers_df <-
       mutate(cell_type = as.character(cell_type) ) 
   )) %>%
   
-  # We test the two populations but we select data for all populations
+  # We test the two populations (endothelial vs epithelial) but we select data for all populations
   mutate(markers = map(
     comparison_data,
     ~ .x %>%
@@ -872,7 +888,7 @@ markers_df <-
         omit_contrast_in_colnames = TRUE
       ) %>%
       
-      # Select 4 markers with large logFC 
+      # Select a few markers
       filter(FDR<0.05 & abs(logFC)>=2) %>% 
       dplyr::slice(1:4) %>% 
       pull(symbol)
