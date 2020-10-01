@@ -768,21 +768,6 @@ For this example we will use a subset of the breast cancer TCGA dataset.
 
 ```{r}
 
-# BRCA =
-# 	readRDS("~/PhD/deconvolution/ARMET/dev/armet_BRCA_input.rds") %>% 
-# 	nanny::nest_subset(data = -patient)  %>% nest(data2 = -alive) %>% 
-# 	mutate(data2 = map(
-# 		data2, 
-# 		~ .x %>% 
-# 			dplyr::arrange(PFI.time.2) %>%
-# 			slice(c(1:5, (n()-5):n()) )
-# 	)) %>% 
-# 	unnest(data2) %>% 
-# 	unnest(data) %>% 
-# 	dplyr::select(patient, transcript, count, contains("PFI")) %>%
-# 	mutate_if(is.character, as.factor) %>%
-# 	mutate(PFI.2 = as.integer(PFI.2))
-
 BRCA_tidy = 
 	rpharma2020tidytranscriptomics::BRCA %>%
 	tidybulk(patient, transcript, count)
