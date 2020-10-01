@@ -11,7 +11,7 @@
 #'
 #' Stefano's gate list
 #'
-#' @format  A list of gates to use. Gates consist of x and y corordinates.
+#' @format  A list of gates to use. Gates consist of x and y coordinates.
 #' @usage data(de_gate_gates)
 "de_gate_gates"
 
@@ -20,7 +20,14 @@
 #'
 #' Stefano's cell type df
 #'
-#' @format  A list of gates to use. Gates consist of x and y corordinates.
+#' @format  A list of gates to use. Gates consist of x and y coordinates.
 #' @usage data(cell_type_df)
 "cell_type_df"
 
+#' BRCA
+#'
+#' Subset of the TCGA BRCA data set
+#'
+#' @format  A tidy data frame.
+#' @usage data(BRCA)
+"BRCA"
