@@ -45,11 +45,13 @@ Alternatively, you could install the workshop using the commands below in R `4.0
 
 ```
 # Install same versions used in the workshop
-
 # install.packages('remotes')
 remotes::install_github(c("stemangiola/tidybulk@v1.1.8", "stemangiola/tidygate@v0.2.8", "stemangiola/tidyseurat@v0.1.8", "stemangiola/tidyHeatmap@v1.1.5"))
+
+# Install workshop package
 remotes::install_github("stemangiola/rpharma2020_tidytranscriptomics", build_vignettes = TRUE)
 
+# To view vignettes
 library(rpharma2020tidytranscriptomics)
 browseVignettes("rpharma2020tidytranscriptomics")
 ```
@@ -72,7 +74,7 @@ Recommended Background Reading
 
 ### Workshop Participation
 
-The workshop format is a 2.5-3 hour session consisting of demos, exercises and Q&A.
+The workshop format is a 3 hour session consisting of hands-on demos, exercises and Q&A.
 
 ### _R_ / _Bioconductor_ packages used
 
@@ -99,24 +101,23 @@ Rough guide
 
 | Activity                                            | Time |
 |-----------------------------------------------------|------|
-| **Part 1 Bulk RNA-seq Core**                        | 50m  |
-|  *Introduction to RNA-seq*                          |      |
-|  *Data preprocessing*                               |      |
-|  *Data dimensionality reduction and clustering*     |      |
-|  *Differential gene expression*                     |      |
-|  *Data visualisation*                               |      |
+| **Part 1 Bulk RNA-seq Core**                        |      |
+|  *Introduction to RNA-seq*                          | 50m  |
+|  *Data preprocessing*                               |  |   |
+|  *Data dimensionality reduction and clustering*     |  |.  |
+|  *Differential gene expression*                     |  |   |
+|  *Data visualisation*                               |  |   |
 |  *Exercises and Q&A*                                | 10m  |
 | _Break_                                             |  5m  |
-| **Part 2 Bulk RNA-seq Extended**                    | 40m  |
-|  *Comparison of differential testing tools*         |      |
-|  *Cell type composition analysis*                   |      |
+| **Part 2 Bulk RNA-seq Extended**                    |      |
+|  *Comparison of differential testing tools*         | 40m  |
+|  *Cell type composition analysis*                   |  |   |
 |  *Exercises and Q&A*                                | 10m  |
 | _Break_                                             |  5m  |
-| **Part 3 Single-cell RNA-seq**                      | 30m  |
-|  *Brief introduction to single-cell RNA-seq*        |      |
-|  *Brief introduction to tidyseurat*                 |      |
+| **Part 3 Single-cell RNA-seq**                      |      |
+|  *Introduction to single-cell*                      | 30m  |
 |  *Additional Q&A*                                   | 30m  |
-
+  Total                                                180m
 
 ### Workshop goals and objectives
 
