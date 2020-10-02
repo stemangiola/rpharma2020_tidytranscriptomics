@@ -854,7 +854,7 @@ We can visualise the cell type proportions for the most associated cell types
 
 ```{r}
 BRCA_tidy_survival %>%
-	slice(1:2) %>%
+	dplyr::slice(1:2) %>%
 	unnest(cell_type_proportions) %>%
 	ggplot(aes(time, .proportion, color = factor(event_occurred))) +
 	geom_point() +
