@@ -9,17 +9,48 @@ vignette: >
 
 ```{r message=FALSE, warning=FALSE}
 # load libraries
+library(airway)
 library(tibble)
 library(dplyr)
 library(tidyr)
 library(readr)
 library(stringr)
+library(purrr)
 library(ggplot2)
+library(ggrepel)
 library(tidyHeatmap)
 library(tidybulk)
-library(ggrepel)
-library(airway)
 ```
+
+Plot settings. Set the colours and theme we will use for our plots.
+
+```{r}
+# Use colourblind-friendly colours
+friendly_cols <- dittoSeq::dittoColors()
+
+# Set theme
+custom_theme <-
+  list(
+    scale_fill_manual(values = friendly_cols),
+    scale_color_manual(values = friendly_cols),
+    theme_bw() +
+      theme(
+        panel.border = element_blank(),
+        axis.line = element_line(),
+        panel.grid.major = element_line(size = 0.2),
+        panel.grid.minor = element_line(size = 0.1),
+        text = element_text(size = 12),
+        legend.position = "bottom",
+        #aspect.ratio = 1,
+        strip.background = element_blank(),
+        axis.title.x = element_text(margin = margin(t = 10, r = 10, b = 10, l = 10)),
+        axis.title.y = element_text(margin = margin(t = 10, r = 10, b = 10, l = 10)),
+        axis.text.x = element_text(angle = 30, hjust = 1, vjust = 1)
+      )
+  )
+```
+
+# Part 1 Bulk RNA-seq Core
 
 ## How to start from tables
 
@@ -206,9 +237,75 @@ dotplot( enrH )
 emapplot(enrH)
 ```
 
+# Part 2 Bulk RNA-seq Extended
+
 ## Nested analyses 
 
-### Continuation of bulk nested analyses - see workshop
+`tidybulk` allows for data nesting, using the `tidyr` utility `nest`. This is an extremely powerful tool as it enables easily performing analyses on data subsets.
+
+## How to perform same analysis on subsets
+
+Let's suppose we want to perform differential transcript abundance analysis independently for two different data subsets to compare results after the test
+
+
+```{r}
+pasilla_de <- 
+  rpharma2020tidytranscriptomics::pasilla %>% 
+  
+  # Convert SummarizedExperiment object to tibble
+  tidybulk %>%
+  
+  # Filter counts
+  identify_abundant(factor_of_interest=condition) %>%
+    
+  # Scale abundance   
+  scale_abundance() %>%
+  
+  # Nest
+  nest(data = -type) %>%
+  
+  # Differential analysis
+  mutate(data = map(
+    data,
+    ~  test_differential_abundance(.x, ~ condition) 
+  )) %>%
+  
+  unnest(data)
+```
+
+Now we can for example compare the number of differentially transcribed genes and their co-expression
+
+```{r}
+pasilla_de %>%
+  nest(data = -type) %>%
+  mutate(
+    number_of_differential = map_int(
+      data, ~ .x %>% pivot_transcript() %>% filter(FDR < 0.05) %>% nrow
+    ))
+```
+
+We can easily see which genes overlap, and plot them
+
+```{r}
+pasilla_de %>%
+  filter(FDR < 0.05) %>%
+  nest(data = -feature) %>%
+  mutate(occurrences = map_int(data, ~ .x %>% distinct(type) %>% nrow)) %>%
+  
+  # We filter some of them
+  filter(occurrences == 2) %>%
+  dplyr::slice(1:6) %>%
+  unnest(data) %>%
+  
+  # And plot
+  ggplot(aes(type, counts_scaled +1, color=condition)) + 
+  geom_point() + 
+  facet_wrap(~feature) +
+  scale_y_log10() +
+  custom_theme
+```
+
+### How to perform analysis on subset and apply to full dataset
 
 Let's suppose we want to identify the markers that distinguish epithelial from endothelial cells, and we also want to then visualise the abundance of those transcripts across many cell types to understand their cell type specificity.
 

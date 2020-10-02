@@ -11,7 +11,6 @@ Suggested answers to the workshop questions are below. You might have some diffe
 
 ```{r out.width = "70%", message=FALSE, warning=FALSE}
 # load libraries
-library(org.Dm.eg.db)
 
 # tidyverse core packages
 library(tibble)
@@ -19,14 +18,14 @@ library(dplyr)
 library(tidyr)
 library(readr)
 library(stringr)
+library(purrr)
 library(ggplot2)
 
 # tidyverse-friendly packages
+library(plotly)
+library(ggrepel)
 library(tidyHeatmap)
 library(tidybulk)
-library(ggrepel)
-library(plotly)
-library(purrr)
 
 # load data
 data("pasilla", package = "rpharma2020tidytranscriptomics")
@@ -35,7 +34,7 @@ data("pasilla", package = "rpharma2020tidytranscriptomics")
 counts_tt <-
     pasilla %>%
     tidybulk() %>%
-    mutate(symbol = mapIds(org.Dm.eg.db, keys=as.character(feature), keytype = "FLYBASE", column="SYMBOL", multiVals = "first"))
+    mutate(symbol = AnnotationDbi::mapIds(org.Dm.eg.db::org.Dm.eg.db, keys=as.character(feature), keytype = "FLYBASE", column="SYMBOL", multiVals = "first"))
 
 # filter counts
 counts_filtered <- counts_tt %>% keep_abundant(factor_of_interest = condition)
