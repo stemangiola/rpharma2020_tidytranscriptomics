@@ -253,18 +253,18 @@ de_all %>%
 	
 	# Reshape for nesting
 	pivot_longer(
-		cols = -c(feature, .abundant),
+		cols = -c(feature, .abundant, symbol),
 		names_sep = "_", 
 		names_to = c("method", "statistic"), 
 		values_to = "value"
 	) %>%
 	
-	# Filter statictic
+	# Filter statistic
 	filter(statistic %in% c("FDR", "adj.P.Val", "padj")) %>%
 	filter(value < 0.05) %>%
 	
 	# Nesting
-	count(method)
+	dplyr::count(method)
 	
 ```
 
@@ -282,7 +282,7 @@ trend_plot =
 	
 	# Reshape for nesting
 	pivot_longer(
-		cols = -c(feature, .abundant),
+		cols = -c(feature, .abundant, symbol),
 		names_sep = "_", 
 		names_to = c("method", "statistic"), 
 		values_to = "value"
@@ -313,5 +313,15 @@ trend_plot +
 	scale_y_log10()
 	
 ```
+## What is the most abundant cell type overall in BRCA samples?
+
+```{r eval=FALSE}
+BRCA_cell_type_long %>% 
+	group_by(cell_type) %>% 
+	summarise(m = median(proportion)) %>% 
+	dplyr::arrange(dplyr::desc(m))
+
+```
+
 
 
