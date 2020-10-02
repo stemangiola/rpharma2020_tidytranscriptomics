@@ -34,7 +34,7 @@ data("pasilla", package = "rpharma2020tidytranscriptomics")
 counts_tt <-
     pasilla %>%
     tidybulk() %>%
-    mutate(symbol = Annotation::mapIds(org.Dm.eg.db::org.Dm.eg.db, keys=as.character(feature), keytype = "FLYBASE", column="SYMBOL", multiVals = "first"))
+    mutate(symbol = AnnotationDbi::mapIds(org.Dm.eg.db::org.Dm.eg.db, keys=as.character(feature), keytype = "FLYBASE", column="SYMBOL", multiVals = "first"))
 
 # filter counts
 counts_filtered <- counts_tt %>% keep_abundant(factor_of_interest = condition)
