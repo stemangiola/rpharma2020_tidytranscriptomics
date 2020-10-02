@@ -405,9 +405,10 @@
   <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html">scale_y_log10</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span>
   <span class="va">custom_theme</span></pre></div>
 <p><img src="supplementary_files/figure-html/unnamed-chunk-15-1.png" width="700"></p>
-<div id="how-to-perform-analysis-on-subset-and-apply-to-full-dataset" class="section level3">
-<h3 class="hasAnchor">
-<a href="#how-to-perform-analysis-on-subset-and-apply-to-full-dataset" class="anchor"></a>How to perform analysis on subset and apply to full dataset</h3>
+</div>
+<div id="how-to-perform-analysis-on-subset-and-apply-to-full-dataset" class="section level2">
+<h2 class="hasAnchor">
+<a href="#how-to-perform-analysis-on-subset-and-apply-to-full-dataset" class="anchor"></a>How to perform analysis on subset and apply to full dataset</h2>
 <p>Let’s suppose we want to identify the markers that distinguish epithelial from endothelial cells, and we also want to then visualise the abundance of those transcripts across many cell types to understand their cell type specificity.</p>
 <div class="sourceCode" id="cb31"><pre class="downlit">
 <span class="va">cell_type_tt</span> <span class="op">=</span> <span class="fu">rpharma2020tidytranscriptomics</span><span class="fu">::</span><span class="va"><a href="../reference/cell_type_df.html">cell_type_df</a></span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://rdrr.io/pkg/tidybulk/man/tidybulk-methods.html">tidybulk</a></span><span class="op">(</span><span class="va">sample</span>, <span class="va">symbol</span>, <span class="va">count</span><span class="op">)</span>
@@ -465,7 +466,6 @@
     <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/coord_flip.html">coord_flip</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span>
     <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html">scale_y_log10</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> 
     <span class="va">custom_theme</span></pre></div>
-</div>
 </div>
 </div>
   </div>
