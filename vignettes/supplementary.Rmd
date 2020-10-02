@@ -9,6 +9,7 @@ vignette: >
 
 ```{r message=FALSE, warning=FALSE}
 # load libraries
+library(airway)
 library(tibble)
 library(dplyr)
 library(tidyr)
@@ -17,8 +18,6 @@ library(stringr)
 library(ggplot2)
 library(tidyHeatmap)
 library(tidybulk)
-library(ggrepel)
-library(airway)
 ```
 
 ## How to start from tables
@@ -160,7 +159,7 @@ counts_de %>%
 	# Plot
 	ggplot(aes(x = logCPM, y = logFC, label=transcript)) +
 	geom_point(aes(color = significant, size = significant, alpha=significant)) +
-	geom_text_repel() +
+	ggrepel::geom_text_repel() +
 	scale_color_manual(values=c("black", "#e11f28")) +
 	scale_size_discrete(range = c(0, 2)) +
 	theme_bw()
@@ -173,7 +172,6 @@ To run below you'll need the `clusterProfiler` and `org.Hs.eg.db` packages. This
 
 ```{r eval=FALSE}
 library(clusterProfiler)
-library(org.Hs.eg.db)
 
 # extract all genes tested for DE
 res <- counts_de %>% 
@@ -184,7 +182,7 @@ egoCC <- res %>%
     filter(FDR < 0.1 & logFC > 0 ) %>%
     pull( "transcript" ) %>%
     enrichGO(
-      OrgDb = org.Hs.eg.db,
+      OrgDb = org.Hs.eg.db::org.Hs.eg.db,
       keyType = 'SYMBOL',
       ont = "BP",
       universe = (res %>% pull( "transcript" ) ) )
