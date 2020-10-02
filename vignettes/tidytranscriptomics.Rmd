@@ -813,7 +813,7 @@ BRCA_cell_type_long %>%
 
 We can visualise the tissue composition similarity performing a dimensionality reduction on cell type and proportion (rather than on transcript and counts)
 
-```{r}
+```{r warning=FALSE}
 
 BRCA_cell_type_long %>%
 	
