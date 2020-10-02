@@ -17,6 +17,7 @@ library(readr)
 library(stringr)
 library(purrr)
 library(ggplot2)
+library(ggrepel)
 library(tidyHeatmap)
 library(tidybulk)
 ```
@@ -190,7 +191,7 @@ counts_de %>%
 	# Plot
 	ggplot(aes(x = logCPM, y = logFC, label=transcript)) +
 	geom_point(aes(color = significant, size = significant, alpha=significant)) +
-	ggrepel::geom_text_repel() +
+	geom_text_repel() +
 	scale_color_manual(values=c("black", "#e11f28")) +
 	scale_size_discrete(range = c(0, 2)) +
 	theme_bw()
