@@ -259,12 +259,12 @@ de_all %>%
 		values_to = "value"
 	) %>%
 	
-	# Filter statictic
+	# Filter statistic
 	filter(statistic %in% c("FDR", "adj.P.Val", "padj")) %>%
 	filter(value < 0.05) %>%
 	
 	# Nesting
-	count(method)
+	dplyr::count(method)
 	
 ```
 
@@ -313,5 +313,15 @@ trend_plot +
 	scale_y_log10()
 	
 ```
+## What is the most abundant cell type overall in BRCA samples?
+
+```{r eval=FALSE}
+BRCA_cell_type_long %>% 
+	group_by(cell_type) %>% 
+	summarise(m = median(proportion)) %>% 
+	dplyr::arrange(dplyr::desc(m))
+
+```
+
 
 

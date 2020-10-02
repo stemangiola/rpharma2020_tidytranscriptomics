@@ -849,7 +849,7 @@ library(survival)
 
 BRCA_tidy_survival = 
 	BRCA_tidy %>%
-	test_differential_cellularity(Surv(PFI.time.2, PFI.2) ~ .	) %>%
+	test_differential_cellularity(Surv(time, event_occurred) ~ .	) %>%
 	arrange(p.value)
 
 BRCA_tidy_survival %>%
@@ -862,7 +862,7 @@ We can visualise the cell type proportions for the most associated cell types
 BRCA_tidy_survival %>%
 	slice(1:2) %>%
 	unnest(cell_type_proportions) %>%
-	ggplot(aes(PFI.time.2, .proportion, color = factor(PFI.2))) +
+	ggplot(aes(time, .proportion, color = factor(event_occurred))) +
 	geom_point() +
 	facet_wrap(~ .cell_type) +
 	scale_x_log10() +
