@@ -650,7 +650,7 @@ de_all
 
 You may notice that the methods produce columns with different names for similar outputs, for example edgerQLT_PValue vs deseq2_pvalue and edgerQLT_FDR vs deseq2_padj. If you wish to make these consistent you can do that with tidyverse `rename`.
 
-```{r}
+```{r eval=FALSE}
 # example of renaming DESeq2 columns
 de_all %>%
 rename(deseq2_PValue = deseq2_pvalue, deseq2_FDR = deseq2_padj)
