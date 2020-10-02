@@ -1,6 +1,6 @@
 <!-- badges: start -->
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.3959148.svg)](https://doi.org/10.5281/zenodo.3959148)
-[![.github/workflows/basic_checks.yaml](https://github.com/stemangiola/rpharma2020_tidytranscriptomics/workflows/.github/workflows/basic_checks.yaml/badge.svg)](https://github.com/stemangiola/rpharma2020_tidytranscriptomics/actions) [![Docker](https://github.com/Bioconductor/rpharma2020/raw/master/docs/images/docker_icon.png)](https://hub.docker.com/repository/docker/stemangiola/rpharma2020_tidytranscriptomics) 	
+[![.github/workflows/basic_checks.yaml](https://github.com/stemangiola/rpharma2020_tidytranscriptomics/workflows/.github/workflows/basic_checks.yaml/badge.svg)](https://github.com/stemangiola/rpharma2020_tidytranscriptomics/actions) [![Docker](https://github.com/Bioconductor/BioC2020/raw/master/docs/images/docker_icon.png)](https://hub.docker.com/repository/docker/stemangiola/rpharma2020_tidytranscriptomics) 	
 <!-- badges: end -->
 
 # Introduction to Tidy Transcriptomics
@@ -30,8 +30,6 @@ This is necessary in order to reproduce the code shown in the workshop. The work
 
 If you're familiar with [Docker](https://docs.docker.com/get-docker/) you could use the Docker image which has all the software pre-configured to the correct versions.
 
-TODO: Docker not created yet
-
 ```
 docker run -e PASSWORD=abc -p 8787:8787 stemangiola/rpharma2020_tidytranscriptomics:rpharma2020
 ```
@@ -49,17 +47,14 @@ Alternatively, you could install the workshop using the commands below in R `4.0
 # Install same versions used in the workshop
 
 # install.packages('remotes')
-remotes::install_github("stemangiola/tidybulk@v1.1.8")
-remotes::install_github("stemangiola/tidygate@v0.2.8")
-remotes::install_github("stemangiola/tidyseurat@v0.1.8")
-remotes::install_github("stemangiola/tidyHeatmap@v1.1.5")
+remotes::install_github(c("stemangiola/tidybulk@v1.1.8", "stemangiola/tidygate@v0.2.8", "stemangiola/tidyseurat@v0.1.8", "stemangiola/tidyHeatmap@v1.1.5"))
 remotes::install_github("stemangiola/rpharma2020_tidytranscriptomics", build_vignettes = TRUE)
 
 library(rpharma2020tidytranscriptomics)
 browseVignettes("rpharma2020tidytranscriptomics")
 ```
 
-To run the code, you could then copy and paste the code from the workshop [R markdown file](https://raw.githubusercontent.com/stemangiola/rpharma2020_tidytranscriptomics/master/vignettes/tidytranscriptomics.Rmd) into a new R Markdown file on your computer.
+To run the code, you could then copy and paste the code from the workshop vignette or [R markdown file](https://raw.githubusercontent.com/stemangiola/rpharma2020_tidytranscriptomics/master/vignettes/tidytranscriptomics.Rmd) into a new R Markdown file on your computer.
 
 ## Workshop Description
 
@@ -112,15 +107,15 @@ Rough guide
 |  *Data visualisation*                               |      |
 |  *Exercises and Q&A*                                | 10m  |
 | _Break_                                             |  5m  |
-| **Part 2 Bulk RNA-seq Extended**                    | 30m  |
+| **Part 2 Bulk RNA-seq Extended**                    | 40m  |
 |  *Comparison of differential testing tools*         |      |
-|  *Example of nested analysis*                       |      |
+|  *Cell type composition analysis*                   |      |
 |  *Exercises and Q&A*                                | 10m  |
 | _Break_                                             |  5m  |
-| **Part 3 Single-cell RNA-seq**                      | 40m  |
+| **Part 3 Single-cell RNA-seq**                      | 30m  |
 |  *Brief introduction to single-cell RNA-seq*        |      |
 |  *Brief introduction to tidyseurat*                 |      |
-|  *Q&A*                                              | 30m  |
+|  *Additional Q&A*                                   | 30m  |
 
 
 ### Workshop goals and objectives
