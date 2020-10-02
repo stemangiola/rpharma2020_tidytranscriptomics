@@ -1055,7 +1055,7 @@ pbmc_small_nested <-
 pbmc_small_nested
 ```
 
-Now we can independently for the lymphoid and myeloid subsets (i) find variable features, (ii) reduce dimensions, and (iii) cluster using both tidyverse and SingleCellExperiment seamlessly.
+Now we can independently for the lymphoid and myeloid subsets (i) find variable features, (ii) reduce dimensions, and (iii) cluster using both tidyverse and Seurat seamlessly.
 
 ```{r, warning=FALSE}
 pbmc_small_nested_reanalysed <-
