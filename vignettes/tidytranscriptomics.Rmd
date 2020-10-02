@@ -660,8 +660,6 @@ de_all <-
 de_all
 ```
 
-
-
 ***
 
 #### Note 
@@ -870,84 +868,16 @@ BRCA_tidy_survival %>%
 	custom_theme
 ```
 
-## Nested analyses
-
-`tidybulk` allows for data nesting, using the `tidyr` utility `nest`. This is an extremely powerful tool as allows functional programming on transcriptomic data.
-
-### Perform same analysis on subsets
-
-Let's suppose we want to perform differential transcript abundance analysis independently for two different data subsets to compare results after the test
-
-```{r message=FALSE, warning=FALSE}
-# load additional libraries
-library(purrr)
-```
-
-```{r}
-pasilla_de <- 
-  rpharma2020tidytranscriptomics::pasilla %>% 
-  
-  # Convert SummarizedExperiment object to tibble
-  tidybulk %>%
-  
-  # Filter counts
-  identify_abundant(factor_of_interest=condition) %>%
-    
-  # Scale abundance   
-  scale_abundance() %>%
-  
-  # Nest
-  nest(data = -type) %>%
-  
-  # Differential analysis
-  mutate(data = map(
-    data,
-    ~  test_differential_abundance(.x, ~ condition) 
-  )) %>%
-  
-  unnest(data)
-```
-
-Now we can for example compare the number of differentially transcribed genes and their co-expression
-
-```{r}
-pasilla_de %>%
-  nest(data = -type) %>%
-  mutate(
-    number_of_differential = map_int(
-      data, ~ .x %>% pivot_transcript() %>% filter(FDR < 0.05) %>% nrow
-    ))
-```
-
-We can easily see which genes overlap, and plot them
-
-```{r}
-pasilla_de %>%
-  filter(FDR < 0.05) %>%
-  nest(data = -feature) %>%
-  mutate(occurrences = map_int(data, ~ .x %>% distinct(type) %>% nrow)) %>%
-  
-  # We filter some of them
-  filter(occurrences == 2) %>%
-  dplyr::slice(1:6) %>%
-  unnest(data) %>%
-  
-  # And plot
-  ggplot(aes(type, counts_scaled +1, color=condition)) + 
-  geom_point() + 
-  facet_wrap(~feature) +
-  scale_y_log10() +
-  custom_theme
-```
-
 
 ## Key Points
 
 - `tidybulk` allows streamlined multi-method analyses
 - `tidygate` allows the selection of arbitrary points in a two-dimensional plot, and add the gate information to the input tibble
-- `tidybulk` allow easy deconvolution analyses 
-- Hypothesis testing for tissue composition is analogous to the one for transcript abundance 
-- Nesting allows for iteratively perform analyses on portions of the data set, without the creation of new variable, and in a totally functional way.
+- `tidybulk` allow easy analyses of cell type composition
+- Testing for differences in tissue composition between samples is analogous to the testing for differences in transcript abundance 
+
+## Supplementary
+Some things we don't have time to cover in Part 2 of this workshop can be found in the [Supplementary material](https://stemangiola.github.io/rpharma2020_tidytranscriptomics/articles/supplementary.html).
 
 ## Exercises
 
