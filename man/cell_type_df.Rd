@@ -5,7 +5,7 @@
 \alias{cell_type_df}
 \title{cell_type_df}
 \format{
-A list of gates to use. Gates consist of x and y corordinates.
+A list of gates to use. Gates consist of x and y coordinates.
 }
 \usage{
 data(cell_type_df)

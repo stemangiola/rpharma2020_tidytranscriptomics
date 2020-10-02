@@ -253,7 +253,7 @@ de_all %>%
 	
 	# Reshape for nesting
 	pivot_longer(
-		cols = -c(feature, .abundant, symbol),
+		cols = -c(feature, .abundant),
 		names_sep = "_", 
 		names_to = c("method", "statistic"), 
 		values_to = "value"
@@ -282,7 +282,7 @@ trend_plot =
 	
 	# Reshape for nesting
 	pivot_longer(
-		cols = -c(feature, .abundant, symbol),
+		cols = -c(feature, .abundant),
 		names_sep = "_", 
 		names_to = c("method", "statistic"), 
 		values_to = "value"
