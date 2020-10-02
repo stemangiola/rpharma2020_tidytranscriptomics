@@ -118,11 +118,13 @@
 <a href="#via-github" class="anchor"></a>Via GitHub</h3>
 <p>Alternatively, you could install the workshop using the commands below in R <code>4.0</code>.</p>
 <pre><code><a href="https://remotes.r-lib.org/reference/install_github.html"># Install same versions used in the workshop
-
 # install.packages('remotes')
 remotes::install_github(c("stemangiola/tidybulk@v1.1.8", "stemangiola/tidygate@v0.2.8", "stemangiola/tidyseurat@v0.1.8", "stemangiola/tidyHeatmap@v1.1.5"))
+
+# Install workshop package
 remotes::install_github("stemangiola/rpharma2020_tidytranscriptomics", build_vignettes = TRUE)
 
+# To view vignettes
 library(rpharma2020tidytranscriptomics)
 browseVignettes("rpharma2020tidytranscriptomics")</a></code></pre>
 <p>To run the code, you could then copy and paste the code from the workshop vignette or <a href="https://raw.githubusercontent.com/stemangiola/rpharma2020_tidytranscriptomics/master/vignettes/tidytranscriptomics.Rmd">R markdown file</a> into a new R Markdown file on your computer.</p>
@@ -145,7 +147,7 @@ browseVignettes("rpharma2020tidytranscriptomics")</a></code></pre>
 <div id="workshop-participation" class="section level3">
 <h3 class="hasAnchor">
 <a href="#workshop-participation" class="anchor"></a>Workshop Participation</h3>
-<p>The workshop format is a 2.5-3 hour session consisting of demos, exercises and Q&amp;A.</p>
+<p>The workshop format is a 3 hour session consisting of hands-on demos, exercises and Q&amp;A.</p>
 </div>
 <div id="r--bioconductor-packages-used" class="section level3">
 <h3 class="hasAnchor">
@@ -180,11 +182,11 @@ browseVignettes("rpharma2020tidytranscriptomics")</a></code></pre>
 <tbody>
 <tr class="odd">
 <td><strong>Part 1 Bulk RNA-seq Core</strong></td>
-<td>50m</td>
+<td></td>
 </tr>
 <tr class="even">
 <td><em>Introduction to RNA-seq</em></td>
-<td></td>
+<td>50m</td>
 </tr>
 <tr class="odd">
 <td><em>Data preprocessing</em></td>
@@ -212,11 +214,11 @@ browseVignettes("rpharma2020tidytranscriptomics")</a></code></pre>
 </tr>
 <tr class="odd">
 <td><strong>Part 2 Bulk RNA-seq Extended</strong></td>
-<td>40m</td>
+<td></td>
 </tr>
 <tr class="even">
 <td><em>Comparison of differential testing tools</em></td>
-<td></td>
+<td>40m</td>
 </tr>
 <tr class="odd">
 <td><em>Cell type composition analysis</em></td>
@@ -232,22 +234,19 @@ browseVignettes("rpharma2020tidytranscriptomics")</a></code></pre>
 </tr>
 <tr class="even">
 <td><strong>Part 3 Single-cell RNA-seq</strong></td>
+<td></td>
+</tr>
+<tr class="odd">
+<td><em>Introduction to single-cell</em></td>
 <td>30m</td>
 </tr>
-<tr class="odd">
-<td><em>Brief introduction to single-cell RNA-seq</em></td>
-<td></td>
-</tr>
 <tr class="even">
-<td><em>Brief introduction to tidyseurat</em></td>
-<td></td>
-</tr>
-<tr class="odd">
 <td><em>Additional Q&amp;A</em></td>
 <td>30m</td>
 </tr>
 </tbody>
 </table>
+<p>Total 180m</p>
 </div>
 <div id="workshop-goals-and-objectives" class="section level3">
 <h3 class="hasAnchor">
