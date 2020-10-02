@@ -818,10 +818,11 @@ We can visualise the similarity of the tissue composition for the patients by pe
 
 ```{r warning=FALSE}
 BRCA_cell_type_long %>%
-	
-	# We add some noise to the proportion inference to avoid PCA error from having some cell types with zero variance as they not present in all patients
-	# A better (but more complex) way would be to eliminate the zero variance cell types 
-	mutate(proportion = proportion + rnorm(n(), 0, 1e-10) %>% abs) %>%
+    
+    # Filter cell types with proportion zero in all patients
+    group_by(cell_type) %>% 
+    filter(sum(proportion) > 0) %>%
+    ungroup() %>%
 	
 	reduce_dimensions(
 		patient, 
@@ -835,7 +836,6 @@ BRCA_cell_type_long %>%
 	geom_point(color="red") +
 	ggrepel::geom_text_repel(size=3) +
 	custom_theme
-
 ```
 
 We can also perform differential tissue composition analyses, similar to how we performed differential transcript abundance analyses. We use tidybulk's `test_differential_cellularity` and can perform our analyses using a known factor of interest, such as tumour subtype, or using survival data.
