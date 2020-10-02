@@ -305,7 +305,7 @@ pasilla_de %>%
   custom_theme
 ```
 
-### How to perform analysis on subset and apply to full dataset
+## How to perform analysis on subset and apply to full dataset
 
 Let's suppose we want to identify the markers that distinguish epithelial from endothelial cells, and we also want to then visualise the abundance of those transcripts across many cell types to understand their cell type specificity.
 
