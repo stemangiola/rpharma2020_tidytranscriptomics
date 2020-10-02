@@ -99,28 +99,28 @@ The workshop format is a 3 hour session consisting of hands-on demos, exercises 
 
 Rough guide
 
-| Activity                                            | Time |
-|-----------------------------------------------------|------|
-| **Part 1 Bulk RNA-seq Core**                        |      |
-|  *Hands-on Demos*                                   |  50m |
-|    Introduction to RNA-seq                          |      |
-|    Data preprocessing                               |      |
-|    Data dimensionality reduction and clustering     |      |
-|    Differential gene expression                     |      |
-|    Data visualisation                               |      |
-|  *Exercises and Q&A*                                |  10m |
-| _Break_                                             |   5m |
-| **Part 2 Bulk RNA-seq Extended**                    |      |
-|  *Hands-on Demos*                                   |  40m |
-|    Comparison of differential testing tools         |      |
-|    Cell type composition analysis                   |      |
-|  *Exercises and Q&A*                                |  10m |
-| _Break_                                             |   5m |
-| **Part 3 Single-cell RNA-seq**                      |      |
-|  *Hands-on Demos*                                   |  30m |
-|    Introduction to single-cell                      |      |
-| **Additional Q&A**                                  |  30m |
-| Total                                               | 180m |
+| Activity                                              | Time |
+|-------------------------------------------------------|------|
+| **Part 1 Bulk RNA-seq Core**                          |      |
+|  *Hands-on Demos*                                     |  50m |
+|      Introduction to RNA-seq                          |      |
+|      Data preprocessing                               |      |
+|      Data dimensionality reduction and clustering     |      |
+|      Differential gene expression                     |      |
+|      Data visualisation                               |      |
+|  *Exercises and Q&A*                                  |  10m |
+| _Break_                                               |   5m |
+| **Part 2 Bulk RNA-seq Extended**                      |      |
+|  *Hands-on Demos*                                     |  40m |
+|      Comparison of differential testing tools         |      |
+|      Cell type composition analysis                   |      |
+|  *Exercises and Q&A*                                  |  10m |
+| _Break_                                               |   5m |
+| **Part 3 Single-cell RNA-seq**                        |      |
+|  *Hands-on Demos*                                     |  30m |
+|      Introduction to single-cell                      |      |
+| **Additional Q&A**                                    |  30m |
+| Total                                                 | 180m |
 
 ### Workshop goals and objectives
 
