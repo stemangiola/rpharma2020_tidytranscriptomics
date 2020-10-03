@@ -811,7 +811,7 @@ de_gate %>%
 
 If we are sequencing tissue samples, we may want to know what cell types are present and if there are differences in expression between them. `tidybulk` has a `deconvolve_cellularity` function that can help us do this.
 
-For this example we will use a subset of the breast cancer TCGA dataset. 
+For this example we will use a subset of the breast cancer dataset from [The Cancer Genome Atlas (TCGA)](https://www.cancer.gov/tcga). 
 
 ```{r}
 BRCA_tidy <- 
@@ -821,7 +821,7 @@ BRCA_tidy <-
 BRCA_tidy
 ```
 
-With tidybulk, we can easily infer the proportions of cell types within a tissue using one of several published methods (Cibersort, EPIC and llsr). Here we will use Cibersort which provides a default signature called LM22 to define the cell types. LM22 contains >500 genes that identify 22 human immune cell types.
+With tidybulk, we can easily infer the proportions of cell types within a tissue using one of several published methods (Cibersort[@newman2015robust], EPIC[@racle2017simultaneous] and llsr[@abbas2009deconvolution]). Here we will use Cibersort which provides a default signature called LM22 to define the cell types. LM22 contains 547 genes that identify 22 human immune cell types.
 
 ```{r}
 BRCA_cell_type <- 
@@ -889,7 +889,7 @@ BRCA_cell_type_long %>%
 	custom_theme
 ```
 
-We can also perform differential tissue composition analyses, similar to how we performed differential transcript abundance analyses. We use tidybulk's `test_differential_cellularity` and can perform our analyses using a known factor of interest, such as tumour subtype, or using survival data.
+We can also perform differential tissue composition analyses, similar to how we performed differential transcript abundance analyses. We use tidybulk's `test_differential_cellularity` and can perform our analyses using a known factor of interest, such as tumour subtype, or using survival data. Here we use survival data available from TCGA[@liu2018integrated].
 
 ```{r}
 library(survival)
