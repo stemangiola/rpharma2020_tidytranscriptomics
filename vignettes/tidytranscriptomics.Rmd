@@ -573,6 +573,34 @@ Extra
 
 # Part 2 Bulk RNA-seq Extended
 
+## Tidybulk ADD versus GET modes
+
+In this Part 2 we will see action="get" being used, so we will explain here what it is doing.
+
+Every tidybulk function takes a tidybulk tibble as input, and  
+ * action="add" outputs the new information joined to the original input data frame (default)
+ * action="get" outputs the new information with the sample or transcript information, depending on what the analysis is
+ 
+For example, with action="add" (default), we can add the PCA dimensions to the original data set. So we still have a row for every transcript in every sample.
+
+```{r}
+counts_scaled %>%
+  reduce_dimensions(
+  method = "PCA",
+  action = "add")
+```
+
+Or with action= "get" we can add the PCA dimensions to the original data set selecting just the sample-wise columns. Note that we now have just one row for every sample.
+
+```{r}
+counts_scaled %>%
+  reduce_dimensions(
+  method = "PCA",
+  action = "get")
+```
+
+## Comparison of differential analysis methods
+
 *tidybulk* integrates several popular methods for differential transcript abundance testing: the edgeR quasi-likelihood [@chen2016reads] (tidybulk default method), edgeR likelihood ratio [@mccarthy2012differential], limma-voom [@law2014voom] and DESeq2 [@love2014moderated]. A common question researchers have is which method to choose. Mike Love, DESeq2 author has this advice in his [blog](https://mikelove.wordpress.com/2016/09/28/deseq2-or-edger).
 
 ```{r, echo=FALSE, out.width = "350px"}
@@ -580,8 +608,6 @@ knitr::include_graphics("../inst/vignettes/which_method.png")
 ```
 
 tidybulk can help you decide which method (or methods) to use, as it provides an easy way to run multiple and see how they compare.
-
-## Comparison of differential analysis methods
 
 We can perform differential analysis with several methods, and the results will be added to the original dataset. 
 
