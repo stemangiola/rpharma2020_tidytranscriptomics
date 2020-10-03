@@ -526,6 +526,13 @@ We can also specify which parameters from the `aes` we want to show up when we h
 strip_chart %>% ggplotly(tooltip = c("label", "y"))
 ```
 
+## Automatic bibliography
+
+Tidybulk provides a handy function called `get_bibliography` that you can use to obtain the references for the methods used. The references are in BibTeX format and can be imported into your reference manager.
+
+```{r}
+get_bibliography(counts_de)
+```
 
 ## Key Points
 - RNA sequencing data can be represented and analysed in a 'tidy' way using tidybulk and the tidyverse
@@ -566,6 +573,34 @@ Extra
 
 # Part 2 Bulk RNA-seq Extended
 
+## Tidybulk ADD versus GET modes
+
+In this Part 2 we will see action="get" being used, so we will explain here what it is doing.
+
+Every tidybulk function takes a tidybulk tibble as input, and  
+ * action="add" outputs the new information joined to the original input data frame (default)
+ * action="get" outputs the new information with the sample or transcript information, depending on what the analysis is
+ 
+For example, with action="add" (default), we can add the PCA dimensions to the original data set. So we still have a row for every transcript in every sample.
+
+```{r}
+counts_scaled %>%
+  reduce_dimensions(
+  method = "PCA",
+  action = "add")
+```
+
+Or with action= "get" we can add the PCA dimensions to the original data set selecting just the sample-wise columns. Note that we now have just one row for every sample.
+
+```{r}
+counts_scaled %>%
+  reduce_dimensions(
+  method = "PCA",
+  action = "get")
+```
+
+## Comparison of differential analysis methods
+
 *tidybulk* integrates several popular methods for differential transcript abundance testing: the edgeR quasi-likelihood [@chen2016reads] (tidybulk default method), edgeR likelihood ratio [@mccarthy2012differential], limma-voom [@law2014voom] and DESeq2 [@love2014moderated]. A common question researchers have is which method to choose. Mike Love, DESeq2 author has this advice in his [blog](https://mikelove.wordpress.com/2016/09/28/deseq2-or-edger).
 
 ```{r, echo=FALSE, out.width = "350px"}
@@ -573,8 +608,6 @@ knitr::include_graphics("../inst/vignettes/which_method.png")
 ```
 
 tidybulk can help you decide which method (or methods) to use, as it provides an easy way to run multiple and see how they compare.
-
-## Comparison of differential analysis methods
 
 We can perform differential analysis with several methods, and the results will be added to the original dataset. 
 
@@ -597,8 +630,8 @@ pasilla_de <-
   # Add gene symbols
   mutate(symbol = AnnotationDbi::mapIds(org.Dm.eg.db::org.Dm.eg.db,   keys=as.character(feature), keytype = "FLYBASE", column="SYMBOL", multiVals = "first")) %>%
   
-  # Scale abundance
-  keep_abundant(factor_of_interest=condition) 
+  # Filter counts
+  keep_abundant(factor_of_interest=condition)
 ```
 
 This is an example for the default method for differential abundance testing. It uses the edgeR quasi-likelihood method.
@@ -690,6 +723,8 @@ de_all %>%
 
 We can select some of the transcripts for further analysis using the [*tidygate*](https://github.com/stemangiola/tidygate) package.
 
+With tidygate, we can interactively draw gates to select points we want using `gate`. We specify which columns we want to plot in the scatterplot, and how many gates we want to draw. We can also specify the opacity if we want to make it easier to see overlapping points.
+
 ```{r, eval=FALSE}
 de_gate <- 
   de_all %>%
@@ -703,7 +738,18 @@ de_gate <-
   )
 ```
 
+We then click to draw gates around the points we want, for example as shown in the screenshot below.
+
 ```{r, echo=FALSE}
+knitr::include_graphics("../inst/vignettes/comparison_different_DE_methods_gates.png")
+```
+
+That will add a column called gate, specifying which gate the points (transcripts) are in. The coordinates of the gates are stored in the gate attribute of the gate object and can be retrieved with `attr(de_gate, "internals")$gate`.
+
+We can also specify the coordinates for pre-selected gates with `gate_list`. This can be useful, for example, for reproducibility, if we want to reuse the coordinates of gates we've drawn. 
+
+```{r}
+# using pre-selected gates
 de_gate <- 
   de_all %>%
   
@@ -716,17 +762,23 @@ de_gate <-
 de_gate
 ```
 
-```{r, echo=FALSE}
-knitr::include_graphics("../inst/vignettes/comparison_different_DE_methods_gates.png")
-```
-
-We can now select the transcripts from the two gates (i.e. oversignificant in DESeq2  and oversignificant in edgeR)
+We can check how many transcripts we've got in each gate.
 
 ```{r}
 de_gate %>% 
+    pivot_transcript() %>% 
+    dplyr::count(gate)
+```
+
+We can now select the transcripts from our two gates i.e. more significant in edgeR (gate 1) and more significant in DESeq2 (gate 2).
+
+```{r}
+de_gate %>% 
+    
+  # Generate scaled counts for plotting     
   scale_abundance() %>%
   
-  # Filter only transcripts within the gates
+  # Filter for transcripts within the gates
   filter(gate > 0) %>% 
   
   # Rename for clarity
@@ -736,7 +788,7 @@ de_gate %>%
     TRUE ~ gate
   )) %>%
   
-  # Rearrange order
+  # Order the plots for the transcripts
   mutate(feature = fct_reorder(feature, edgerQLT_PValue, min)) %>%
   
   # Plot
@@ -746,8 +798,7 @@ de_gate %>%
   custom_theme
 ```
 
-
-This enables us to see, for example, that DESeq2 produces a more conservative statistic for the transcript `FBgn0052939` .
+This enables us to see, for example, that DESeq2 produces a more conservative logFC statistic for the transcript `FBgn0052939` .
 
 ```{r}
 de_gate %>%
@@ -760,7 +811,7 @@ de_gate %>%
 
 If we are sequencing tissue samples, we may want to know what cell types are present and if there are differences in expression between them. `tidybulk` has a `deconvolve_cellularity` function that can help us do this.
 
-For this example we will use a subset of the breast cancer TCGA dataset. 
+For this example we will use a subset of the breast cancer dataset from [The Cancer Genome Atlas (TCGA)](https://www.cancer.gov/tcga). 
 
 ```{r}
 BRCA_tidy <- 
@@ -770,7 +821,7 @@ BRCA_tidy <-
 BRCA_tidy
 ```
 
-With tidybulk, we can easily infer the proportions of cell types within a tissue using one of several published methods (Cibersort, EPIC and llsr). Here we will use Cibersort which provides a default signature called LM22 to define the cell types. LM22 contains >500 genes that identify 22 human immune cell types.
+With tidybulk, we can easily infer the proportions of cell types within a tissue using one of several published methods (Cibersort[@newman2015robust], EPIC[@racle2017simultaneous] and llsr[@abbas2009deconvolution]). Here we will use Cibersort which provides a default signature called LM22 to define the cell types. LM22 contains 547 genes that identify 22 human immune cell types.
 
 ```{r}
 BRCA_cell_type <- 
@@ -838,7 +889,7 @@ BRCA_cell_type_long %>%
 	custom_theme
 ```
 
-We can also perform differential tissue composition analyses, similar to how we performed differential transcript abundance analyses. We use tidybulk's `test_differential_cellularity` and can perform our analyses using a known factor of interest, such as tumour subtype, or using survival data.
+We can also perform differential tissue composition analyses, similar to how we performed differential transcript abundance analyses. We use tidybulk's `test_differential_cellularity` and can perform our analyses using a known factor of interest, such as tumour subtype, or using survival data. Here we use survival data available from TCGA[@liu2018integrated].
 
 ```{r}
 library(survival)
