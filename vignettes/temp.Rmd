@@ -1,0 +1,17 @@
+---
+output: html_document
+---
+
+```{css, echo = FALSE}
+.pool {
+background-color: #ffeaa7;
+}
+```
+
+```{mtcars}
+summary(mtcars)
+```
+
+```{pool class.source="pool"}
+summary(cars)
+```

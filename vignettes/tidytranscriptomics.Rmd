@@ -19,6 +19,15 @@ knitr::opts_chunk$set(
 )
 ```
 
+```{css, echo = FALSE}
+.pool {
+background-color: #fff4d4;
+}
+.pool code {
+	background-color: #fff4d4;
+}
+```
+
 # Part 1 Bulk RNA-seq Core
 
 This workshop will present how to perform analysis of RNA sequencing data following the tidy data paradigm [@wickham2014tidy]. The tidy data paradigm provides a standard way to organise data values within a dataset, where each variable is a column, each observation is a row, and data is manipulated using an easy-to-understand vocabulary. Most importantly, the data structure remains consistent across manipulation and analysis functions.
@@ -33,6 +42,18 @@ This material was adapted from an R for RNA sequencing workshop first run [here]
 knitr::include_graphics("../inst/vignettes/tidybulk_logo.png")
 ```
 
+```{pool_1 class.source="pool"}
+Pool: Will you code during this workshop?
+```
+
+
+```{pool_2 class.source="pool"}
+Pool: Do you have experience with transcriptomic analyses?
+```
+
+```{pool_3 class.source="pool"}
+Pool: Do you have experience with tidyverse?
+```
 
 ## Introduction
 Measuring gene expression on a genome-wide scale has become common practice over the last two decades or so, with microarrays predominantly used pre-2008. With the advent of next generation sequencing technology in 2008, an increasing number of scientists use this technology to measure and understand changes in gene expression in often complex systems. As sequencing costs have decreased, using RNA sequencing to simultaneously measure the expression of tens of thousands of genes for multiple samples has never been easier. The cost of these experiments has now moved from generating the data to storing and analysing it.
@@ -292,6 +313,9 @@ counts_scal_PCA %>%
 
 The samples separate by treatment on PC1 which is what we hope to see. PC2 separates the N080611 cell line from the other samples, indicating a greater difference between that cell line and the others.
 
+```{pool_7 class.source="pool"}
+Pool: What fraction of variance is explained by PC1?
+```
 
 ### Hierarchical clustering with heatmaps
 
@@ -399,6 +423,9 @@ counts_de %>%
 	write_tsv("de_results.tsv")
 ```
 
+```{pool_8 class.source="pool"}
+Pool: How many differentially expressed genes are there for treated vs untreated (FDR < 0.05)?
+```
 
 ### Counting differentially expressed genes
 
@@ -429,6 +456,10 @@ topgenes_symbols <- topgenes %>% pull(symbol)
 
 # take a look
 topgenes_symbols
+```
+
+```{pool_9 class.source="pool"}
+Pool: What is the FBgn id of the 10th most differentially expressed gene (by smallest P value)?
 ```
 
 ## Plots after testing for differentially expressed
@@ -689,6 +720,12 @@ de_all <-
 de_all
 ```
 
+```{pool_4 class.source="pool"}
+Pool: What is the method that detects more differentially abundant transcripts?
+```
+
+
+
 ***
 
 #### Note 
@@ -811,6 +848,10 @@ de_gate %>%
   select(edgerQLT_logFC, deseq2_log2FoldChange)
 ```
 
+```{pool_5 class.source="pool"}
+Pool: For the top ranked genes, DESeq2 estimates lower p.values compared to limma-voom. Roughly, around what point of gene rank the significance trend of DESeq2 crosses the one of limma-voom?
+```
+
 ## Cell type composition analysis
 
 If we are sequencing tissue samples, we may want to know what cell types are present and if there are differences in expression between them. `tidybulk` has a `deconvolve_cellularity` function that can help us do this.
@@ -891,6 +932,10 @@ BRCA_cell_type_long %>%
 	geom_point(color="red") +
 	ggrepel::geom_text_repel(size=3) +
 	custom_theme
+```
+
+```{pool_6 class.source="pool"}
+Pool: What is the most abundant cell type overall in BRCA samples?
 ```
 
 We can also perform differential tissue composition analyses, similar to how we performed differential transcript abundance analyses. We use tidybulk's `test_differential_cellularity` and can perform our analyses using a known factor of interest, such as tumour subtype, or using survival data. Here we use survival data available from TCGA[@liu2018integrated].
