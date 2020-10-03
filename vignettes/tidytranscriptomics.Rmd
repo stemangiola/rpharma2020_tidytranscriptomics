@@ -526,6 +526,13 @@ We can also specify which parameters from the `aes` we want to show up when we h
 strip_chart %>% ggplotly(tooltip = c("label", "y"))
 ```
 
+## Automatic bibliography
+
+Tidybulk provides a handy function called `get_bibliography` that you can use to obtain the references for the methods used. The references are in BibTeX format and can be imported into your reference manager.
+
+```{r}
+get_bibliography(counts_de)
+```
 
 ## Key Points
 - RNA sequencing data can be represented and analysed in a 'tidy' way using tidybulk and the tidyverse
