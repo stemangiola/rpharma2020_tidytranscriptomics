@@ -630,8 +630,8 @@ pasilla_de <-
   # Add gene symbols
   mutate(symbol = AnnotationDbi::mapIds(org.Dm.eg.db::org.Dm.eg.db,   keys=as.character(feature), keytype = "FLYBASE", column="SYMBOL", multiVals = "first")) %>%
   
-  # Scale abundance
-  keep_abundant(factor_of_interest=condition) 
+  # Filter counts
+  keep_abundant(factor_of_interest=condition)
 ```
 
 This is an example for the default method for differential abundance testing. It uses the edgeR quasi-likelihood method.
@@ -723,6 +723,8 @@ de_all %>%
 
 We can select some of the transcripts for further analysis using the [*tidygate*](https://github.com/stemangiola/tidygate) package.
 
+With tidygate, we can interactively draw gates to select points we want using `gate`. We specify which columns we want to plot in the scatterplot, and how many gates we want to draw. We can also specify the opacity if we want to make it easier to see overlapping points.
+
 ```{r, eval=FALSE}
 de_gate <- 
   de_all %>%
@@ -736,7 +738,18 @@ de_gate <-
   )
 ```
 
+We then click to draw gates around the points we want, for example as shown in the screenshot below.
+
 ```{r, echo=FALSE}
+knitr::include_graphics("../inst/vignettes/comparison_different_DE_methods_gates.png")
+```
+
+That will add a column called gate, specifying which gate the points (transcripts) are in. The coordinates of the gates are stored in the gate attribute of the gate object and can be retrieved with `attr(de_gate, "internals")$gate`.
+
+We can also specify the coordinates for pre-selected gates with `gate_list`. This can be useful, for example, for reproducibility, if we want to reuse the coordinates of gates we've drawn. 
+
+```{r}
+# using pre-selected gates
 de_gate <- 
   de_all %>%
   
@@ -749,17 +762,23 @@ de_gate <-
 de_gate
 ```
 
-```{r, echo=FALSE}
-knitr::include_graphics("../inst/vignettes/comparison_different_DE_methods_gates.png")
-```
-
-We can now select the transcripts from the two gates (i.e. oversignificant in DESeq2  and oversignificant in edgeR)
+We can check how many transcripts we've got in each gate.
 
 ```{r}
 de_gate %>% 
+    pivot_transcript() %>% 
+    count(gate)
+```
+
+We can now select the transcripts from our two gates i.e. more significant in edgeR (gate 1) and more significant in DESeq2 (gate 2).
+
+```{r}
+de_gate %>% 
+    
+  # Generate scaled counts for plotting     
   scale_abundance() %>%
   
-  # Filter only transcripts within the gates
+  # Filter for transcripts within the gates
   filter(gate > 0) %>% 
   
   # Rename for clarity
@@ -769,7 +788,7 @@ de_gate %>%
     TRUE ~ gate
   )) %>%
   
-  # Rearrange order
+  # Order the plots for the transcripts
   mutate(feature = fct_reorder(feature, edgerQLT_PValue, min)) %>%
   
   # Plot
@@ -779,8 +798,7 @@ de_gate %>%
   custom_theme
 ```
 
-
-This enables us to see, for example, that DESeq2 produces a more conservative statistic for the transcript `FBgn0052939` .
+This enables us to see, for example, that DESeq2 produces a more conservative logFC statistic for the transcript `FBgn0052939` .
 
 ```{r}
 de_gate %>%
