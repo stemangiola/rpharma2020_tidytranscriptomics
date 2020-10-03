@@ -767,7 +767,7 @@ We can check how many transcripts we've got in each gate.
 ```{r}
 de_gate %>% 
     pivot_transcript() %>% 
-    count(gate)
+    dplyr::count(gate)
 ```
 
 We can now select the transcripts from our two gates i.e. more significant in edgeR (gate 1) and more significant in DESeq2 (gate 2).
