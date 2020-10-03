@@ -744,7 +744,11 @@ We then click to draw gates around the points we want, for example as shown in t
 knitr::include_graphics("../inst/vignettes/comparison_different_DE_methods_gates.png")
 ```
 
-That will add a column called gate, specifying which gate the points (transcripts) are in. The coordinates of the gates are stored in the gate attribute of the gate object and can be retrieved with `attr(de_gate, "internals")$gate`.
+That will add a column called gate, specifying which gate the points (transcripts) are in. The coordinates of the gates are stored in the "gate" attribute of the gate object and can be retrieved if desired.
+
+```{r eval=FALSE}
+de_gate %>% attr("gate")
+```
 
 We can also specify the coordinates for pre-selected gates with `gate_list`. This can be useful, for example, for reproducibility, if we want to reuse the coordinates of gates we've drawn. 
 
