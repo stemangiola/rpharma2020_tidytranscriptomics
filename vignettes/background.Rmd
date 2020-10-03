@@ -1,11 +1,11 @@
 ---
-title: "Background knowledge for the Tidy transcriptomic workshop"
+title: "Background knowledge for the Tidy Transcriptomics workshop"
 author:
   - Maria Doyle, Peter MacCallum Cancer Centre^[maria.doyle@petermac.org]
   - Stefano Mangiola, Walter and Eliza Hall Institute^[mangiola.s@wehi.edu.au]
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Background}
+  %\VignetteIndexEntry{Background knowledge for the Tidy Transcriptomics workshop}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -28,6 +28,10 @@ knitr::include_graphics("../inst/vignettes/tidybulk_logo.png")
 - Part 3 Single-cell RNA-seq
 
 The format is a few introductory slides, then demos, exercises plus Q&A
+<br>
+<br>
+<br>
+<br>
 
 # What is transcriptomics?
 
@@ -44,7 +48,10 @@ knitr::include_graphics("../inst/vignettes/transcriptomics.jpg")
 - Genome (DNA) pretty stable
 - Proteome (proteins) harder to measure
 - Transcriptome (RNA) can measure changes in expression of thousands of coding and non-coding transcripts
-
+<br>
+<br>
+<br>
+<br>
 ```{r, echo=FALSE, out.width = "600px"}
 knitr::include_graphics("../inst/vignettes/ScreenShot1.png")
 ```
@@ -85,13 +92,21 @@ knitr::include_graphics("../inst/vignettes/RPharma2020pipeline-02.png")
 
 ## 1) RStudio Cloud
 
-Easiest way to run this material. Only available during workshop.
-https://rstudio.cloud/spaces/92179/project/1673971
+Easiest way to run this material. Only available during workshop.  
+ * Click on the TidyTranscriptomics project: https://rstudio.cloud/spaces/92179/project/1711490  
+   You may need to create a login for RStudio Cloud if you don't already have one  
+ * **Make a copy of the project** as shown in the screenshot below
+ 
+```{r, echo=FALSE, out.width = "600px"}
+knitr::include_graphics("../inst/vignettes/rstudio_cloud_copy_project.png")
+```
+ 
+ * Open `tidytranscriptomics.Rmd` in `vignettes` folder
+
 
 ## 2) Install on your computer
 
-See instructions here
-https://stemangiola.github.io/rpharma2020_tidytranscriptomics/index.html
+See instructions [here](https://stemangiola.github.io/rpharma2020_tidytranscriptomics/index.html#workshop-package-installation)
 
 
 

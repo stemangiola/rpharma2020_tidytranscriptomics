@@ -45,7 +45,7 @@ Alternatively, you could install the workshop using the commands below in R `4.0
 
 ```
 # Install same versions used in the workshop
-# install.packages('remotes')
+#install.packages('remotes')
 remotes::install_github(c("stemangiola/tidybulk@v1.1.8", "stemangiola/tidygate@v0.2.8", "stemangiola/tidyseurat@v0.1.8", "stemangiola/tidyHeatmap@v1.1.5"))
 
 # Install workshop package
