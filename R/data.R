@@ -31,3 +31,11 @@
 #' @format  A tidy data frame.
 #' @usage data(BRCA)
 "BRCA"
+
+#' pbmc_small
+#'
+#' A small Seurat dadaset of single cell RNA sequencing data
+#'
+#' @format  A Seurat object.
+#' @usage data(pbmc_small)
+"pbmc_small"
