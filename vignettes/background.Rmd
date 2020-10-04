@@ -30,8 +30,6 @@ knitr::include_graphics("../inst/vignettes/tidybulk_logo.png")
 The format is a few introductory slides, then demos, exercises plus Q&A
 <br>
 <br>
-<br>
-<br>
 
 # What is transcriptomics?
 
@@ -50,8 +48,6 @@ knitr::include_graphics("../inst/vignettes/transcriptomics.jpg")
 - Transcriptome (RNA) can measure changes in expression of thousands of coding and non-coding transcripts
 <br>
 <br>
-<br>
-<br>
 ```{r, echo=FALSE, out.width = "600px"}
 knitr::include_graphics("../inst/vignettes/ScreenShot1.png")
 ```
@@ -68,7 +64,20 @@ knitr::include_graphics("../inst/vignettes/ScreenShot2.png")
 knitr::include_graphics("../inst/vignettes/ScreenShot3.png")
 ```
 
-# Bulk RNA sequencing analysis workflow
+# Types of transcriptomic analyses
+
+* **Differential expression**  
+* **Cell type composition**  
+* Alternative splicing  
+* Novel transcript discovery  
+* Fusions identification  
+* Variant analysis  
+<br>
+Topics in bold we will see in this workshop
+<br>
+<br>
+
+# Bulk RNA sequencing differential expression workflow
 
 ```{r, echo=FALSE, out.width = "600px"}
 knitr::include_graphics("../inst/vignettes/RPharma2020pipeline-01.png")
@@ -94,13 +103,13 @@ knitr::include_graphics("../inst/vignettes/RPharma2020pipeline-02.png")
 
 Easiest way to run this material. Only available during workshop.  
  * You should have received an invite to join the classroom in the R in Pharma Organization space in RStudio Cloud.   
- * **Make a copy of the project** as shown in the screenshot below
+ * **Make a copy of the project** as shown in the screenshot below  
+ * Open `tidytranscriptomics.Rmd` in `vignettes` folder
  
 ```{r, echo=FALSE, out.width = "600px"}
 knitr::include_graphics("../inst/vignettes/rstudio_cloud_copy_project.png")
 ```
  
- * Open `tidytranscriptomics.Rmd` in `vignettes` folder
 
 
 ## 2) Install on your computer
