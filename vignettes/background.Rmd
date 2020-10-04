@@ -99,7 +99,7 @@ knitr::include_graphics("../inst/vignettes/RPharma2020pipeline-02.png")
 
 # Getting started 
 
-## 1) RStudio Cloud
+## Cloud
 
 Easiest way to run this material. Only available during workshop.  
  * You should have received an invite to join the classroom in the R in Pharma Organization space in RStudio Cloud.   
@@ -112,9 +112,9 @@ knitr::include_graphics("../inst/vignettes/rstudio_cloud_copy_project.png")
  
 
 
-## 2) Install on your computer
+## Local
 
-See instructions [here](https://stemangiola.github.io/rpharma2020_tidytranscriptomics/index.html#workshop-package-installation)
+See instructions [here](https://stemangiola.github.io/rpharma2020_tidytranscriptomics/index.html#workshop-package-installation) if you wnat to install on your own computer. We recommend using the Cloud during the RPharma workshop and this if you want to run the material after the workshop.
 
 
 
