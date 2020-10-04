@@ -989,7 +989,7 @@ Questions:
 
 # Part 3 Single-cell RNA-seq
 
-In the Part 2 we mentioned the importance of studying the cell-type composition of a biological sample (i.e. bulk RNA sequencing deconvolution). The barcoding of RNA molecules according to the single cell origin gives higher information resolution. One of the benefits is a more direct estimation of cell-type composition. While for bulk RNA sequencing we need to use inference, with single-cell RNA sequencing the problem reduces to classification.   
+In Part 2 we showed how we can study the cell-type composition of a biological sample using bulk RNA sequencing.  Single cell sequencing enables a more direct estimation of cell-type composition and gives greater resolution. For bulk RNA sequencing we need to infer the cell types using the abundance of transcripts in the whole sample, with single-cell RNA sequencing we can directly measure the transcripts in each cell and then classify the cells into cell types. 
 
 Seurat is a very popular analysis framework for single cell RNA sequencing data [@butler2018integrating; @stuart2019comprehensive] .
 
