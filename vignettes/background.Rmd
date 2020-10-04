@@ -114,7 +114,7 @@ knitr::include_graphics("../inst/vignettes/rstudio_cloud_copy_project.png")
 
 ## Local
 
-See instructions [here](https://stemangiola.github.io/rpharma2020_tidytranscriptomics/index.html#workshop-package-installation) if you wnat to install on your own computer. We recommend using the Cloud during the RPharma workshop and this if you want to run the material after the workshop.
+If you want to install on your own computer, see instructions [here](https://stemangiola.github.io/rpharma2020_tidytranscriptomics/index.html#workshop-package-installation). We recommend using the Cloud during the RPharma workshop and this method if you want to run the material after the workshop.
 
 
 
