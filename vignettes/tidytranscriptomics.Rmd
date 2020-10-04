@@ -989,6 +989,10 @@ Questions:
 
 # Part 3 Single-cell RNA-seq
 
+In the Part 2 we mentioned the importance of studying the cell-type composition of a biological sample (i.e. bulk RNA sequencing deconvolution). The barcoding of RNA molecules according to the single cell origin gives higher information resolution. One of the benefits is a more direct estimation of cell-type composition. While for bulk RNA sequencing we need to use inference, with single-cell RNA sequencing the problem reduces to classification.   
+
+Seurat is a very popular analysis framework for single cell RNA sequencing data [@butler2018integrating; @stuart2019comprehensive] .
+
 tidyseurat provides a bridge between the Seurat single-cell package [@butler2018integrating; @stuart2019comprehensive] and the tidyverse [@wickham2019welcome]. It creates an invisible layer that enables viewing the
 Seurat object as a tidyverse tibble, and provides Seurat-compatible *dplyr*, *tidyr*, *ggplot* and *plotly* functions.
 
