@@ -5,9 +5,8 @@ articles:
   background: background.html
   solutions: solutions.html
   supplementary: supplementary.html
-  temp: temp.html
   tidytranscriptomics: tidytranscriptomics.html
-last_built: 2020-10-03T12:50Z
+last_built: 2020-10-04T02:12Z
 urls:
   reference: https://stemangiola.github.io/rpharma2020_tidytranscriptomics/reference
   article: https://stemangiola.github.io/rpharma2020_tidytranscriptomics/articles
