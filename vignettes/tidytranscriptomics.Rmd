@@ -37,7 +37,7 @@ This can be achieved for RNA sequencing data with the [tidybulk](https://stemang
 
 
 ### Acknowledgements
-This material was adapted from an R for RNA sequencing workshop first run [here](http://combine-australia.github.io/2016-05-11-RNAseq/). Use of the airway and pasilla datasets was inspired by the [DESeq2 vignette](http://bioconductor.org/packages/devel/bioc/vignettes/DESeq2/inst/doc/DESeq2.html).
+Some of the material in Part 1 was adapted from an R for RNA sequencing workshop first run [here](http://combine-australia.github.io/2016-05-11-RNAseq/). Use of the airway and pasilla datasets was inspired by the [DESeq2 vignette](http://bioconductor.org/packages/devel/bioc/vignettes/DESeq2/inst/doc/DESeq2.html).
 
 ```{r, echo=FALSE, out.width = "100px"}
 knitr::include_graphics("../inst/vignettes/tidybulk_logo.png")
@@ -59,7 +59,7 @@ Poll: Do you have experience with tidyverse?
 ## Introduction
 Measuring gene expression on a genome-wide scale has become common practice over the last two decades or so, with microarrays predominantly used pre-2008. With the advent of next generation sequencing technology in 2008, an increasing number of scientists use this technology to measure and understand changes in gene expression in often complex systems. As sequencing costs have decreased, using RNA sequencing to simultaneously measure the expression of tens of thousands of genes for multiple samples has never been easier. The cost of these experiments has now moved from generating the data to storing and analysing it.
 
-There are many steps involved in analysing an RNA sequencing dataset. Sequenced reads are aligned to a reference genome, then the number of reads mapped to each gene can be counted. This results in a table of counts, which is what we perform statistical analyses on in R. While mapping and counting are important and necessary tasks, today we will be starting from the count data and showing how differential expression analysis can be performed in a friendly way using tidybulk.
+There are many steps involved in analysing an RNA sequencing dataset. Sequenced reads are aligned to a reference genome, then the number of reads mapped to each gene can be counted. This results in a table of counts, which is what we perform statistical analyses on in R. While mapping and counting are important and necessary tasks, today we will be starting from the count data and showing how differential expression analysis can be performed in a friendly way using the Bioconductor package, tidybulk.
 
 
 First, let’s load all the packages we will need to analyse the data. Note that you should load the *tidybulk* library after the tidyverse core packages for best integration.
@@ -104,7 +104,6 @@ custom_theme <-
         panel.grid.minor = element_line(size = 0.1),
         text = element_text(size = 12),
         legend.position = "bottom",
-        #aspect.ratio = 1,
         strip.background = element_blank(),
         axis.title.x = element_text(margin = margin(t = 10, r = 10, b = 10, l = 10)),
         axis.title.y = element_text(margin = margin(t = 10, r = 10, b = 10, l = 10)),
@@ -118,7 +117,7 @@ Here we will perform our analysis using the data from the *airway* package. The 
 
 ### Setting up the data
 
-The airway data is stored as a *RangedSummarizedExperiment* object. We can convert a SummarizedExperiment object into a tidybulk tibble, which is the tidyverse table format.
+The airway data is stored as a Bioconductor *RangedSummarizedExperiment* object. We will convert this object into a tidybulk tibble. A tibble is the tidyverse table format.
 
 In this workshop we will be using the tidyverse pipe `%>%`. This 'pipes' the output from the command on the left into the command on the right/below. Using the pipe is not essential but it reduces the amount of code we need to write when we have multiple steps (as we'll see later). It also can make the steps clearer and easier to see. For more details on the pipe see [here](https://r4ds.had.co.nz/pipes.html).
 
@@ -138,7 +137,7 @@ We can type the name of the object to view.
 counts_airway
 ```
 
-The `counts_tt` object contains information about genes and samples, the first column has the Ensembl gene identifier, the second column has the sample identifier and the third column has the gene transcription abundance expressed in number of reads aligning to the gene in each experimental sample. The remaining columns include sample-wise information. The dex column tells us whether the samples are treated or untreated and the cell column tells us what cell line they are from.
+The `counts_tt` object contains information about genes and samples, the first column has the Ensembl gene identifier, the second column has the sample identifier and the third column has the gene transcription abundance. The abundance is the number of reads aligning to the gene in each experimental sample. The remaining columns include sample-wise information. The dex column tells us whether the samples are treated or untreated and the cell column tells us what cell line they are from.
 
 We can shorten the sample names. We can remove the SRR1039 prefix that's present in all of them, as shorter names can fit better in some of the plots we will create. We can use `mutate()` together with `str_replace()` to remove the SRR1039 string from the sample column.
 
@@ -174,9 +173,9 @@ counts_tt <-
 From this tidybulk tibble, we can perform differential expression analysis with the tidybulk package.
 
 ## Filtering lowly transcribed genes  
-Genes with very low counts across all libraries provide little evidence for differential expression and they interfere with some of the statistical approximations that are used later in the pipeline. They also add to the multiple testing burden when estimating false discovery rates, reducing power to detect differentially expressed genes. These genes should be filtered out prior to further analysis.
+Genes with very low counts across all libraries provide little evidence for differential expression and they can interfere with some of the statistical approximations that are used later in the pipeline. They also add to the multiple testing burden when estimating false discovery rates, reducing power to detect differentially expressed genes. These genes should be filtered out prior to further analysis.
 
-Tidybulk `keep_abundant` can use the *edgeR* `filterByExpr` function described in [@law2016rna] to keep the genes with adequate abundance for differential expression testing. By default, this will keep genes with ~10 counts in a minimum number of samples, the number of the samples in the smallest group. In this dataset the smallest group size is four (as we have four dex-treated samples vs four untreated). Alternatively, we could use `identify_abundant` to identify which genes are abundant or not (TRUE/FALSE), rather than just keeping the abundant ones. 
+We can perform the filtering using tidybulk `keep_abundant` or `identify_abundant`. These functions can use the *edgeR* `filterByExpr` function described in [@law2016rna] to automatically identify the genes with adequate abundance for differential expression testing. By default, this will keep genes with ~10 counts in a minimum number of samples, the number of the samples in the smallest group. In this dataset the smallest group size is four (as we have four dex-treated samples vs four untreated). Alternatively, we could use `identify_abundant` to identify which genes are abundant or not (TRUE/FALSE), rather than just keeping the abundant ones. 
 
 ```{r}
 # Filtering counts
@@ -366,7 +365,7 @@ gplots::heatmap.2(highly_variable_lcpm, col=colours, trace="none", ColSideColors
 
 ## Differential expression
 
-Now that we are happy that the data looks good, we can continue to testing for differentially expressed (DE) genes. We will use the `test_differential_abundance` from tidybulk which currently uses *edgeR* [@robinson2010edger] to perform the differential expression analysis. We give `test_differential_abundance` our tidybulk counts object and a formula, specifying the column that contains our groups to be compared. If all our samples were from the same cell line we could use the formula `0 + dex`, however, each treated and untreated sample is from a different cell line so we add the cell line as an additional factor `0 + dex + cell`. We also provide the names of the groups we want to compare to `.contrasts` (e.g. `.contrasts = c("dextreat - dexuntreat")`).
+Now that we are happy that the data looks good, we can continue to testing for differentially expressed (DE) genes. We will use the `test_differential_abundance` from tidybulk which currently uses *edgeR* [@robinson2010edger] to perform the differential expression analysis. We give `test_differential_abundance` our tidybulk counts object and a formula, specifying the column that contains our groups to be compared. If all our samples were from the same cell line, and there were no additional factors contributing variance such as batch differences, we could use the formula `0 + dex`. However, each treated and untreated sample is from a different cell line so we add the cell line as an additional factor `0 + dex + cell`. We also provide the names of the groups we want to compare to `.contrasts` (e.g. `.contrasts = c("dextreat - dexuntreat")`).
 
 We only have one contrast here so we omit the suffix.
 
@@ -393,7 +392,7 @@ If we just want a table of differentially expressed genes we can select the tran
 counts_de %>% pivot_transcript()
 ```
 
-Now we have columns with our log-fold change (logFC), false-discovery rate (FDR) and probability value (p-value). 
+Now we have columns with our log-fold change (logFC), false-discovery rate (FDR) and probability value (p-value). logFC is log2(treated/untreated).
 
 Tidybulk enables a simplified way of performing an RNA sequencing differential expression analysis (with the benefit of smoothly integrating with ggplot2 and other tidyverse packages). Compare the code for a tidybulk edgeR analysis versus standard edgeR below.
 
@@ -428,6 +427,8 @@ counts_de %>%
 
 
 ### Counting differentially expressed genes
+
+In order to decide which genes are differentially expressed, we usually take a cut-off of 0.05 on the FDR (or adjusted P value), NOT the raw p-value. This is because we are testing many (thousands) genes, and the chances of finding differentially expressed genes is very high when you do that many tests. Hence we need to control the false discovery rate, which is the adjusted p-value column in the results table. What this means is that if 100 genes are significant at a 5% false discovery rate, we are willing to accept that 5 will be false positives. 
 
 We can count how many differentially expressed genes there are. We'll filter on FDR 0.05.
 
