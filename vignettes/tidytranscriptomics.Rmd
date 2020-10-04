@@ -189,7 +189,7 @@ After running `keep_abundant` we have a column called `.abundant` containing TRU
 
 ## Scaling counts to normalise
 
-Scaling of counts, normalisation, is performed to eliminate uninteresting differences between samples due to sequencing depth or composition. In the tidybulk package the function `scale_abundance` generates scaled counts, with scaling factors calculated on abundant (filtered) transcripts and applied to all transcripts. We can choose from different normalisation methods. Here we will use the default, TMM, [@robinson2010scaling]. TMM normalisation (and most scaling normalisation methods) scale relative to one sample.
+Scaling of counts, normalisation, is performed to eliminate uninteresting differences between samples due to sequencing depth or composition. A more detailed explanation can be found [here](https://hbctraining.github.io/DGE_workshop/lessons/02_DGE_count_normalization.html). In the tidybulk package the function `scale_abundance` generates scaled counts, with scaling factors calculated on abundant (filtered) transcripts and applied to all transcripts. We can choose from different normalisation methods. Here we will use the default, edgeR's trimmed mean of M values (TMM), [@robinson2010scaling]. TMM normalisation (and most scaling normalisation methods) scale relative to one sample.
 
 ```{r}
 # Scaling counts
