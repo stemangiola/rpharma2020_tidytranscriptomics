@@ -93,8 +93,7 @@ knitr::include_graphics("../inst/vignettes/RPharma2020pipeline-02.png")
 ## 1) RStudio Cloud
 
 Easiest way to run this material. Only available during workshop.  
- * Click on the TidyTranscriptomics project: https://rstudio.cloud/spaces/92179/project/1711490  
-   You may need to create a login for RStudio Cloud if you don't already have one  
+ * You should have received an invite to join the classroom in the R in Pharma Organization space in RStudio Cloud.   
  * **Make a copy of the project** as shown in the screenshot below
  
 ```{r, echo=FALSE, out.width = "600px"}
