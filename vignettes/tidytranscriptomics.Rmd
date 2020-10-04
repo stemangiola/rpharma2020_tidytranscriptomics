@@ -946,8 +946,19 @@ Seurat object as a tidyverse tibble, and provides Seurat-compatible *dplyr*, *ti
 
 
 ```{r message=FALSE, warning=FALSE}
+# Detach all previous packages - stackoverflow.com/questions/7505547/detach-all-packages-while-working-in-r
+invisible(lapply(paste0('package:', names(sessionInfo()$otherPkgs)), detach, character.only=TRUE,unload=TRUE))
+bspkgs.nb<-sessionInfo()$basePkgs[sessionInfo()$basePkgs!="base"]
+bspkgs.nbu<-bspkgs.nb[bspkgs.nb!="utils"]
+names(bspkgs.nbu)<-bspkgs.nbu
+suppressMessages(invisible(lapply(paste0('package:', names(bspkgs.nbu)), detach, character.only=TRUE,unload=TRUE)))
+
+
 # load additional libraries
+library(rpharma2020tidytranscriptomics)
+library(dplyr)
 library(purrr)
+library(stringr)
 library(Seurat)
 library(tidyseurat)
 ```
@@ -958,7 +969,7 @@ library(tidyseurat)
 This is a seurat object but it is evaluated as tibble. So it is fully compatible both with Seurat and tidyverse APIs. 
 
 ```{r}
-pbmc_small_tidy <- tidyseurat::pbmc_small %>% tidy()
+pbmc_small_tidy <- rpharma2020tidytranscriptomics::pbmc_small %>% tidy()
 ```
 
 **It looks like a tibble**
@@ -973,13 +984,29 @@ pbmc_small_tidy
 pbmc_small_tidy@assays
 ```
 
+## Polish the data
+
+We can interact with out object as we do with any tibble. In this case we want to polish some annotation column.
+
+```{r}
+pbmc_small_tidy_clean <-
+	pbmc_small_tidy %>%
+	
+	# Clean groups
+	mutate(groups = groups %>% str_remove("^g")) %>%
+	
+	# Extract sample
+	extract(file, "sample", "../data/sample([a-z0-9]+)/outs.+")
+
+pbmc_small_tidy_clean
+```
 
 ## Preprocess the dataset
 
 
 ```{r preprocess, warning=FALSE}
 pbmc_small_pca <-
-  pbmc_small_tidy %>%
+  pbmc_small_tidy_clean %>%
   SCTransform(verbose = FALSE) %>%
   FindVariableFeatures(verbose = FALSE) %>%
   RunPCA(verbose = FALSE)
@@ -1005,7 +1032,7 @@ Now we can interrogate the object as if it was a regular tibble data frame.
 
 ```{r cluster count}
 pbmc_small_cluster %>%
-  tidyseurat::count(groups, seurat_clusters)
+  count(sample, groups, seurat_clusters)
 ```
 
 We can identify cluster markers using Seurat.
@@ -1017,6 +1044,8 @@ markers <-
   FindAllMarkers(only.pos = TRUE, min.pct = 0.25, thresh.use = 0.25) %>%
   group_by(cluster) %>%
   top_n(10, avg_logFC)
+
+markers
 
 # Plot heatmap
 pbmc_small_cluster %>%
@@ -1033,7 +1062,7 @@ We can calculate the first 3 UMAP dimensions using the Seurat framework.
 ```{r umap}
 pbmc_small_UMAP <-
   pbmc_small_cluster %>%
-  RunUMAP(reduction = "pca", dims = 1:15, n.components = 3L, )
+  RunUMAP(reduction = "pca", dims = 1:15, n.components = 3L)
 ```
 
 And we can plot them using 3D plot using plotly.
@@ -1064,14 +1093,20 @@ blueprint <- celldex::BlueprintEncodeData()
 
 # Infer cell identities
 cell_type_df <-
+	
+	# extracting counts from Seurat object
   pbmc_small_UMAP@assays[["SCT"]]@counts %>%
   log1p() %>%
   Matrix::Matrix(sparse = TRUE) %>%
+	
+	# SingleR
   SingleR::SingleR(
     ref = blueprint,
     labels = blueprint$label.main,
     method = "single"
   ) %>%
+	
+	# Formatting results
   as.data.frame() %>%
   as_tibble(rownames = "cell") %>%
   select(cell, first.labels)
@@ -1085,7 +1120,7 @@ pbmc_small_cell_type <-
 
 # Reorder columns
 pbmc_small_cell_type %>%
-  tidyseurat::select(cell, first.labels, everything())
+  select(cell, first.labels, everything())
 ```
 
 We can easily summarise the results. For example, we can see how cell type classification overlaps with cluster classification.
