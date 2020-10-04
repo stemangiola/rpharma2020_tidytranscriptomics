@@ -435,7 +435,7 @@ We can count how many differentially expressed genes there are. We'll filter on 
 counts_de %>%
     pivot_transcript() %>%
     filter(FDR < 0.05) %>%
-    count(feature)
+    dplyr::count(feature)
 ```
 
 
@@ -945,7 +945,7 @@ BRCA_cell_type_long %>%
 Poll: What is the most abundant cell type overall in BRCA samples?
 ```
 
-We can also perform differential tissue composition analyses, similar to how we performed differential transcript abundance analyses. We use tidybulk's `test_differential_cellularity` and can perform our analyses using a known factor of interest, such as tumour subtype, or using survival data. Here we use survival data available from TCGA[@liu2018integrated].
+We can also perform differential tissue composition analyses, similar to how we performed differential transcript abundance analyses. We use tidybulk's `test_differential_cellularity` and can perform our analyses using a known factor of interest, such as tumour subtype, or using survival data. Here we use survival data available from TCGA [@liu2018integrated].
 
 ```{r}
 library(survival)
