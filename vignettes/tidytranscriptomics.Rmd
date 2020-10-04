@@ -943,7 +943,7 @@ Questions:
 
 In Part 2 we showed how we can study the cell-type composition of a biological sample using bulk RNA sequencing.  Single cell sequencing enables a more direct estimation of cell-type composition and gives greater resolution. For bulk RNA sequencing we need to infer the cell types using the abundance of transcripts in the whole sample, with single-cell RNA sequencing we can directly measure the transcripts in each cell and then classify the cells into cell types. 
 
-Seurat is a very popular analysis framework for single cell RNA sequencing data [@butler2018integrating; @stuart2019comprehensive] .
+Seurat is a very popular analysis toolkit for single cell RNA sequencing data [@butler2018integrating; @stuart2019comprehensive] .
 
 tidyseurat provides a bridge between the Seurat single-cell package [@butler2018integrating; @stuart2019comprehensive] and the tidyverse [@wickham2019welcome]. It creates an invisible layer that enables viewing the
 Seurat object as a tidyverse tibble, and provides Seurat-compatible *dplyr*, *tidyr*, *ggplot* and *plotly* functions.
