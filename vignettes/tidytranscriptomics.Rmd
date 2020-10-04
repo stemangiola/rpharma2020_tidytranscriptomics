@@ -433,9 +433,8 @@ We can count how many differentially expressed genes there are. We'll filter on 
 
 ```{r}
 counts_de %>%
-    pivot_transcript() %>%
-    filter(FDR < 0.05) %>%
-    dplyr::count(feature)
+  filter(FDR < 0.05) %>%
+  summarise(num_de = n_distinct(feature))
 ```
 
 
