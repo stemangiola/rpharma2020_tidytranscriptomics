@@ -873,7 +873,7 @@ BRCA_tidy <-
 BRCA_tidy
 ```
 
-With tidybulk, we can easily infer the proportions of cell types within a tissue using one of several published methods (Cibersort[@newman2015robust], EPIC[@racle2017simultaneous] and llsr[@abbas2009deconvolution]). Here we will use Cibersort which provides a default signature called LM22 to define the cell types. LM22 contains 547 genes that identify 22 human immune cell types.
+With tidybulk, we can easily infer the proportions of cell types within a tissue using one of several published methods (Cibersort [@newman2015robust], EPIC [@racle2017simultaneous] and llsr [@abbas2009deconvolution]). Here we will use Cibersort which provides a default signature called LM22 to define the cell types. LM22 contains 547 genes that identify 22 human immune cell types.
 
 ```{r}
 BRCA_cell_type <- 
