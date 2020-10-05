@@ -989,14 +989,23 @@ Questions:
 
 # Part 3 Single-cell RNA-seq
 
+In Part 2 we showed how we can study the cell-type composition of a biological sample using bulk RNA sequencing.  Single cell sequencing enables a more direct estimation of cell-type composition and gives greater resolution. For bulk RNA sequencing we need to infer the cell types using the abundance of transcripts in the whole sample, with single-cell RNA sequencing we can directly measure the transcripts in each cell and then classify the cells into cell types. 
+
+Seurat is a very popular analysis toolkit for single cell RNA sequencing data [@butler2018integrating; @stuart2019comprehensive] .
+
 tidyseurat provides a bridge between the Seurat single-cell package [@butler2018integrating; @stuart2019comprehensive] and the tidyverse [@wickham2019welcome]. It creates an invisible layer that enables viewing the
 Seurat object as a tidyverse tibble, and provides Seurat-compatible *dplyr*, *tidyr*, *ggplot* and *plotly* functions.
 
 
 ```{r message=FALSE, warning=FALSE}
+
 # load additional libraries
+library(rpharma2020tidytranscriptomics)
+library(dplyr)
 library(purrr)
+library(stringr)
 library(Seurat)
+library(SingleR)
 library(tidyseurat)
 ```
 
@@ -1006,7 +1015,7 @@ library(tidyseurat)
 This is a seurat object but it is evaluated as tibble. So it is fully compatible both with Seurat and tidyverse APIs. 
 
 ```{r}
-pbmc_small_tidy <- tidyseurat::pbmc_small %>% tidy()
+pbmc_small_tidy <- rpharma2020tidytranscriptomics::pbmc_small %>% tidy()
 ```
 
 **It looks like a tibble**
@@ -1018,70 +1027,47 @@ pbmc_small_tidy
 **But it is a Seurat object after all**
 
 ```{r}
-pbmc_small_tidy@assays
+Assays(pbmc_small_tidy)
 ```
 
+## Polish the data
+
+We can interact with our object as we do with any tibble. In this case we want to polish an annotation column.
+
+```{r}
+pbmc_small_tidy_clean <-
+	pbmc_small_tidy %>%
+	
+	# Clean groups
+	mutate(groups = groups %>% str_remove("^g")) %>%
+	
+	# Extract sample
+	extract(file, "sample", "../data/sample([a-z0-9]+)/outs.+")
+
+pbmc_small_tidy_clean
+```
 
 ## Preprocess the dataset
 
 
 ```{r preprocess, warning=FALSE}
-pbmc_small_pca <-
-  pbmc_small_tidy %>%
+pbmc_small_scaled <-
+  pbmc_small_tidy_clean %>%
   SCTransform(verbose = FALSE) %>%
-  FindVariableFeatures(verbose = FALSE) %>%
-  RunPCA(verbose = FALSE)
+  FindVariableFeatures(verbose = FALSE) 
 
-pbmc_small_pca
-```
-
-
-## Identify clusters 
-
-We proceed with cluster identification with Seurat.
-
-```{r cluster}
-pbmc_small_cluster <-
-  pbmc_small_pca %>%
-  FindNeighbors(verbose = FALSE) %>%
-  FindClusters(method = "igraph", verbose = FALSE)
-
-pbmc_small_cluster
-```
-
-Now we can interrogate the object as if it was a regular tibble data frame.
-
-```{r cluster count}
-pbmc_small_cluster %>%
-  tidyseurat::count(groups, seurat_clusters)
-```
-
-We can identify cluster markers using Seurat.
-
-```{r}
-# Identify top 10 markers per cluster
-markers <-
-  pbmc_small_cluster %>%
-  FindAllMarkers(only.pos = TRUE, min.pct = 0.25, thresh.use = 0.25) %>%
-  group_by(cluster) %>%
-  top_n(10, avg_logFC)
-
-# Plot heatmap
-pbmc_small_cluster %>%
-  DoHeatmap(
-    features = markers$gene,
-    group.colors = friendly_cols
-  )
+pbmc_small_scaled
 ```
 
 ## Reduce dimensions
 
-We can calculate the first 3 UMAP dimensions using the Seurat framework.
+Beside PCA which is a linear dimensionality reduction, we can apply neighbour aware methods such as UMAP, to better define locally similar cells. We can calculate the first 3 UMAP dimensions using the Seurat framework.
 
 ```{r umap}
 pbmc_small_UMAP <-
-  pbmc_small_cluster %>%
-  RunUMAP(reduction = "pca", dims = 1:15, n.components = 3L, )
+  pbmc_small_scaled %>%
+  RunPCA(verbose = FALSE) %>%
+  RunUMAP(reduction = "pca", dims = 1:15, n.components = 3L)
 ```
 
 And we can plot them using 3D plot using plotly.
@@ -1097,43 +1083,91 @@ pbmc_small_UMAP %>%
   )
 ```
 
+
 ```{r, echo=FALSE}
 knitr::include_graphics("../inst/vignettes/plotly.png")
 ```
 
+## Identify clusters 
 
-## Cell type classification
+We proceed with cluster identification with Seurat.
 
-We can infer cell type identities using *SingleR* [@aran2019reference] and manipulate the output using tidyverse.
+```{r cluster}
+pbmc_small_cluster <-
+  pbmc_small_UMAP %>%
+  FindNeighbors(verbose = FALSE) %>%
+  FindClusters(method = "igraph", verbose = FALSE)
 
-```{r eval=FALSE}
+pbmc_small_cluster
+```
+
+Now we can interrogate the object as if it was a regular tibble data frame.
+
+```{r cluster count}
+pbmc_small_cluster %>%
+  count(sample, groups, seurat_clusters)
+```
+
+## Manual cell type classification
+
+We can identify cluster markers using Seurat.
+
+```{r}
+# Identify top 10 markers per cluster
+markers <-
+  pbmc_small_cluster %>%
+  FindAllMarkers(only.pos = TRUE, min.pct = 0.25, thresh.use = 0.25) %>%
+  group_by(cluster) %>%
+  top_n(10, avg_logFC)
+
+markers
+
+# Plot heatmap
+pbmc_small_cluster %>%
+  DoHeatmap(
+    features = markers$gene,
+    group.colors = friendly_cols
+  )
+```
+
+## Automatic cell type classification
+
+We can infer cell type identities using *SingleR* [@aran2019reference] and manipulate the output using tidyverse. SingleR [accepts any log-normalised transcript abundance matrix](https://bioconductor.org/packages/devel/bioc/vignettes/SingleR/inst/doc/SingleR.html)
+
+```{r}
 # Get cell type reference data
-blueprint <- celldex::BlueprintEncodeData()
+hpca <- HumanPrimaryCellAtlasData()
 
 # Infer cell identities
 cell_type_df <-
-  pbmc_small_UMAP@assays[["SCT"]]@counts %>%
+	
+# extracting counts from Seurat object
+  pbmc_small_cluster@assays[["SCT"]]@counts %>%
   log1p() %>%
-  Matrix::Matrix(sparse = TRUE) %>%
-  SingleR::SingleR(
-    ref = blueprint,
-    labels = blueprint$label.main,
-    method = "single"
+
+	# SingleR
+  SingleR(
+    ref = hpca,
+    labels = hpca$label.main,
+    method = "cluster",
+    clusters = pbmc_small_cluster %>% pull(seurat_clusters)
   ) %>%
+	
+	# Formatting results
   as.data.frame() %>%
-  as_tibble(rownames = "cell") %>%
-  select(cell, first.labels)
+  as_tibble(rownames = "seurat_clusters") %>%
+  select(seurat_clusters, first.labels)
 ```
 
 ```{r}
 # Join UMAP and cell type info
 pbmc_small_cell_type <-
-  pbmc_small_UMAP %>%
-  left_join(cell_type_df, by = "cell")
+  pbmc_small_cluster %>%
+  left_join(cell_type_df, by = "seurat_clusters")
 
 # Reorder columns
 pbmc_small_cell_type %>%
-  tidyseurat::select(cell, first.labels, everything())
+  select(cell, first.labels, everything())
 ```
 
 We can easily summarise the results. For example, we can see how cell type classification overlaps with cluster classification.
