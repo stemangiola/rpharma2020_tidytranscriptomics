@@ -954,9 +954,11 @@ Seurat object as a tidyverse tibble, and provides Seurat-compatible *dplyr*, *ti
 # load additional libraries
 library(rpharma2020tidytranscriptomics)
 library(dplyr)
+#library(dplyr)
 library(purrr)
 library(stringr)
 library(Seurat)
+library(SingleR)
 library(tidyseurat)
 ```
 
@@ -978,7 +980,7 @@ pbmc_small_tidy
 **But it is a Seurat object after all**
 
 ```{r}
-pbmc_small_tidy@assays
+Assays(pbmc_small_tidy)
 ```
 
 ## Polish the data
@@ -1082,11 +1084,11 @@ knitr::include_graphics("../inst/vignettes/plotly.png")
 
 ## Cell type classification
 
-We can infer cell type identities using *SingleR* [@aran2019reference] and manipulate the output using tidyverse.
+We can infer cell type identities using *SingleR* [@aran2019reference] and manipulate the output using tidyverse. SingleR [accepts any log-normalised transcript abundance matrix](https://bioconductor.org/packages/devel/bioc/vignettes/SingleR/inst/doc/SingleR.html)
 
-```{r eval=FALSE}
+```{r}
 # Get cell type reference data
-blueprint <- celldex::BlueprintEncodeData()
+hpca <- HumanPrimaryCellAtlasData()
 
 # Infer cell identities
 cell_type_df <-
@@ -1094,26 +1096,26 @@ cell_type_df <-
 	# extracting counts from Seurat object
   pbmc_small_UMAP@assays[["SCT"]]@counts %>%
   log1p() %>%
-  Matrix::Matrix(sparse = TRUE) %>%
-	
+
 	# SingleR
-  SingleR::SingleR(
-    ref = blueprint,
-    labels = blueprint$label.main,
-    method = "single"
+  SingleR(
+    ref = hpca,
+    labels = hpca$label.main,
+    method = "cluster",
+    clusters = pbmc_small_UMAP %>% pull(seurat_clusters)
   ) %>%
 	
 	# Formatting results
   as.data.frame() %>%
-  as_tibble(rownames = "cell") %>%
-  select(cell, first.labels)
+  as_tibble(rownames = "seurat_clusters") %>%
+  select(seurat_clusters, first.labels)
 ```
 
 ```{r}
 # Join UMAP and cell type info
 pbmc_small_cell_type <-
   pbmc_small_UMAP %>%
-  left_join(cell_type_df, by = "cell")
+  left_join(cell_type_df, by = "seurat_clusters")
 
 # Reorder columns
 pbmc_small_cell_type %>%
