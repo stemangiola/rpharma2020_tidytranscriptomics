@@ -29,6 +29,11 @@ background-color: #fff4d4;
 }
 ```
 
+# Background
+
+Background information and setup instructions for this workshop can be found [here](https://stemangiola.github.io/rpharma2020_tidytranscriptomics/articles/background.html).
+
+
 # Part 1 Bulk RNA-seq Core
 
 This workshop will present how to perform analysis of RNA sequencing data following the tidy data paradigm [@wickham2014tidy]. The tidy data paradigm provides a standard way to organise data values within a dataset, where each variable is a column, each observation is a row, and data is manipulated using an easy-to-understand vocabulary. Most importantly, the data structure remains consistent across manipulation and analysis functions.
