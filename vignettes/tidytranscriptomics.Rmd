@@ -1033,7 +1033,7 @@ Assays(pbmc_small_tidy)
 
 ## Polish the data
 
-We can interact with out object as we do with any tibble. In this case we want to polish some annotation column.
+We can interact with our object as we do with any tibble. In this case we want to polish an annotation column.
 
 ```{r}
 pbmc_small_tidy_clean <-
