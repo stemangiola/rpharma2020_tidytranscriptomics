@@ -1002,7 +1002,6 @@ Seurat object as a tidyverse tibble, and provides Seurat-compatible *dplyr*, *ti
 # load additional libraries
 library(rpharma2020tidytranscriptomics)
 library(dplyr)
-#library(dplyr)
 library(purrr)
 library(stringr)
 library(Seurat)
