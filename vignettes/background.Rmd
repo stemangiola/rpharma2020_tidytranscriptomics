@@ -27,7 +27,10 @@ knitr::include_graphics("../inst/vignettes/tidybulk_logo.png")
 - Part 2 Bulk RNA-seq Extended
 - Part 3 Single-cell RNA-seq
 
-The format is a few introductory slides, then demos, exercises plus Q&A
+A more detailed schedule can be found [here](https://stemangiola.github.io/rpharma2020_tidytranscriptomics/index.html#time-outline).  
+<br>
+**Format**: a few introductory slides, then demos, exercises plus Q&A.  
+**Interact**: Zoom chat and polls
 <br>
 <br>
 
@@ -116,7 +119,3 @@ knitr::include_graphics("../inst/vignettes/rstudio_cloud_copy_project.png")
 
 If you want to install on your own computer, see instructions [here](https://stemangiola.github.io/rpharma2020_tidytranscriptomics/index.html#workshop-package-installation). We recommend using the Cloud during the RPharma workshop and this method if you want to run the material after the workshop.
 
-
-
-
-## References
