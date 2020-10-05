@@ -617,7 +617,7 @@ In this Part 2 we will see action="get" being used, so we will explain here what
 
 Every tidybulk function takes a tidybulk tibble as input, and  
  * action="add" outputs the new information joined to the original input data frame (default)
- * action="get" outputs the new information with the sample or transcript information, depending on what the analysis is
+ * action="get" outputs the new information with only the sample or transcript information, depending on what the analysis is
  
 For example, with action="add" (default), we can add the PCA dimensions to the original data set. So we still have a row for every transcript in every sample.
 
@@ -663,7 +663,7 @@ pasilla_de <-
   rpharma2020tidytranscriptomics::pasilla %>% 
   
   # Convert SummarizedExperiment object to tibble
-  tidybulk %>%
+  tidybulk() %>%
     
   # Add gene symbols
   mutate(symbol = AnnotationDbi::mapIds(org.Dm.eg.db::org.Dm.eg.db,   keys=as.character(feature), keytype = "FLYBASE", column="SYMBOL", multiVals = "first")) %>%
@@ -732,7 +732,6 @@ Poll: Which method detects the most differentially abundant transcripts?
 ```
 
 
-
 ***
 
 #### Note 
@@ -760,9 +759,8 @@ Similarly, we can visually compare the significance for all methods. In this cas
 ```{r}
 de_all %>%
   pivot_transcript() %>%
-  select(edgerQLT_PValue, edgerLR_PValue, voom_P.Value, deseq2_pvalue, feature ) %>%
+  select(edgerQLT_PValue, edgerLR_PValue, voom_P.Value, deseq2_pvalue, feature) %>%
   ggpairs(1:4)
-
 ```
 
 We can select some of the transcripts for further analysis using the [*tidygate*](https://github.com/stemangiola/tidygate) package.
