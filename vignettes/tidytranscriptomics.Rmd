@@ -1149,7 +1149,10 @@ cell_type_df <-
 # Join UMAP and cell type info
 pbmc_small_cell_type <-
   pbmc_small_cluster %>%
-  left_join(cell_type_df, by = "seurat_clusters")
+  left_join(
+  	rpharma2020tidytranscriptomics::cell_type_df, 
+  	by = "seurat_clusters"
+  )
 
 # Reorder columns
 pbmc_small_cell_type %>%
