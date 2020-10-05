@@ -1142,7 +1142,7 @@ hpca <- HumanPrimaryCellAtlasData()
 # Infer cell identities
 cell_type_df <-
 	
-	# extracting counts from Seurat object
+# extracting counts from Seurat object
   pbmc_small_cluster@assays[["SCT"]]@counts %>%
   log1p() %>%
 
