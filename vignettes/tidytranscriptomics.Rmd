@@ -433,7 +433,7 @@ counts_de %>%
 
 ### Counting differentially expressed genes
 
-In order to decide which genes are differentially expressed, we usually take a cut-off of 0.05 on the FDR (or adjusted P value), NOT the raw p-value. This is because we are testing many (thousands) genes, and the chances of finding differentially expressed genes is very high when you do that many tests. Hence we need to control the false discovery rate, which is the adjusted p-value column in the results table. What this means is that if 100 genes are significant at a 5% false discovery rate, we are willing to accept that 5 will be false positives. 
+In order to decide which genes are differentially expressed, we usually take a cut-off of 0.05 on the FDR (or adjusted P value), NOT the raw p-value. This is because we are testing many genes (multiple testing), and the chances of finding differentially expressed genes is very high when you do that many tests. Hence we need to control the false discovery rate, which is the adjusted p-value column in the results table. What this means is that if 100 genes are significant at a 5% false discovery rate, we are willing to accept that 5 will be false positives. 
 
 We can count how many differentially expressed genes there are. We'll filter on FDR 0.05.
 
@@ -731,23 +731,21 @@ de_all <-
 de_all
 ```
 
+***
+
+>Note 
+
+>You may notice that the methods produce columns with different names for similar outputs. If you wish to make these consistent you can do that with tidyverse `rename`. For example, to rename the p value adjusted columns you could run below.
+
+>de_all %>% rename(deseq2_FDR = deseq2_padj, voom_FDR = voom_adj.P.Val)
+
+
+***
+
 ```{poll_7 class.source="poll"}
 Which method detects the most differentially abundant transcripts, p value adjusted for multiple testing <  0.05 (FDR, adj.P.Val, padj)?
 ```
 
-
-***
-
-#### Note 
-
-You may notice that the methods produce columns with different names for similar outputs, for example edgerQLT_PValue vs deseq2_pvalue and edgerQLT_FDR vs deseq2_padj. If you wish to make these consistent you can do that with tidyverse `rename`.
-
-```{r eval=FALSE}
-# example of renaming DESeq2 columns
-de_all %>%
-rename(deseq2_PValue = deseq2_pvalue, deseq2_FDR = deseq2_padj)
-```
-***
 
 We can visually compare the log fold change (logFC) of transcript abundance for the comparison of interest (treated vs untreated) for all methods. We will notice that the consistency of the logFC is really high for the methods.
 
