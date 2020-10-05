@@ -44,7 +44,8 @@ Imports:
     dittoSeq,
     GGally,
     plotly,
-    survival
+    survival,
+    SingleR
 Suggests:
     knitr,
     rmarkdown,
