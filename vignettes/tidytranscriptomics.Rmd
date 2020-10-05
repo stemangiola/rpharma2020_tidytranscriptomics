@@ -1004,15 +1004,41 @@ pbmc_small_tidy_clean
 
 
 ```{r preprocess, warning=FALSE}
-pbmc_small_pca <-
+pbmc_small_scaled <-
   pbmc_small_tidy_clean %>%
   SCTransform(verbose = FALSE) %>%
-  FindVariableFeatures(verbose = FALSE) %>%
-  RunPCA(verbose = FALSE)
+  FindVariableFeatures(verbose = FALSE) 
 
-pbmc_small_pca
+pbmc_small_scaled
 ```
 
+## Reduce dimensions
+
+Beside PCA which is a linear dimensionality reduction, we can apply neighbour aware methods such as UMAP, to better define locally similar cells. We can calculate the first 3 UMAP dimensions using the Seurat framework.
+
+```{r umap}
+pbmc_small_UMAP <-
+  pbmc_small_scaled %>%
+  RunPCA(verbose = FALSE) %>%
+  RunUMAP(reduction = "pca", dims = 1:15, n.components = 3L)
+```
+
+And we can plot them using 3D plot using plotly.
+
+```{r umap plot, eval=FALSE}
+pbmc_small_UMAP %>%
+  plot_ly(
+    x = ~`UMAP_1`,
+    y = ~`UMAP_2`,
+    z = ~`UMAP_3`,
+    color = ~seurat_clusters,
+    colors = friendly_cols[1:4]
+  )
+```
+
+```{r, echo=FALSE}
+knitr::include_graphics("../inst/vignettes/plotly.png")
+```
 
 ## Identify clusters 
 
@@ -1020,7 +1046,7 @@ We proceed with cluster identification with Seurat.
 
 ```{r cluster}
 pbmc_small_cluster <-
-  pbmc_small_pca %>%
+  pbmc_small_UMAP %>%
   FindNeighbors(verbose = FALSE) %>%
   FindClusters(method = "igraph", verbose = FALSE)
 
@@ -1033,6 +1059,8 @@ Now we can interrogate the object as if it was a regular tibble data frame.
 pbmc_small_cluster %>%
   count(sample, groups, seurat_clusters)
 ```
+
+## Manual cell type classification
 
 We can identify cluster markers using Seurat.
 
@@ -1054,35 +1082,8 @@ pbmc_small_cluster %>%
   )
 ```
 
-## Reduce dimensions
 
-We can calculate the first 3 UMAP dimensions using the Seurat framework.
-
-```{r umap}
-pbmc_small_UMAP <-
-  pbmc_small_cluster %>%
-  RunUMAP(reduction = "pca", dims = 1:15, n.components = 3L)
-```
-
-And we can plot them using 3D plot using plotly.
-
-```{r umap plot, eval=FALSE}
-pbmc_small_UMAP %>%
-  plot_ly(
-    x = ~`UMAP_1`,
-    y = ~`UMAP_2`,
-    z = ~`UMAP_3`,
-    color = ~seurat_clusters,
-    colors = friendly_cols[1:4]
-  )
-```
-
-```{r, echo=FALSE}
-knitr::include_graphics("../inst/vignettes/plotly.png")
-```
-
-
-## Cell type classification
+## Automatic cell type classification
 
 We can infer cell type identities using *SingleR* [@aran2019reference] and manipulate the output using tidyverse. SingleR [accepts any log-normalised transcript abundance matrix](https://bioconductor.org/packages/devel/bioc/vignettes/SingleR/inst/doc/SingleR.html)
 
@@ -1094,7 +1095,7 @@ hpca <- HumanPrimaryCellAtlasData()
 cell_type_df <-
 	
 	# extracting counts from Seurat object
-  pbmc_small_UMAP@assays[["SCT"]]@counts %>%
+  pbmc_small_cluster@assays[["SCT"]]@counts %>%
   log1p() %>%
 
 	# SingleR
@@ -1102,7 +1103,7 @@ cell_type_df <-
     ref = hpca,
     labels = hpca$label.main,
     method = "cluster",
-    clusters = pbmc_small_UMAP %>% pull(seurat_clusters)
+    clusters = pbmc_small_cluster %>% pull(seurat_clusters)
   ) %>%
 	
 	# Formatting results
@@ -1114,7 +1115,7 @@ cell_type_df <-
 ```{r}
 # Join UMAP and cell type info
 pbmc_small_cell_type <-
-  pbmc_small_UMAP %>%
+  pbmc_small_cluster %>%
   left_join(cell_type_df, by = "seurat_clusters")
 
 # Reorder columns
