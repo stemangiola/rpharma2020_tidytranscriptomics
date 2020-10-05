@@ -1065,7 +1065,6 @@ pbmc_small_UMAP %>%
     x = ~`UMAP_1`,
     y = ~`UMAP_2`,
     z = ~`UMAP_3`,
-    color = ~seurat_clusters,
     colors = friendly_cols[1:4]
   )
 ```
