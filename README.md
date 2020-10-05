@@ -114,7 +114,7 @@ Rough guide
 |  *Hands-on Demos*                                     |  40m |
 |      Comparison of differential testing tools         |      |
 |      Cell type composition analysis                   |      |
-|  *Exercises and Q&A*                                  |  10m |
+|  *Q&A*                                                |  10m |
 | _Break_                                               |   5m |
 | **Part 3 Single-cell RNA-seq**                        |      |
 |  *Hands-on Demos*                                     |  30m |
