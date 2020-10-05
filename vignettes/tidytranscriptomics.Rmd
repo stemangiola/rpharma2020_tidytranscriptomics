@@ -892,12 +892,6 @@ BRCA_cell_type_long <-
 BRCA_cell_type_long
 ```
 
-***
-### Note 
-
-Creating intermediary variables such as `BRCA_cell_type_long` here is useful for education, however is not needed nor recommended in normal circumstances. The `%>%` can be used to directly plot the data.
-***
-
 We can plot the proportions of immune cell types for each patient.
 
 ```{r}
