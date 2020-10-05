@@ -998,13 +998,6 @@ Seurat object as a tidyverse tibble, and provides Seurat-compatible *dplyr*, *ti
 
 
 ```{r message=FALSE, warning=FALSE}
-# Detach all previous packages - stackoverflow.com/questions/7505547/detach-all-packages-while-working-in-r
-invisible(lapply(paste0('package:', names(sessionInfo()$otherPkgs)), detach, character.only=TRUE,unload=TRUE))
-bspkgs.nb<-sessionInfo()$basePkgs[sessionInfo()$basePkgs!="base"]
-bspkgs.nbu<-bspkgs.nb[bspkgs.nb!="utils"]
-names(bspkgs.nbu)<-bspkgs.nbu
-suppressMessages(invisible(lapply(paste0('package:', names(bspkgs.nbu)), detach, character.only=TRUE,unload=TRUE)))
-
 
 # load additional libraries
 library(rpharma2020tidytranscriptomics)
