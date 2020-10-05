@@ -27,7 +27,8 @@ knitr::include_graphics("../inst/vignettes/tidybulk_logo.png")
 - Part 2 Bulk RNA-seq Extended
 - Part 3 Single-cell RNA-seq
 
-The format is a few introductory slides, then demos, exercises plus Q&A
+The format is a few introductory slides, then demos, exercises plus Q&A.
+A more detailed schedule cnn be found [here](https://stemangiola.github.io/rpharma2020_tidytranscriptomics/index.html#time-outline).
 <br>
 <br>
 
