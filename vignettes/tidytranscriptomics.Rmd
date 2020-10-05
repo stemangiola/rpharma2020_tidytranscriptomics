@@ -49,7 +49,7 @@ knitr::include_graphics("../inst/vignettes/tidybulk_logo.png")
 ```
 
 ```{poll_1 class.source="poll"}
-Poll: Will you code during this workshop?
+Poll: Will you code along and/or try out exercises during this workshop?
 ```
 
 
@@ -288,7 +288,7 @@ By far, one of the most important plots we make when we analyse RNA sequencing d
 # Get principal components
 counts_scal_PCA <-
   counts_scaled %>%
-  reduce_dimensions(method="PCA")
+  reduce_dimensions(method="PCA", .dims=3)
 ```
 
 ```{poll_4 class.source="poll"}
@@ -445,7 +445,7 @@ counts_de %>%
 
 
 ```{poll_5 class.source="poll"}
-Poll: How many differentially expressed genes are there for FDR < 0.01 and abs(logFC) > 2?
+Poll: How many differentially expressed transcripts are there for FDR < 0.05 if we did not include cell line in the formula?
 ```
 
 
@@ -484,7 +484,6 @@ counts_de %>%
 	geom_point() +
 	scale_y_continuous(trans = "log10_reverse") +
 	custom_theme
-
 ```
 
 A more informative plot, integrating some of the packages in tidyverse.
@@ -602,7 +601,7 @@ counts_tt <-
 ```{poll_6 class.source="poll"}
 Poll: 
 1) What is the Fraction of Variance for PC1?  
-2) How many differentially expressed genes are there for treated vs      untreated (FDR < 0.05)?  
+2) How many differentially expressed genes are there for treated vs untreated (FDR < 0.05)?  
 3) What is the FBgn id of the 10th most differentially expressed gene (by smallest P value)?
 ```
 
@@ -618,13 +617,13 @@ Extra
 
 ## Tidybulk ADD versus GET modes
 
-In this Part 2 we will see action="get" being used, so we will explain here what it is doing.
+In this Part 2 we will see `action="get"` being used, so we will explain here what it is doing.
 
 Every tidybulk function takes a tidybulk tibble as input, and  
- * action="add" outputs the new information joined to the original input data frame (default)
- * action="get" outputs the new information with only the sample or transcript information, depending on what the analysis is
+ * `action="add"` outputs the new information joined to the original input data frame (default)  
+ * `action="get"` outputs the new information with only the sample or transcript information, depending on what the analysis is
  
-For example, with action="add" (default), we can add the PCA dimensions to the original data set. So we still have a row for every transcript in every sample.
+For example, with `action="add"` (default), we can add the PCA dimensions to the original data set. So we still have a row for every transcript in every sample.
 
 ```{r}
 counts_scaled %>%
@@ -633,7 +632,7 @@ counts_scaled %>%
   action = "add")
 ```
 
-Or with action= "get" we can add the PCA dimensions to the original data set selecting just the sample-wise columns. Note that we now have just one row for every sample.
+Or with `action= "get"` we can add the PCA dimensions to the original data set selecting just the sample-wise columns. Note that we now have just one row for every sample.
 
 ```{r}
 counts_scaled %>%
@@ -677,7 +676,7 @@ pasilla_de <-
   keep_abundant(factor_of_interest=condition)
 ```
 
-This is an example for the default method for differential abundance testing. It uses the edgeR quasi-likelihood method.
+This is an example for the default method for differential abundance testing as we saw previously with the airway dataset. It uses the edgeR quasi-likelihood method.
 
 ```{r}
 pasilla_de %>%
@@ -733,7 +732,7 @@ de_all
 ```
 
 ```{poll_7 class.source="poll"}
-Poll: Which method detects the most differentially abundant transcripts?
+Which method detects the most differentially abundant transcripts, p value adjusted for multiple testing <  0.05 (FDR, adj.P.Val, padj)?
 ```
 
 
@@ -851,9 +850,6 @@ de_gate %>%
   select(edgerQLT_logFC, deseq2_log2FoldChange)
 ```
 
-```{poll_8 class.source="poll"}
-Poll: For the top ranked genes, DESeq2 estimates lower p.values compared to limma-voom. Roughly, around what gene rank does the significance trend of DESeq2 cross the one of limma-voom?
-```
 
 ## Cell type composition analysis
 
@@ -937,7 +933,7 @@ BRCA_cell_type_long %>%
 	custom_theme
 ```
 
-```{poll_9 class.source="poll"}
+```{poll_8 class.source="poll"}
 Poll: What is the most abundant cell type overall in BRCA samples?
 ```
 
@@ -980,18 +976,17 @@ BRCA_tidy_survival %>%
 ## Supplementary
 Some things we don't have time to cover in Part 2 of this workshop can be found in the [Supplementary material](https://stemangiola.github.io/rpharma2020_tidytranscriptomics/articles/supplementary.html).
 
-## Exercises
-
-Questions:  
-2.1 How can I compare the amount of differential abundant transcripts for the different methods?  
-2.2 How can I trace the adjusted p-value rank for methods?
+## Q & A
 
 
 # Part 3 Single-cell RNA-seq
 
+[Background information] (https://stemangiola.github.io/rpharma2020_tidytranscriptomics/articles/background.html#differences-between-bulk-and-single-cell-rna-sequencing-1)
+
 In Part 2 we showed how we can study the cell-type composition of a biological sample using bulk RNA sequencing.  Single cell sequencing enables a more direct estimation of cell-type composition and gives greater resolution. For bulk RNA sequencing we need to infer the cell types using the abundance of transcripts in the whole sample, with single-cell RNA sequencing we can directly measure the transcripts in each cell and then classify the cells into cell types. 
 
 Seurat is a very popular analysis toolkit for single cell RNA sequencing data [@butler2018integrating; @stuart2019comprehensive] .
+
 
 tidyseurat provides a bridge between the Seurat single-cell package [@butler2018integrating; @stuart2019comprehensive] and the tidyverse [@wickham2019welcome]. It creates an invisible layer that enables viewing the
 Seurat object as a tidyverse tibble, and provides Seurat-compatible *dplyr*, *tidyr*, *ggplot* and *plotly* functions.
