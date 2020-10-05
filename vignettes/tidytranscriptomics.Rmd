@@ -29,6 +29,11 @@ background-color: #fff4d4;
 }
 ```
 
+# Background
+
+Background information and setup instructions for this workshop can be found [here](https://stemangiola.github.io/rpharma2020_tidytranscriptomics/articles/background.html).
+
+
 # Part 1 Bulk RNA-seq Core
 
 This workshop will present how to perform analysis of RNA sequencing data following the tidy data paradigm [@wickham2014tidy]. The tidy data paradigm provides a standard way to organise data values within a dataset, where each variable is a column, each observation is a row, and data is manipulated using an easy-to-understand vocabulary. Most importantly, the data structure remains consistent across manipulation and analysis functions.
@@ -785,17 +790,10 @@ We then click to draw gates around the points we want, for example as shown in t
 ```{r, echo=FALSE}
 knitr::include_graphics("../inst/vignettes/comparison_different_DE_methods_gates.png")
 ```
+That will add a column called gate, specifying which gate the points (transcripts) are in.
 
-That will add a column called gate, specifying which gate the points (transcripts) are in. The coordinates of the gates are stored in the "gate" attribute of the gate object and can be retrieved if desired.
-
-```{r eval=FALSE}
-de_gate %>% attr("gate")
-```
-
-We can also specify the coordinates for pre-selected gates with `gate_list`. This can be useful, for example, for reproducibility, if we want to reuse the coordinates of gates we've drawn. 
-
-```{r}
-# using pre-selected gates
+```{r echo=FALSE}
+# using pre-selected gates just to render the html version of this document
 de_gate <- 
   de_all %>%
   
