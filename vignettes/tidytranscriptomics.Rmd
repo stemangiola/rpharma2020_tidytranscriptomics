@@ -1121,7 +1121,7 @@ pbmc_small_cluster %>%
 
 We can infer cell type identities using *SingleR* [@aran2019reference] and manipulate the output using tidyverse. SingleR [accepts any log-normalised transcript abundance matrix](https://bioconductor.org/packages/devel/bioc/vignettes/SingleR/inst/doc/SingleR.html)
 
-```{r}
+```{r eval=FALSE}
 # Get cell type reference data
 hpca <- HumanPrimaryCellAtlasData()
 
