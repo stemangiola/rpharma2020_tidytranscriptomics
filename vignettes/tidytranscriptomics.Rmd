@@ -1084,6 +1084,7 @@ pbmc_small_UMAP %>%
   )
 ```
 
+
 ```{r, echo=FALSE}
 knitr::include_graphics("../inst/vignettes/plotly.png")
 ```
@@ -1129,7 +1130,6 @@ pbmc_small_cluster %>%
     group.colors = friendly_cols
   )
 ```
-
 
 ## Automatic cell type classification
 
