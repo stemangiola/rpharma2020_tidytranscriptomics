@@ -1065,7 +1065,6 @@ pbmc_small_UMAP %>%
     x = ~`UMAP_1`,
     y = ~`UMAP_2`,
     z = ~`UMAP_3`,
-    color = ~seurat_clusters,
     colors = friendly_cols[1:4]
   )
 ```
@@ -1121,7 +1120,7 @@ pbmc_small_cluster %>%
 
 We can infer cell type identities using *SingleR* [@aran2019reference] and manipulate the output using tidyverse. SingleR [accepts any log-normalised transcript abundance matrix](https://bioconductor.org/packages/devel/bioc/vignettes/SingleR/inst/doc/SingleR.html)
 
-```{r}
+```{r eval=FALSE}
 # Get cell type reference data
 hpca <- HumanPrimaryCellAtlasData()
 
@@ -1150,7 +1149,10 @@ cell_type_df <-
 # Join UMAP and cell type info
 pbmc_small_cell_type <-
   pbmc_small_cluster %>%
-  left_join(cell_type_df, by = "seurat_clusters")
+  left_join(
+  	rpharma2020tidytranscriptomics::cell_type_df, 
+  	by = "seurat_clusters"
+  )
 
 # Reorder columns
 pbmc_small_cell_type %>%
