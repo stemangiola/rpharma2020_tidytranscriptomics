@@ -106,11 +106,11 @@ knitr::include_graphics("../inst/vignettes/RPharma2020pipeline-02.png")
 
 Easiest way to run this material. Only available during workshop.  
  * You should have received an invite to join the classroom in the R in Pharma Organization space in RStudio Cloud.   
- * **Make a copy of the project** as shown in the screenshot below  
+ * Login and click the "Start" button as shown in the screenshot below  
  * Open `tidytranscriptomics.Rmd` in `vignettes` folder
  
 ```{r, echo=FALSE, out.width = "600px"}
-knitr::include_graphics("../inst/vignettes/rstudio_cloud_copy_project.png")
+knitr::include_graphics("../inst/vignettes/rstudio_cloud.png")
 ```
  
 
