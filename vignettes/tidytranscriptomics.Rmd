@@ -1193,8 +1193,7 @@ pbmc_small_nested_reanalysed <-
       FindVariableFeatures(verbose = FALSE) %>%
       RunPCA(npcs = 10, verbose = FALSE) %>%
       FindNeighbors(verbose = FALSE) %>%
-      FindClusters(method = "igraph", verbose = FALSE) %>%
-      RunUMAP(reduction = "pca", dims = 1:10, n.components = 3L, verbose = FALSE)
+      FindClusters(method = "igraph", verbose = FALSE) 
   ))
 
 pbmc_small_nested_reanalysed
