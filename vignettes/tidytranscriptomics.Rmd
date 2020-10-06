@@ -1004,7 +1004,7 @@ library(tidyseurat)
 This is a seurat object but it is evaluated as tibble. So it is fully compatible both with Seurat and tidyverse APIs. 
 
 ```{r}
-pbmc_small_tidy <- tidyseurat::pbmc_small %>% tidy()
+pbmc_small_tidy <- rpharma2020tidytranscriptomics::pbmc_small %>% tidy()
 ```
 
 **It looks like a tibble**
@@ -1176,8 +1176,8 @@ A powerful tool we can use with tidyseurat is `nest`. We can easily perform inde
 ```{r}
 pbmc_small_nested <-
   pbmc_small_cell_type %>%
-  filter(first.labels != "Erythrocytes") %>%
-  mutate(cell_class = if_else(`first.labels` %in% c("Macrophages", "Monocytes"), "myeloid", "lymphoid")) %>%
+  filter(first.labels != "Platelets") %>%
+  mutate(cell_class = if_else(`first.labels` %in% c("Macrophage", "Monocyte"), "myeloid", "lymphoid")) %>%
   nest(data = -cell_class)
 
 pbmc_small_nested
