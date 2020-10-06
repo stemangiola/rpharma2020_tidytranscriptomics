@@ -11,6 +11,7 @@ Suggested answers to the workshop questions are below. You might have some diffe
 
 ```{r out.width = "70%", message=FALSE, warning=FALSE}
 # load libraries
+library(airway)
 
 # tidyverse core packages
 library(tibble)
@@ -26,7 +27,47 @@ library(plotly)
 library(ggrepel)
 library(tidyHeatmap)
 library(tidybulk)
+```
 
+# Part 1 Bulk RNA-seq Core
+
+## Airway dataset
+
+```{r}
+# Set up data
+data("airway")
+
+counts_tt <- 
+  airway %>%
+	tidybulk()
+```
+
+### What fraction of variance is explained by PC3?
+
+```{r}
+counts_tt %>% 
+  scale_abundance() %>%
+  reduce_dimensions(method="PCA", .dims=3)
+```
+
+
+### How many differentially expressed transcripts are there for FDR < 0.05 if we did not include cell line in the formula?
+
+```{r}
+counts_tt %>% 
+  keep_abundant(factor_of_interest=dex) %>%
+    test_differential_abundance(
+      .formula = ~ 0 + dex,
+      .contrasts = c("dextrt - dexuntrt"),
+      omit_contrast_in_colnames = TRUE
+    ) %>%
+  filter(FDR < 0.05) %>%
+  summarise(num_de = n_distinct(feature))
+```
+
+## Pasilla dataset
+
+```{r}
 # load data
 data("pasilla", package = "rpharma2020tidytranscriptomics")
 
@@ -41,22 +82,9 @@ counts_filtered <- counts_tt %>% keep_abundant(factor_of_interest = condition)
 
 # scale counts
 counts_scaled <- counts_filtered %>% scale_abundance()
+```	
 
-# create density plots
-counts_scaled %>%
-	pivot_longer(cols = c("counts", "counts_scaled"), names_to = "source", values_to = "abundance") %>%
-  ggplot(aes(x=abundance + 1, group=sample, color=condition)) +
-	geom_density() +
-	facet_wrap(~source) +
-	scale_x_log10() +
-	theme_bw()
-```
-
-# Part 1 Bulk RNA-seq Core
-
-## Question 1.1
-
-What is the Fraction of Variance for PC1 and PC2? 
+### What is the Fraction of Variance for PC1?
 
 ```{r}
 counts_scal_PCA <-
@@ -64,20 +92,7 @@ counts_scal_PCA <-
   reduce_dimensions(method="PCA")
 ```
 
-
-What do PC1 and PC2 represent?
-
-```{r out.width = "70%"}
-counts_scal_PCA %>%
-	pivot_sample() %>%
-	ggplot(aes(x=PC1, y=PC2, colour=condition, shape=type)) + 
-  geom_point() +
-  geom_text_repel(aes(label=sample), show.legend = FALSE) +
-	theme_bw()
-```
-
-Answer: PC1 represents variance due to treatment effect(treated vs untreated). PC2 represents variance due to sequencing type single vs paired.
-
+### How many differentially expressed genes are there for treated vs untreated (FDR < 0.05)? 
 
 ```{r}
 counts_de <-
@@ -85,22 +100,13 @@ counts_de <-
   test_differential_abundance(.formula = ~ 0 + condition + type, 
                               .contrasts = c("conditiontreated - conditionuntreated"), 
                               omit_contrast_in_colnames = TRUE)
-```
-
-## Question 1.2 
-
-How many DE genes are there for treated vs untreated (FDR < 0.05)?
-
-```{r}
 counts_de %>% 
   filter(FDR < 0.05) %>% 
   summarise(num_de = n_distinct(feature))
 ```
 
 
-## Question 1.3
-
-What is the FBgn id of the 10th most differentially expressed gene (by smallest P value)?
+## What is the FBgn id of the 10th most differentially expressed gene (by smallest P value)?
 
 ```{r}
 topgenes <- counts_de %>%
@@ -155,7 +161,7 @@ counts_scaled %>%
 
 What code can generate an interactive volcano plot that has gene ids showing on hover?  
 
-```{r out.width = "70%"}
+```{r eval=FALSE, out.width = "70%"}
 p <- counts_de %>%
 	pivot_transcript() %>%
 
@@ -201,9 +207,9 @@ counts_scaled %>%
 
 # Part 2 Bulk RNA-seq Extended
 
-## Question 2.1
+## Comparison of methods
 
-How can I compare the amount of differential abundant transcripts for the different methods?
+### Which method detects the most differentially abundant transcripts, p value adjusted for multiple testing <  0.05 (FDR, adj.P.Val, padj)?
 
 ```{r}
 # Set up data
@@ -269,58 +275,11 @@ de_all %>%
 	
 	# Nesting
 	dplyr::count(method)
-	
 ```
 
-## Question 2.2 
+## Cell type composition
 
-How can I trace the adjusted p-value rank for methods?
-
-```{r out.width = "70%"}
-# significance trend
-trend_plot = 
-	de_all %>%
-	
-	# Subset transcript information
-	pivot_transcript() %>%
-	
-	# Reshape for nesting
-	pivot_longer(
-		cols = -c(feature, .abundant),
-		names_sep = "_", 
-		names_to = c("method", "statistic"), 
-		values_to = "value"
-	) %>%
-	
-	# Filter statictic
-	filter(statistic %in% c("FDR", "adj.P.Val", "padj")) %>%
-	filter(value %>% is.na %>% `!`) %>%
-
-	# Nesting
-	nest(data = -method) %>%
-	mutate(data = map(
-		data,
-		~ .x %>% 
-			arrange(value) %>%
-			mutate(rank = 1:n())
-	)) %>%
-	unnest(data) %>%
-	
-	ggplot(aes(rank, value, color = method)) + 
-	geom_line() 
-
-trend_plot
-
-# Zooming on highly significant events
-trend_plot + 
-	scale_x_log10() + 
-	scale_y_log10()
-	
-```
-
-## Queston 2.3
-
-What is the most abundant cell type overall in BRCA samples?
+### What is the most abundant cell type overall in BRCA samples?
 
 ```{r eval=FALSE}
 BRCA_cell_type_long %>% 
@@ -328,6 +287,3 @@ BRCA_cell_type_long %>%
 	summarise(m = median(proportion)) %>% 
 	dplyr::arrange(dplyr::desc(m))
 ```
-
-
-

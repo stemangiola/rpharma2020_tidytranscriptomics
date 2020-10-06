@@ -142,7 +142,7 @@ We can type the name of the object to view.
 counts_airway
 ```
 
-The `counts_tt` object contains information about genes and samples, the first column has the Ensembl gene identifier, the second column has the sample identifier and the third column has the gene transcription abundance. The abundance is the number of reads aligning to the gene in each experimental sample. The remaining columns include sample-wise information. The dex column tells us whether the samples are treated or untreated and the cell column tells us what cell line they are from.
+The `counts_airway` object contains information about genes and samples, the first column has the Ensembl gene identifier, the second column has the sample identifier and the third column has the gene transcription abundance. The abundance is the number of reads aligning to the gene in each experimental sample. The remaining columns include sample-wise information. The dex column tells us whether the samples are treated or untreated and the cell column tells us what cell line they are from.
 
 We can shorten the sample names. We can remove the SRR1039 prefix that's present in all of them, as shorter names can fit better in some of the plots we will create. We can use `mutate()` together with `str_replace()` to remove the SRR1039 string from the sample column.
 
@@ -157,7 +157,9 @@ counts_format <- counts_airway %>%
 We can get the gene symbols for these Ensembl gene ids using the Bioconductor annotation package for human, `org.Hs.eg.db` and add them as a column using `mutate` again.
 
 ```{r}
-counts_tt <- counts_format %>% mutate(symbol = AnnotationDbi::mapIds(org.Hs.eg.db::org.Hs.eg.db, keys = as.character(feature), keytype = "ENSEMBL", column="SYMBOL", multiVals = "first"))
+counts_tt <- counts_format %>% 
+  mutate(symbol = AnnotationDbi::mapIds(org.Hs.eg.db::org.Hs.eg.db, keys = as.character(feature), keytype = "ENSEMBL", column="SYMBOL", multiVals = "first"))
+
 counts_tt
 ```
 
@@ -227,7 +229,7 @@ As tidybulk smoothly integrates with ggplot2 and other tidyverse packages it can
 # tidybulk
 airway %>%
 	tidybulk() %>%
-    keep_abundant(factor_of_interest=dex) %>%
+  keep_abundant(factor_of_interest=dex) %>%
 	scale_abundance() %>%
 	pivot_longer(cols = c("counts", "counts_scaled"), names_to = "source", values_to = "abundance") %>%
 	ggplot(aes(x=abundance + 1, color=sample)) +
@@ -288,7 +290,7 @@ By far, one of the most important plots we make when we analyse RNA sequencing d
 # Get principal components
 counts_scal_PCA <-
   counts_scaled %>%
-  reduce_dimensions(method="PCA", .dims=3)
+  reduce_dimensions(method="PCA")
 ```
 
 ```{poll_4 class.source="poll"}
@@ -332,7 +334,7 @@ An alternative to principal component analysis for examining relationships betwe
 counts_scaled %>%
 
 	# extract 500 most variable genes
-	keep_variable( .abundance = counts_scaled, top = 500) %>%
+	keep_variable(.abundance = counts_scaled, top = 500) %>%
 
 	# create heatmap
 	heatmap(
@@ -502,7 +504,7 @@ counts_de %>%
 	geom_text_repel() +
 
 	# Custom scales
-    custom_theme +
+  custom_theme +
 	scale_y_continuous(trans = "log10_reverse") +
 	scale_color_manual(values=c("black", "#e11f28")) +
 	scale_size_discrete(range = c(0, 2))
