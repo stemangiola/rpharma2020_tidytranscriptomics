@@ -1004,7 +1004,7 @@ library(tidyseurat)
 This is a seurat object but it is evaluated as tibble. So it is fully compatible both with Seurat and tidyverse APIs. 
 
 ```{r}
-pbmc_small_tidy <- rpharma2020tidytranscriptomics::pbmc_small %>% tidy()
+pbmc_small_tidy <- tidyseurat::pbmc_small %>% tidy()
 ```
 
 **It looks like a tibble**
