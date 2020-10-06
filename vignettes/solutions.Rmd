@@ -38,8 +38,9 @@ library(tidybulk)
 data("airway")
 
 counts_tt <- 
-  airway %>%
-	tidybulk()
+    airway %>%
+	tidybulk() %>%
+    keep_abundant(factor_of_interest=dex)
 ```
 
 ### What fraction of variance is explained by PC3?
@@ -55,7 +56,6 @@ counts_tt %>%
 
 ```{r}
 counts_tt %>% 
-  keep_abundant(factor_of_interest=dex) %>%
     test_differential_abundance(
       .formula = ~ 0 + dex,
       .contrasts = c("dextrt - dexuntrt"),
@@ -97,16 +97,18 @@ counts_scal_PCA <-
 ```{r}
 counts_de <-
   counts_tt %>%
-  test_differential_abundance(.formula = ~ 0 + condition + type, 
-                              .contrasts = c("conditiontreated - conditionuntreated"), 
-                              omit_contrast_in_colnames = TRUE)
+  test_differential_abundance(
+      .formula = ~ 0 + condition + type, 
+      .contrasts = c("conditiontreated - conditionuntreated"),
+      omit_contrast_in_colnames = TRUE)
+
 counts_de %>% 
   filter(FDR < 0.05) %>% 
   summarise(num_de = n_distinct(feature))
 ```
 
 
-## What is the FBgn id of the 10th most differentially expressed gene (by smallest P value)?
+### What is the FBgn id of the 10th most differentially expressed gene (by smallest P value)?
 
 ```{r}
 topgenes <- counts_de %>%
